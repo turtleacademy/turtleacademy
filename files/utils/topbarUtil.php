@@ -1,170 +1,178 @@
 <?php
 
 class topbarUtil {
-    public static function print_topbar($topbarPage)
-    {
+
+    public static function print_topbar($topbarPage) {
         global $root_dir;
         $topbarSpanSize = 16;
-           //Topbar menu display items
-            $topbarDisplay = array (
-                "turtleacademy" => false,
-                "exercise" => false,
-                "helpus" => false,
-                "publicPrograms" => true ,
-                "playground" => false,
-                "forum" => false,
-                "news" => false,
-                "about" => false,
-                "sample" => false
-            );
+        //Topbar menu display items
+        $topbarDisplay = array(
+            "turtleacademy" => false,
+            "exercise" => false,
+            "helpus" => false,
+            "publicPrograms" => true,
+            "playground" => false,
+            "forum" => false,
+            "news" => false,
+            "about" => false,
+            "sample" => false
+        );
 
-            $signUpDisplay = true; 
-            $languagesDisplay = true;
-           
+        //$signUpDisplay = true;
+        $languagesDisplay = true;
 
-            $language = array(
-                "en" => "en",
-                "de" => "de",
-                "es" => "es",
-                "fi" => "fi",
-                "nl" => "nl",
-                "it" => "it",
-                "pt" => "pt",
-                "pl" => "pl",
-                "ru" => "ru",
-                "he" => "he",              
-                "zh" => "zh",
-                "hr" => "hr"
-                );
-            //Will be sorted in the correct order 
-            $displaylanguage = array(
-                "en" => true,
-                "es" => true,
-                "de" => true,
-                "nl" => true,
-                "it" => false,
-                "pt" => true,
-                "pl" => false,
-                "fi" => false,
-                "ru" => true,
-                "he" => true,
-                "zh" => true ,
-                "hr" => false
-            );
-            $countryFlagName = array(
-                "en" => "us",
-                "de" => "de",
-                "es" => "es",
-                "fi" => "fi", 
-                "hr" => "hr",
-                "pt" => "br",
-                "it" => "it",
-                "pl" => "pl",
-                "ru" => "ru",
-                "nl" => "nl",
-                "he" => "il",
-                "zh" => "cn"
-                     
-            );
-            $countryNativeName = array(
-                "en" => "English",
-                "ru" => "Русский",
-                "es" => "Español",
-                "fi" => "Finnish",
-                "zh" => "中文",
-                "it" => "italian",
-                "he" => "עברית",
-                "de" => "Deutsch",
-                "nl" => "Dutch",
-                "pt" => "Português",
-                "pl" => "polish",
-                "hr" => "Croatian"
-            );
-            switch ($topbarPage) {
-                case "learn": 
-                     $topbarDisplay['playground'] = true ; 
-                     $topbarDisplay['news'] = true ; $topbarDisplay['about'] = true ; 
-                     $displaylanguage['de'] = true ;  $displaylanguage['pl']=true;$displaylanguage['fi']=true;
-                     $displaylanguage['nl']=true;$displaylanguage['it']=false;$displaylanguage['hr']=true;
-                    break; 
-                case "faq":
-                    $signUpDisplay = false;
-                    $languagesDisplay = false;
-                    $topbarSpanSize = 20;
-                    $topbarDisplay['playground'] = true ;  $topbarDisplay['news'] = true ; $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;
-                case "index":
-                    $signUpDisplay = false;
-                    $topbarDisplay['playground'] = true ; 
-                    $topbarDisplay['news'] = true ; $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;
-                case "playground":
-                    $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;
-                case "program":
-                    $topbarDisplay['playground'] = true ; 
-                    $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    $topbarSpanSize = 21;
-                    //$languagesDisplay = false;
-                    break;       
-                case "programUpdate":
-                    $topbarDisplay['playground'] = true ; 
-                    $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    $topbarDisplay['publicPrograms'] = false; 
-                    $topbarSpanSize = 21;
-                    $languagesDisplay = true;
-                    break;  
-                case "institute":
-                    $signUpDisplay = true;
-                    $languagesDisplay = false;
-                    break;
-                case "users":
-                    $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;
-                case "registration":
-                    $signUpDisplay = false;
-                    $topbarDisplay['about'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    $language['en'] = "en_US"; $language['ru'] = "ru_RU"; $language['he'] = "he_IL";
-                    $language['es'] = "es_AR"; $language['zh'] = "zh_CN"; $language['de'] = "de_DE"; 
-                    $language['pt'] = "pt_BR"; $language['pl'] = "pl_PL";
-                    $topbarSpanSize = 13;
-                    break;
-                case "news":
-                    $topbarDisplay['turtleacademy'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;
-                case "documentation":
-                    $topbarDisplay['turtleacademy'] = true ; 
-                    $topbarDisplay['exercise'] = true ;
-                    break;                
-                
-                
-            }        
-            topbarUtil::print_topbar_selected($root_dir, $topbarDisplay, $languagesDisplay , $signUpDisplay,
-                    $language ,$topbarSpanSize , $displaylanguage , $countryNativeName , $countryFlagName);
+
+        $language = array(
+            "en" => "en",
+            "de" => "de",
+            "es" => "es",
+            "fi" => "fi",
+            "nl" => "nl",
+            "it" => "it",
+            "pt" => "pt",
+            "pl" => "pl",
+            "ru" => "ru",
+            "he" => "he",
+            "zh" => "zh",
+            "hr" => "hr"
+        );
+        //Will be sorted in the correct order 
+        $displaylanguage = array(
+            "en" => true,
+            "es" => true,
+            "de" => true,
+            "nl" => true,
+            "it" => false,
+            "pt" => true,
+            "pl" => false,
+            "fi" => false,
+            "ru" => true,
+            "he" => true,
+            "zh" => true,
+            "hr" => false
+        );
+        $countryFlagName = array(
+            "en" => "us",
+            "de" => "de",
+            "es" => "es",
+            "fi" => "fi",
+            "hr" => "hr",
+            "pt" => "br",
+            "it" => "it",
+            "pl" => "pl",
+            "ru" => "ru",
+            "nl" => "nl",
+            "he" => "il",
+            "zh" => "cn"
+        );
+        $countryNativeName = array(
+            "en" => "English",
+            "ru" => "Русский",
+            "es" => "Español",
+            "fi" => "Finnish",
+            "zh" => "中文",
+            "it" => "italian",
+            "he" => "עברית",
+            "de" => "Deutsch",
+            "nl" => "Dutch",
+            "pt" => "Português",
+            "pl" => "polish",
+            "hr" => "Croatian"
+        );
+        switch ($topbarPage) {
+            case "learn":
+                $topbarDisplay['playground'] = true;
+                $topbarDisplay['news'] = true;
+                $topbarDisplay['about'] = true;
+                $displaylanguage['de'] = true;
+                $displaylanguage['pl'] = true;
+                $displaylanguage['fi'] = true;
+                $displaylanguage['nl'] = true;
+                $displaylanguage['it'] = false;
+                $displaylanguage['hr'] = true;
+                break;
+            case "faq":
+                //$signUpDisplay = false;
+                $languagesDisplay = false;
+                $topbarSpanSize = 20;
+                $topbarDisplay['playground'] = true;
+                $topbarDisplay['news'] = true;
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+            case "index":
+                //$signUpDisplay = false;
+                $topbarDisplay['playground'] = true;
+                $topbarDisplay['news'] = true;
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+            case "playground":
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+            case "program":
+                $topbarDisplay['playground'] = true;
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                $topbarSpanSize = 21;
+                //$languagesDisplay = false;
+                break;
+            case "programUpdate":
+                $topbarDisplay['playground'] = true;
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                $topbarDisplay['publicPrograms'] = false;
+                $topbarSpanSize = 21;
+                $languagesDisplay = true;
+                break;
+            case "institute":
+                //$signUpDisplay = true;
+                $languagesDisplay = false;
+                break;
+            case "users":
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+            case "registration":
+                //$signUpDisplay = false;
+                $topbarDisplay['about'] = true;
+                $topbarDisplay['exercise'] = true;
+                $language['en'] = "en_US";
+                $language['ru'] = "ru_RU";
+                $language['he'] = "he_IL";
+                $language['es'] = "es_AR";
+                $language['zh'] = "zh_CN";
+                $language['de'] = "de_DE";
+                $language['pt'] = "pt_BR";
+                $language['pl'] = "pl_PL";
+                $topbarSpanSize = 13;
+                break;
+            case "news":
+                $topbarDisplay['turtleacademy'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+            case "documentation":
+                $topbarDisplay['turtleacademy'] = true;
+                $topbarDisplay['exercise'] = true;
+                break;
+        }
+        topbarUtil::print_topbar_selected($root_dir, $topbarDisplay, $languagesDisplay/*, $signUpDisplay*/, $language, $topbarSpanSize, $displaylanguage, $countryNativeName, $countryFlagName);
     }
-     private static function print_topbar_selected($rootDir, $topbarDisplay, $langDropDown, $signUpDisplay,
-             $language,$topbarSpanSize ,$displaylanguage , $countryNativeName , $countryFlagName , $showTurtleIcon = true) 
-    {
-        global $cssleft, $cssright, $lang , $site_path;
+
+    private static function print_topbar_selected($rootDir, $topbarDisplay, $langDropDown/*, $signUpDisplay*/, $language, $topbarSpanSize, $displaylanguage, $countryNativeName, $countryFlagName, $showTurtleIcon = true) {
+        global $cssleft, $cssright, $lang, $site_path;
         ?>    
         <div class="topbar" id="topbarMainDiv" > 
             <div class="fill" id="topbarfill">
                 <div class="container span<?php echo $topbarSpanSize; ?>" id="topbarContainer">
-                    <?php
-                    if ($showTurtleIcon) {
-                        ?>
-                        <a href="<?php echo $site_path."/index/".$lang; ?>" alt="Home page"><img class="brand" id="turtleimg" lang="<?php echo $lang ?>" src="<?php echo $rootDir; ?>files/turtles.png" /></a> 
                         <?php
-                    }//Close show icon
-                    ?>
+                        if ($showTurtleIcon) {
+                            ?>
+                        <a href="<?php echo $site_path . "/index/" . $lang; ?>" alt="Home page"><img class="brand" id="turtleimg" lang="<?php echo $lang ?>" src="<?php echo $rootDir; ?>files/turtles.png" /></a> 
+                            <?php
+                        }//Close show icon
+                        ?>
                     <ul class="nav" id="turtleHeaderUl" lang="<?php echo $lang ?>"> 
                         <?php
                         if ($topbarDisplay['turtleacademy'] == "true") {
@@ -182,7 +190,7 @@ class topbarUtil {
                             echo _("User programs");
                             echo "</a></li>";
                         }
-                        
+
                         if ($topbarDisplay['helpus'] == "true") {
                             echo "<li><a href='" . $site_path . "needed.php'>";
                             echo _("Help Us");
@@ -210,31 +218,20 @@ class topbarUtil {
                         }
                         ?>
                     </ul> 
-                    <?php
-                    if ($langDropDown == "true") {
-                        ?>
-                        <form class="<?php
-                                        echo "pull-$cssleft form-inline";
-                                    ?>" action="" id="turtleHeaderLanguage" lang="<?php echo $lang ?>">
-                            <select name="selectedLanguage" id="selectedLanguage"> 
                             <?php
-                                $blankImagePath = $rootDir . "Images/msdropdown/icons/blank.gif";
-                                foreach ($language as $langKey=>$langVal)
-                                {
-                                    if ($displaylanguage[$langKey]) 
-                                        echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]'> $countryNativeName[$langKey] </option> ";
-                                }
-                            ?> 
-                               <!-- 
-                                <option value='<?php echo $language['en']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag us" data-title="United States">English</option>
-                                <option value='<?php echo $language['de']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag de" data-title="German">Deutsch</option>
-                                <option value='<?php echo $language['es']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag es" data-title="Spain">Español</option>
-                                <option value='<?php echo $language['pl']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag pl" data-title="Russain">polish</option>
-                                <option value='<?php echo $language['pt']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag br" data-title="Polish">Português</option>
-                                <option value='<?php echo $language['ru']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag ru" data-title="Russain">Русский</option>
-                                <option value='<?php echo $language['he']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag il" data-title="Israel">עברית</option>
-                                <option value='<?php echo $language['zh']; ?>' data-image="<?php echo $rootDir; ?>Images/msdropdown/icons/blank.gif" data-imagecss="flag cn" data-title="China">中文</option>
-                               -->
+                            if ($langDropDown == "true") {
+                                ?>
+                        <form class="<?php
+                                echo "pull-$cssleft form-inline";
+                                ?>" action="" id="turtleHeaderLanguage" lang="<?php echo $lang ?>">
+                            <select name="selectedLanguage" id="selectedLanguage"> 
+            <?php
+            $blankImagePath = $rootDir . "Images/msdropdown/icons/blank.gif";
+            foreach ($language as $langKey => $langVal) {
+                if ($displaylanguage[$langKey])
+                    echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]'> $countryNativeName[$langKey] </option> ";
+            }
+            ?> 
                             </select>
                         </form>       
             <?php
@@ -248,52 +245,50 @@ class topbarUtil {
                                 <li class="cc-button-group btn-group"> 
                                     <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" >
                                         <?php
-                                            $displayUserName = $_SESSION['username'];
-                                            if (isset($_SESSION['isOpenID'])) {
-                                                $emailDetails = explode('@', $_SESSION['username']);
-                                                $displayUserName = $emailDetails[0];
-                                            }
-                                            echo $displayUserName;
-                                            if (isset($_SESSION['nmsg']))
-                                            {
-                                                if ($_SESSION['nmsg'])
-                                                {
+                                        $displayUserName = $_SESSION['username'];
+                                        if (isset($_SESSION['isOpenID'])) {
+                                            $emailDetails = explode('@', $_SESSION['username']);
+                                            $displayUserName = $emailDetails[0];
+                                        }
+                                        echo $displayUserName;
+                                        if (isset($_SESSION['nmsg'])) {
+                                            if ($_SESSION['nmsg']) {
                                                 ?>
                                                 <i class="icon-envelope innerIcon" lang="en"></i>
-                                                <?php
-                                                }
-                                            }
-                                        ?>                          
+                    <?php
+                }
+            }
+            ?>                          
                                     </a>
                                     <ul class="dropdown-menu" id="ddusermenu"role="menu" aria-labelledby="dLabel">
-                                        <li><a tabindex="-1" href="<?php echo $rootDir . "users.php" ; ?>"   class="innerLink" id="help-nav"><?php echo _("My account"); ?></a></li>
-                                        <li><a tabindex="-1" href="<?php echo $rootDir."project/doc/".$lang; ?>" class="innerLink" id="hel-nav"><?php echo _("Help"); ?></a></li>
+                                        <li><a tabindex="-1" href="<?php echo $rootDir . "users.php"; ?>"   class="innerLink" id="help-nav"><?php echo _("My account"); ?></a></li>
+                                        <li><a tabindex="-1" href="<?php echo $rootDir . "project/doc/" . $lang; ?>" class="innerLink" id="hel-nav"><?php echo _("Help"); ?></a></li>
                                         <li><a href="<?php echo $rootDir; ?>logout.php" class="innerLink"><?php echo _("Log out"); ?></a></li>
                                     </ul>
                                 </li>
                             </ul> 
                         </nav>                                                                     
 
-            <?php
-        } //End if user exist 
-        else //Only if need to display signup button
-        {   
-            if ($signUpDisplay) {
-            ?>       
-                <ul class="nav <?php echo "pull-$cssright "; ?>" id="turtleHeaderLogIn" lang="<?php echo $lang ?>"> 
-                    <li> <a class='nava' href="<?php echo $rootDir; ?>registration.php" id="turtleHeaderUlLogin" lang="<?php echo $lang ?>"><?php echo _("Login"); ?></a></li> 
-                    <li id="registrateBtn" ><a id="menuRegBtn" href="<?php echo $rootDir; ?>registration.php" ><?php echo _("Sign Up for free"); ?></a></li>
-                </ul>                         
-        <?php
-            } //End of if condition ? show signUP
+                        <?php
+                    } //End if user exist 
+                    else { //Only if need to display signup button
+/*                        if ($signUpDisplay) {*/
+                            ?>       
+                            <ul class="nav <?php echo "pull-$cssright "; ?>" id="turtleHeaderLogIn" lang="<?php echo $lang ?>"> 
+                                <li> <a class='nava' href="<?php echo $rootDir; ?>registration.php" id="turtleHeaderUlLogin" lang="<?php echo $lang ?>"><?php echo _("Login"); ?></a></li> 
+                                <li id="registrateBtn" ><a id="menuRegBtn" href="<?php echo $rootDir; ?>registration.php" ><?php echo _("Sign Up for free"); ?></a></li>
+                            </ul>                         
+                <?php
+            //} //End of if condition ? show signUP
         }
         ?> 
                 </div> <!-- topbarContainer -->
             </div>    <!-- topbarfill -->        
         </div> <!-- End of Top menu --> 
-<?php
-    } // Close function printTopBar
+        <?php
+    }
 
-} // Close class topbarUtil
+// Close function printTopBar
+}
 
-            
+// Close class topbarUtil            
