@@ -127,24 +127,10 @@ require_once ('files/utils/topbarUtil.php');
 
     </head>
     <body>
-        <?php
-        //Strings for Password reset
-    $strContinueReset = _("Please check your email to continue with password reset");
-    $strErrSendConfirmMail = _("Error while sending confirm Email");
-    $strContactSupoort = _("please contact the TurtleAcademy support");
-//In case the user properly inserted into the database
-    $strWelcomeMsg   = _("Welcome to TurtleAcademy");
-    $strResetMsg    = _("TurtleAcademy password reset");
-//String for checking Email and username validation
-    $strEmailExist  = _("Email is being used by a registered user");
-    $strForgotPass  = _("if you forgot your password please press reset password");
-    $strUserNExist  = _("Username is already exist in the system");
-    $strChooseNewUN = _("please choose another username");
-
-        
-    $googleid = createOpenIdObject('https://www.google.com/accounts/o8/id', "loginopen.php");
-    $yahooid = createOpenIdObject('https://me.yahoo.com', "loginopen.php");
-//setup some variables/arrays
+    <?php
+        $googleid = createOpenIdObject('https://www.google.com/accounts/o8/id', "loginopen.php");
+        $yahooid = createOpenIdObject('https://me.yahoo.com', "loginopen.php");
+        //setup some variables/arrays
         $action = array();
         $action['result'] = null;
         $text = array();
@@ -186,10 +172,10 @@ require_once ('files/utils/topbarUtil.php');
                     addUserToDb($username, $password, $email, $users, $db);
                 } else if ($existEmail > 0) { //Check if email already exist
                     $action['result'] = 'error';
-                    array_push($text, $strEmailExist . " " . $strForgotPass);
+                    array_push($text, _("Email is being used by a registered user") . " " . _("if you forgot your password please press reset password"));
                 } else if ($existUsername > 0) { //Check if email already exist
                     $action['result'] = 'error';
-                    array_push($text, $strUserNExist . " " . $strChooseNewUN);
+                    array_push($text, _("Username is already exist in the system") . " " . _("please choose another username"));
                 } else {
                     addUserToDb($username, $password, $email, $users, $db);
                 }
@@ -228,20 +214,20 @@ require_once ('files/utils/topbarUtil.php');
                         'email' => $email,
                         'key' => $key,
                         'locale' => $locale,
-                        'msgWelcome' => $strWelcomeMsg,
-                        'msgReset' => $strResetMsg);
+                        'msgWelcome' => _("Welcome to TurtleAcademy"),
+                        'msgReset' => _("TurtleAcademy password reset"));
                     //send the email
                     if (send_email($info, $site_path, "resetpass_template")) {
                         $action['result'] = 'success';
-                        array_push($text, $strContinueReset);
+                        array_push($text, _("Please check your email to continue with password reset"));
                     } else {
                         $action['result'] = 'error';
-                        array_push($text, $strErrSendConfirmMail . " " . $strContactSupoort);
+                        array_push($text, _("Error while sending confirm Email") . " " . _("please contact the TurtleAcademy support"));
                     }
                 } else {
 
                     $action['result'] = 'error';
-                    array_push($text, $strErrSendConfirmMail . " " . $strContactSupoort);
+                    array_push($text, _("Error while sending confirm Email") . " " . _("please contact the TurtleAcademy support"));
                 }
             }
             $action['text'] = $text;
@@ -423,8 +409,7 @@ require_once ('files/utils/topbarUtil.php');
                 $userConfirmResult = $users->insert($userStructure, array('safe' => true));
 
                 //In case the user properly inserted into the database
-                $strWelcomeMsg = _("Welcome to TurtleAcademy");
-                $strResetMsg = _("TurtleAcademy password reset");
+
                 if ($userConfirmResult) {
                     //include the swift class
                     include_once $phpDirPath . 'swift/swift_required.php';
@@ -435,8 +420,8 @@ require_once ('files/utils/topbarUtil.php');
                         'email' => $email,
                         'key' => $key,
                         'locale' => $locale,
-                        'msgWelcome' => $strWelcomeMsg,
-                        'msgReset' => $strResetMsg);
+                        'msgWelcome' => _("Welcome to TurtleAcademy"),
+                        'msgReset' => _("TurtleAcademy password reset"));
                     //send the email
                     $templateType = "signup_template";
                     if ($locale != "en_US")
@@ -461,31 +446,4 @@ require_once ('files/utils/topbarUtil.php');
                 }
             }
         }
-?>
-<script>
-    /*
-  $('#termsofuse').each(function() {
-                    var locale      = $.Storage.get('locale');      
-                    if (locale != "he_IL")
-                        var $dialog = $('<div dir="ltr"></div>');
-                    else
-                        var $dialog = $('<div dir="rtl"></div>');
-                    var $link = $(this).one('click', function() {                      
-                        $dialog                           
-                        .load('termsOfUse.php')
-                        .dialog({
-                            title: "Terms of use",
-                            width: 700,
-                            close: function( event, ui ) {
-                            }
-
-                        }); 
-                        $link.click(function() {
-                            $dialog.dialog('open');
-                            return false;
-                        });
-                        return false;                       
-                    });                                           
-                });   
-                */
-</script>                
+?>              
