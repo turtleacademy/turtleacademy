@@ -25,7 +25,7 @@ require_once ('files/utils/topbarUtil.php');
         ?> 
         <script type='text/javascript'> 
             $(document).ready(function(){
-                var gt = new Gettext({'domain' : 'messages'});
+                //var gt = new Gettext({'domain' : 'messages'});
                 $('#topbar').dropdown();
                 $('#username_in').focus();
                 $("#sign-in-form").validate({
@@ -41,12 +41,12 @@ require_once ('files/utils/topbarUtil.php');
                     },
                     messages: {
                         username: {
-                            required: gt.gettext("Please enter your username"), 
-                            minlength: gt.gettext("Your username must contain at least 4 characters")
+                            required: <?php echo '"'._("Please enter your username").'"'?>, 
+                            minlength: <?php echo '"'._("Your username must contain at least 4 characters").'"'?>
                         },
                         password: {
-                            required: gt.gettext("Please enter your password"),
-                            minlength: gt.gettext("Your password must contain at least 5 characters")
+                            required: <?php echo '"'._("Please enter your password").'"'?>,
+                            minlength: <?php echo '"'._("Your password must contain at least 5 characters").'"'?>
                         }
                     }
                 }); 
@@ -67,14 +67,14 @@ require_once ('files/utils/topbarUtil.php');
                     },
                     messages: {
                         username: {
-                            required: gt.gettext("Please enter your username"), 
-                            minlength: gt.gettext("Your username must contain at least 4 characters")
+                            required: <?php echo '"'._("Please enter your username").'"'?>, 
+                            minlength: <?php echo '"'._("Your username must contain at least 4 characters").'"'?>
                         },
                         password: {
-                            required: gt.gettext("Please enter your password"),
-                            minlength: gt.gettext("Your password must contain at least 5 characters")
+                            required: <?php echo '"'._("Please enter your password").'"'?>,
+                            minlength: <?php echo '"'._("Your password must contain at least 5 characters").'"'?>
                         },
-                        email: gt.gettext("Please enter a valid email address")
+                        email: <?php echo '"'._("Please enter a valid email address").'"'?>
                     }
                 }); 
                 $("#forgot-password-form").validate({
@@ -85,7 +85,7 @@ require_once ('files/utils/topbarUtil.php');
                         }
                     },
                     messages: {
-                        email_pwd: gt.gettext("Please enter a valid email address")
+                        email_pwd: <?php echo '"'._("Please enter a valid email address").'"'?>
                     }
                 }); 
                 try {
