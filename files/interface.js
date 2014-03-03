@@ -47,7 +47,11 @@ function loadLesson(lessonID)
 
     // Render the template with the lessons data
     $.tmpl( "lessonTemplate", lessons[lessonID], {}).appendTo( "#accordion" );
-    $( "#accordionLessonTitle" ).replaceWith('<div id="accordionLessonTitle">'+ LessonTitleTranslated +lessonDisplayNum+ ': ' +lessons[lessonID].title+ '</div>');
+    var lesson_title = "lesson";
+    if (typeof lessons[lessonID] != 'undefined') {
+        lesson_title = lessons[lessonID].title ;
+    }
+    $( "#accordionLessonTitle" ).replaceWith('<div id="accordionLessonTitle">'+ LessonTitleTranslated +lessonDisplayNum+ ': ' +lesson_title+ '</div>');
     //$('<div id="accordionLessonTitle">' +lessons[lessonID].title+ '</div>').prependTo( "#accorPlusNav" );
     $( "#accordion" ).accordion({
         //      icons: icons,
@@ -475,57 +479,60 @@ $(function() {
     }  
 
     // Defining all the properties for building the lesson carousel
-    var opts = {};
-    opts['autoScroll'] = false;
-    opts['continuous'] = false;
-    opts['easing'] = "swing";
-    opts['itemsPerPage'] = 4;
-    opts['itemsPerTransition'] = "auto";
-    opts['nextPrevActions'] = true;
-    if ($('html').attr('dir') == 'rtl'){
-        opts['insertNextAction'] =  function () {
-            return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-prev"><i id="carouselNextBtn" class="icon-fixed-width icon-backward"></i></a>').appendTo("#headnext");
-        }
-        opts['insertPrevAction'] =  function () {
-            return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-forward"></i></a>').appendTo("#headprev");
-        }
-    }
-    else
-    {
-        opts['insertPrevAction'] =  function () {
-            return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-backward"></i></a>').appendTo("#headprev");
-        }
-        opts['insertNextAction'] =  function () {
-            return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-next"><i id="carouselNextBtn" class="icon-fixed-width icon-forward"></i></a>').appendTo("#headnext");
-        }
-    }
-    opts['orientation'] = "horizontal";
-    opts['pagination'] = true;
-    opts['speed'] = "normal"; 
- 
-    $('.rs-carousel').carousel(opts); 
     
-    //Handling pressing back and forward on the lesson carousel
-    
-    $("#lessonCarouselPrev").click(function() { 
-        /*
-        if (activeLesson >= numOfLessonPerPage) //Only if we are not in the first page
-        {
-           var currentPage = Math.floor(activeLesson / numOfLessonPerPage ) ;
-           var newLessonToLoad = (currentPage - 1) * numOfLessonPerPage + (numOfLessonPerPage - 1);
-           loadNewLessonSteps(activeLesson,newLessonToLoad); 
+    if (typeof no_carousel == 'undefined') { //No_carousel is present only on creating lesson by guest in showleasson.php
+        var opts = {};
+        opts['autoScroll'] = false;
+        opts['continuous'] = false;
+        opts['easing'] = "swing";
+        opts['itemsPerPage'] = 4;
+        opts['itemsPerTransition'] = "auto";
+        opts['nextPrevActions'] = true;
+        if ($('html').attr('dir') == 'rtl'){
+            opts['insertNextAction'] =  function () {
+                return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-prev"><i id="carouselNextBtn" class="icon-fixed-width icon-backward"></i></a>').appendTo("#headnext");
+            }
+            opts['insertPrevAction'] =  function () {
+                return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-forward"></i></a>').appendTo("#headprev");
+            }
         }
-        */
-    });
-    $("#lessonCarouselNext").click(function() { 
-        /*
-        var currentPage = Math.floor(activeLesson / numOfLessonPerPage) ; 
-        if (currentPage < numOfPages) 
+        else
         {
-           var newLessonToLoad = (currentPage + 1) * numOfLessonPerPage;
-           loadNewLessonSteps(activeLesson,newLessonToLoad); 
+            opts['insertPrevAction'] =  function () {
+                return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-backward"></i></a>').appendTo("#headprev");
+            }
+            opts['insertNextAction'] =  function () {
+                return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-next"><i id="carouselNextBtn" class="icon-fixed-width icon-forward"></i></a>').appendTo("#headnext");
+            }
         }
-        */
-    });
+        opts['orientation'] = "horizontal";
+        opts['pagination'] = true;
+        opts['speed'] = "normal"; 
+
+        $('.rs-carousel').carousel(opts); 
+
+        //Handling pressing back and forward on the lesson carousel
+
+        $("#lessonCarouselPrev").click(function() { 
+            /*
+            if (activeLesson >= numOfLessonPerPage) //Only if we are not in the first page
+            {
+               var currentPage = Math.floor(activeLesson / numOfLessonPerPage ) ;
+               var newLessonToLoad = (currentPage - 1) * numOfLessonPerPage + (numOfLessonPerPage - 1);
+               loadNewLessonSteps(activeLesson,newLessonToLoad); 
+            }
+            */
+        });
+        $("#lessonCarouselNext").click(function() { 
+            /*
+            var currentPage = Math.floor(activeLesson / numOfLessonPerPage) ; 
+            if (currentPage < numOfPages) 
+            {
+               var newLessonToLoad = (currentPage + 1) * numOfLessonPerPage;
+               loadNewLessonSteps(activeLesson,newLessonToLoad); 
+            }
+            */
+        });
+    } // End or craeting lesson carusel
 });
  
