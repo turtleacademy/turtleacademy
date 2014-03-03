@@ -149,7 +149,7 @@ class includeCssAndJsFiles {
         //    echo "<script src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js'>";
         if ($hasNavigator)
         {    
-            echo "<script type='application/javascript' src='".$root_dir."twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/bootstrap-carousel.js' ></script>" ; 
+            echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
         }
         echo "<link href='".$root_dir."files/bootstrap/css/bootstrap.all.css' rel='stylesheet' >" ;
 
