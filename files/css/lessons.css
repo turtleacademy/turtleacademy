@@ -36,9 +36,12 @@ root {
    float : left;
 }
 #lessonStep{
-   height: 140px;
+   /* height: 140px; */
    width : 100%;
    
+}
+.control-group{
+    margin-bottom: 0px !important; 
 }
 #lessonStep #lessonStepLabel{
    color :   #3D3624 ;
@@ -231,8 +234,9 @@ textarea {
     font-size: 16px;
     cursor: default;
     padding-top: 10px ;
+    /*display : none !important;*/
     border: 0;
-    width : 400px;
+    width : 100px;
     float : left;
     font-size: 14px;
     font-weight: normal;
@@ -242,6 +246,10 @@ textarea {
     text-align: left;
     padding-top: 5px;
 }  
+.form-stacked label{
+    width : 100px !important; 
+        
+}
 .existing_step{
     /*
     list-style: none;
@@ -279,12 +287,14 @@ body, p {
     font-size: 13px;
 }
 fieldset{
-    width : 400px;
+    width : 450px;
     height : 340px; 
+    padding-top: 0px;
 } 
 .divActionBtn{
     height : 50px;
     float: left;
+    margin-top: 10px; 
 }
 #btnShowDoc{
     margin-top: 11px;
@@ -294,4 +304,17 @@ p {
 font-size: 16px;
 color: #7c7c7c;
 font-family: sans-serif;
+}
+#lessonStepUl{
+    margin-bottom: 0px;
+}
+.form-stacked label{
+    /*width :200px !important;*/
+}
+ .form-input label 
+{
+    float:left;
+}
+.form-input{
+    height: 60px;
 }

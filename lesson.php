@@ -9,34 +9,19 @@ and open the template in the editor.
     (isset($_SESSION['Admin']) && $_SESSION['Admin'] == true) || (isset($_SESSION['Guest']) && $_SESSION['Guest'] == true) || (isset($_SESSION['translator']) && $_SESSION['translator'] == true)  ? $show = true : $show = false;
     (isset($_SESSION['username'])) ? $showpage = true : $showpage = false;
 
-    if (isset( $_SESSION['locale']))
-        $locale =   $_SESSION['locale'];
-    if (isset( $_GET['locale']))
-        $locale =   $_GET['locale'];
-    if (!isset($locale)) {
-        $locale = "en_US";
-        $_SESSION['locale'] = "en_US";
-    }
     require_once ("files/utils/lessonsUtil.php");
     require_once("environment.php");
-    if (isset( $_SESSION['locale']))
-        $locale =   $_SESSION['locale']; 
-    if (isset( $_GET['locale']))
-        $locale =   $_GET['locale'];
-    if (!isset($locale)) {
-        $locale = "en_US";
-        $_SESSION['locale'] = "en_US";
-    }
     require_once("localization.php");
-    require_once("files/cssUtils.php");
     require_once("files/utils/languageUtil.php");
+    require_once('files/utils/topbarUtil.php');
 ?>
 
     
 <html>
     <head>
         <?php
-            include_once("files/inc/dropdowndef.php");  
+            require_once("files/utils/includeCssAndJsFiles.php");
+            includeCssAndJsFiles::include_all_page_files("index"); 
             $locale = "en_US";
             $languageGet = "locale";
             if (isset($_GET[$languageGet]))
@@ -84,71 +69,8 @@ and open the template in the editor.
     { // Show the page for register user
 ?>
     <body>
-
-        <!-- Should be different for log in user and for a guest -->
-        <div class="topbar" id="topbarMainDiv"> 
-            <div class="fill" id="topbarfill">
-                <div class="container span16" id="topbarContainer"> 
-                    <img class="brand" id="turtleimg" src="files/turtles.png" alt="צב במשקפיים">
-
-                    <ul class="nav" id="turtleHeaderUl"> 
-                            <li><a href="index.php" ><?php echo _("TurtleAcademy");?></a></li> 
-                    </ul>
-
-                    <form class="<?php 
-                                        echo $formPullingSide . " form-inline";                                
-                                    ?>" action="" id="turtleHeaderLanguage">  
-                        <select name="selectedLanguage" id="selectedLanguage">
-                            <option value='en_US' data-image="/images/msdropdown/icons/blank.gif" data-imagecss="flag us" data-title="United States">English</option>
-                            <option value='es_AR' data-image="/images/msdropdown/icons/blank.gif" data-imagecss="flag es" data-title="Spain">Español</option>
-                            <option value='he_IL' data-image="/images/msdropdown/icons/blank.gif" data-imagecss="flag il" data-title="Israel">עברית</option>
-                            <option value='zh_CN' data-image="/images/msdropdown/icons/blank.gif" data-imagecss="flag cn" data-title="China">中文</option>
-                        </select>
-                    </form>       
-                    <?php
-                        if (isset($_SESSION['username']))
-                        {
-                    ?>                       
-                            <!--  <p class="pull-right">Hello <a href="#"> -->
-                                <nav class="<?php echo $login ?>"  id="turtleHeaderLoggedUser">
-                                    <ul class="nav nav-pills <?php echo $login ?>" id="loggedUserUl">
-
-                                        <li style="padding: 10px 10px 11px;" id='loggedUserLI'> <?php echo _("Hello");?></li>
-                                        <li class="cc-button-group btn-group"> 
-                                            <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" >
-                                                <?php
-                                                    $display_username    = $_SESSION['username'];  
-                                                    if (isset($_SESSION['isOpenID']))
-                                                    {
-                                                        $emailDetails = explode('@',$_SESSION['username']);
-                                                        $display_username = $emailDetails[0];
-                                                    }
-                                                        echo $display_username;
-                                                ?> 
-                                                <!-- <b class="caret"></b>  -->
-                                            </a>
-                                            <ul class="dropdown-menu" id="ddmenu"role="menu" aria-labelledby="dLabel">
-                                                <li><a tabindex="-1" href="users.php"   class="innerLink" id="help-nav"><?php echo _("My account");?></a></li>
-                                                <li><a tabindex="-1" href="/docs" class="innerLink" id="hel-nav"><?php echo _("Help");?></a></li>
-                                                <li><a href="logout.php" class="innerLink"><?php echo _("Log out");?></a></li>
-                                            </ul> 
-                                        </li>
-                                    </ul> 
-                                </nav>                                                                     
-
-                    <?php
-                        }
-                        else
-                        {
-
-                        }
-                        ?>
-                </div>
-            </div> <!-- Ending fill barf -->
-        </div> <!-- Ending top bar -->        
-        
-        
-        <?php
+ <?php
+                     topbarUtil::print_topbar("index");
                     //session_start();
                     $m = new Mongo();
 // select a database
@@ -196,11 +118,7 @@ and open the template in the editor.
                 $hint = "";
             }
             // <label class='control-label' > %%a: </lable>
-            $baseInputText = "<div class='control-group lesson-label'> 
-                                <label class='lesson-label' > %%a </label>
-                                <div class='controlsa'>
-                                     <textarea class='input-xlarge' type='text'  name='%%b' id='%%b' placeholder='Step %%a'>%%c</textarea> 
-                                </div>                              
+            $baseInputText = "<div class='form-input'><label class='lesson-label'> %%a </label><textarea class='input-xlarge' type='text'  name='%%b' id='%%b' placeholder='Step %%a'>%%c</textarea>                          
                              </div>";
             $toReplace = array("%%a", "%%b", "%%c");
             $replaceWithAction = array(_("Action"), "action", $action);
@@ -216,18 +134,17 @@ and open the template in the editor.
         }
 
         function printLeftLessonElemnt($i, $show , $formPullingSide , $lessonPrecedence , $lessonTurtleId) {
-            echo "<div class='leftLessonElem well span7 " . $formPullingSide . "' style='margin-top:10px; margin-left: 0px;  height:350px;'> 
-                        <form class='form-stacked'>
+            echo "<div class='leftLessonElem span7" . $formPullingSide . "' style='margin-top:10px; margin-left: 0px;  height:350px;'> 
+                        <form class='form'>
                             <fieldset class='lesson-fieldset'> 
-                                <div class='control-group lesson-label'> 
-                                    <label class='lesson-label' >" . _("Title")  ."</label> 
-                                    <div class='controlsa'>
-                                        <textarea type='text'  name='title' id='title' placeholder='Step Title' class='input-xlarge' >
-                                        </textarea>
-                                    </div>                                 
+                                <div class='form-input'> <label class='lesson-label'>" . _("Title")  ." </label><textarea type='text'  name='title' id='title' placeholder='Step Title' class='input-xlarge' ></textarea>
                                 </div>";
-
+         //<!--  Close div RightLessonElem --> 
             printElement($i, false, null); 
+            echo " <div class='form-input'>
+                                        <label class='lesson-label'> " . _("Explanation") ."</label>
+                                        <textarea rows='3' type='text'  name='explanation' id='explanation' class='dscText input-xlarge'></textarea>
+              </div> "; 
             if ($show) {
                 echo "<div class='control-group'> 
                                             <div class='controlsa'>
@@ -250,7 +167,6 @@ and open the template in the editor.
             } //End of if show
             echo "<div class='divActionBtn'>
                             <a class='btn' id='btnSaveLesson'>". _("Save Lesson") ."</a>
-                            <a class='btn' id='btnShowLesson' title='show Lesson'>" . _("Show Lesson") ."</a>
                             <a class='btn btn-danger' id='btnDeleteLesson'>" . _("Delete Lesson") ."</a>
                         </div>
                         </fieldset>                      
@@ -261,21 +177,11 @@ and open the template in the editor.
 //End of print left element
 
         function printRightLessonElemnt() {
-            echo "<div class='rightLessonElem well span7' style='margin-top:10px; margin-left: 0px; height:350px;' > 
-                            <form class='form-stacked'>
-                                <fieldset>
-                                    <div class='control-group lesson-label'>
-                                            <label class='lesson-label' > " . _("Explanation") ." </label> 
-                                        <div class='controlsa'>
-                                            <textarea rows='15' type='text'  name='explanation' id='explanation' class='dscText input-xlarge'></textarea>
-                                        </div>
-                                    </div> 
-                                    <div class='divActionBtn'>
-                                        <input type='button' id='btnShowDoc'      class='btn  btn-link' name='showDoc' value='" . _("Show reserve words") ."' />
-                                    </div>
-                                </fieldset>
-                            </form>
-                        </div>";  //<!--  Close div RightLessonElem --> 
+            echo "<div class='rightLessonElem span7' style='margin-top:10px; margin-left: 0px; height:350px;' > 
+                                 <div id = 'lesson_preview'> 
+                                    After saving the lesson data will appear here
+                                 </div>
+                              </div>   ";
         }
 
         function printLessonSteps() {
@@ -299,7 +205,7 @@ and open the template in the editor.
 
         function printLessonTitle($hasTitle, $lessonFinalTitle, $cursor) {
             echo "<div>
-                            <h3 class='muted'>" . _("Lesson Title") ." </h3>
+                            <h3 class='muted'>" . _("Lesson Title") ."
                                 <input type='text' name='lessonTitle'  id='lessonTitle' class='lessonInput' placeholder='". _("Lesson Title") ."'
                                    value=\"";
             if ($hasTitle)
@@ -320,7 +226,7 @@ and open the template in the editor.
                 echo "";
             }
             echo "\"/> 
-                    </div>";
+                    </h3> </div>";
         }
         ?>
 
@@ -381,7 +287,7 @@ and open the template in the editor.
         <?php
     } //End of for each loop
     ?>  
-            <div class="container span16" style="float:none;" >
+            <div class="container span20" style="float:none;" >
                 <div id="stepSection" style="margin-bottom:4px;" class="stepsSection">    
                     <?php
                         printLessonTitle(true, $lessonFinalTitle, $cursor);
@@ -417,7 +323,7 @@ else { //Starting case of creating a new lesson
             $.Storage.set("username" ,"<?php echo $username ?>");
             
             </script>
-            <div class="container span16" style="float:none;" >
+            <div class="container span20" style="float:none;" >
                 <div id="stepSection" style="margin-bottom:4px;" class="stepsSection ">                                
     <?php
 

@@ -18,28 +18,7 @@
                     return $.getUrlVars()[name];
                 }
             });
-            
-            function loadCKEditor()
-            {
-                //$( 'textarea' ).ckeditor( function() { /* callback code */ }, { skin : 'kama' , toolbar : [ [ 'Source', '-', 'Bold', 'Italic', 'Underline', 'Strike','-','Link', '-', 'MyButton' ] ] });
-                var lang = $.getUrlVar('lfrom');
-                if (lang == null || lang.length < 2)
-                {
-                    lang = "en_US";
-                }
-                
-                var translation = $.getUrlVar('ltranslate');
-                var direction = "rtl";
-                if (translation != null && translation.length > 2)
-                {
-                    if (translation == 'he_IL')
-                       direction = "rtl"; 
-                }
-                
-                $( 'textarea.expTxtErea' ).ckeditor( function() { /* callback code */ }, { language : lang.value , contentsLangDirection : 'ltr' , width : '500px' , height  : '260px' , readOnly : true /*, skin : 'office2003' */});       
-                $( 'textarea.expTxtErea1' ).ckeditor( function() { /* callback code */ }, { language : lang.value , contentsLangDirection : direction , width : '500px' , height  : '260px' /*, skin : 'office2003' */});       
 
-            }
             var isLessonSaved   =   false;
             
             var showFirstStepIfExist = function showFirstStepIfExist(stepsType)
@@ -314,6 +293,8 @@
                         //$('#message').removeClass().addClass((data.error === true) ? 'error' : 'success').text(data.msg).show(500);
                         //alert(data.msg);
                         alert("Lesson Saved");
+                        var objid = $.Storage.get("ObjId");
+                        $("#lesson_preview").load('showLesson.php?locale=' + locale + '&objid=' + objid);
                     },        
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
                         $('#waiting').hide(500);
@@ -677,10 +658,13 @@
                     if ($.Storage.get('lessonTitle'))
                         {
                            if ($.Storage.get('lessonTitle').length > 2)
+                           {
                                window.saveLessonData(false);
-                           else
+
+                               
+                            } else
                                alert(gt.gettext("Lesson title should contain at least 2 caracters"));
-                        }
+                            }
                     else{
                         alert(gt.gettext("Lesson title should contain at least 2 caracters"));
                     }
@@ -702,6 +686,7 @@
 
                 
                 $('#btnShowLesson').each(function() {
+                    /*
                             var gt = new Gettext({'domain' : 'messages'});
                             
                             
@@ -728,7 +713,8 @@
                                                     return false;
                                             });
                                     return false;
-                                    }                                          
+                                    }   
+                                    */
                     });
 
                 $('#btnDel').attr('disabled','disabled');

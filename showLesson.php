@@ -14,11 +14,22 @@ require_once("environment.php");
 require_once("localization.php");
 require_once("files/cssUtils.php");
 require_once("files/utils/languageUtil.php");
-include_once("files/inc/dropdowndef.php");
+require_once("files/utils/includeCssAndJsFiles.php");
+            includeCssAndJsFiles::include_all_page_files("learn"); 
     $relPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";
     $ddPath     =   "files/test/dd/";
     $jqueryui   =   "ajax/libs/jqueryui/1.10.0/";
 ?>
+<script>
+    var numOfActiveLessons = 1;
+    var no_carousel = true ;
+</script>    
+<style>
+.jqconsole {
+    width : 460px !important;
+
+}
+</style>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,41 +44,7 @@ include_once("files/inc/dropdowndef.php");
         <!--<script  type="text/javascript" src="ajax/libs/jquery/1.6.4/jquery.js"></script> <!--- equal to googleapis -->
         <script  type="text/javascript" src="<?php echo $jqueryui .  'js/jquery-ui-1.10.0.custom.js' ?>"></script> <!--- equal to googleapis -->
         <link rel='stylesheet' href='<?php echo $jqueryui .  'css/ui-lightness/jquery-ui-1.10.0.custom.css' ?>' type='text/css' media='all'/> 
-        <!--
-        <script  type="text/javascript" src="<?php echo $jqueryui .  'js/jquery-ui-1.10.0.custom.min.js' ?>"></script> 
-        <link rel='stylesheet' href='<?php echo $jqueryui .  'css/ui-lightness/jquery-ui-1.10.0.custom.min.css' ?>' type='text/css' media='all'/> 
-        <script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js'></script> 
-        <script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js'></script>
-
-
-        
-        <script type="application/javascript" src="files/compat.js"></script> <!-- ECMAScript 5 Functions -->
-        <script type="application/javascript" src="files/logo.js"></script> <!-- Logo interpreter -->
-        <script type="application/javascript" src="files/turtle.js"></script> <!-- Canvas turtle -->
-        <script type="application/javascript" src="files/jquery.tmpl.js"></script> <!-- jquerytmpl -->
-        <script type="application/javascript" src="files/Gettext.js"></script> 
-        <script type="application/javascript" src="files/interface.js?locale=<?php echo $locale ?>"></script> 
-        <script type="application/javascript" src="files/jqconsole.js"></script> 
-        <script type="application/javascript" src="files/logo.js"></script> 
-        <script type="application/javascript" src="files/jquery.Storage.js"></script> 
-        <!-- <link rel='stylesheet' href='./files/css/interface.css' type='text/css' media='all'/>  --> 
-        <?php
-        if (isset($_GET['locale']))
-            $locale = $_GET['locale'];
-        if (!isset($locale)) {
-            $locale = "en_US";
-        }
-        $file_path = "locale/" . $locale . "/LC_MESSAGES/messages.po";
-        $po_file = "<link   rel='gettext' type='application/x-po' href='locale/" . $locale . "/LC_MESSAGES/messages.po'" . " />";
-
-
-        if (file_exists($file_path))
-            echo $po_file;
-        ?>
-        <script type="text/javascript">
-            var locale = "<?php echo $locale; ?>";
-        </script>
-        <script type="text/javascript"> 
+          <script type="text/javascript"> 
         <?php  
             $m              = new Mongo();
             // select a database
@@ -143,6 +120,32 @@ include_once("files/inc/dropdowndef.php");
                 echo "]";
             ?>  
         </script>    
+        <script type="application/javascript" src="files/logo.js"></script> <!-- Logo interpreter -->
+        <script type="application/javascript" src="files/turtle.js"></script> <!-- Canvas turtle -->
+        <script type="application/javascript" src="files/jquery.tmpl.js"></script> <!-- jquerytmpl -->
+        <script type="application/javascript" src="files/Gettext.js"></script> 
+        <script type="application/javascript" src="files/interface.js?locale=<?php echo $locale ?>"></script> 
+        <script type="application/javascript" src="files/jqconsole.js"></script> 
+        <script type="application/javascript" src="files/logo.js"></script> 
+        <script type="application/javascript" src="files/jquery.Storage.js"></script> 
+        <!-- <link rel='stylesheet' href='./files/css/interface.css' type='text/css' media='all'/>  --> 
+        <?php
+        if (isset($_GET['locale']))
+            $locale = $_GET['locale'];
+        if (!isset($locale)) {
+            $locale = "en_US";
+        }
+        $file_path = "locale/" . $locale . "/LC_MESSAGES/messages.po";
+        $po_file = "<link   rel='gettext' type='application/x-po' href='locale/" . $locale . "/LC_MESSAGES/messages.po'" . " />";
+
+
+        if (file_exists($file_path))
+            echo $po_file;
+        ?>
+        <script type="text/javascript">
+            var locale = "<?php echo $locale; ?>";
+        </script>
+
 
 <?php   
     cssUtils::loadcss($locale, "./files/css/interface");
@@ -150,32 +153,25 @@ include_once("files/inc/dropdowndef.php");
 
     </head>
     <body> 
+        <div id='lesson_preview'>
         <header id="turtletitle">
-            <h1><img src="files/turtles.png" alt="צב במשקפיים">
-                <?php
-                echo _("Turtle Academy");
-                ?> 
-            </h1>
         </header>
-        <div id="main">
-            <div id="header" class="menu" >
-                <div id="progress">
-                </div>
-            </div>
+        <div id="main_sample">
+            
             <div id="logoer"> 
                 <div id="display"> 
-                    <canvas id="sandbox" width="660" height="350" class="ui-corner-all ui-widget-content">   
+                    <canvas id="sandbox" width="460" height="350" class="ui-corner-all ui-widget-content">   
                         <span style="color: red; background-color: yellow; font-weight: bold;">
                             <?php
                             echo _("Your browser does not support canvas - an updated browser is recommended");
                             ?>                                      
                         </span>
                     </canvas>
-                    <canvas id="turtle" width="660" height="350">   
+                    <canvas id="turtle" width="460" height="350">   
                     </canvas>
                 </div>
 
-                <div id="console" class="ui-corner-all ui-widget-content"><!-- command box --></div>
+                <div id="console" class="ui-corner-all ui-widget-content" style='width: 460px;'><!-- command box --></div>
             </div>
 
             <div id="accordion">
@@ -220,6 +216,7 @@ include_once("files/inc/dropdowndef.php");
                     ?>
 
             </div>
+
         </div>
     </body>
 </html>
