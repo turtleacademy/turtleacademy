@@ -1,70 +1,45 @@
 <?php
-
-
-$locale = "en_US";
-if (isset($_GET['locale']))
-    $locale    = $_GET['locale'];
-
-
-if (!isset($_POST['locale']) && !isset($locale))
-    echo "You will be able to see your lesson here by pressing show lesson button"; //Case of initial loading
-else {
-    
 require_once("environment.php");
 require_once("localization.php");
 require_once("files/cssUtils.php");
 require_once("files/utils/languageUtil.php");
-require_once("files/utils/includeCssAndJsFiles.php");
-            includeCssAndJsFiles::include_all_page_files("learn"); 
-    $relPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";
-    $ddPath     =   "files/test/dd/";
-    $jqueryui   =   "ajax/libs/jqueryui/1.10.0/";
+            cssUtils::loadcss($locale_domain, $root_dir . "files/css/interface"); 
 ?>
 <script>
     var numOfActiveLessons = 1;
     var no_carousel = true ;
+    var dont_show_first_lesson = true;
 </script>    
 <style>
 .jqconsole {
     width : 460px !important;
-
+}
+.accordion
+{
+    width: 300px;
+}
+#logoer , #display {
+    width :460px !important;
 }
 </style>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>
-            <?php
-            echo _("Turtle Academy - learn logo programming in your browser");
-            ?>         
-        </title>  
-        <?php
-            include_once("files/inc/jquerydef.php");
-        ?>
-        <!--<script  type="text/javascript" src="ajax/libs/jquery/1.6.4/jquery.js"></script> <!--- equal to googleapis -->
-        <script  type="text/javascript" src="<?php echo $jqueryui .  'js/jquery-ui-1.10.0.custom.js' ?>"></script> <!--- equal to googleapis -->
-        <link rel='stylesheet' href='<?php echo $jqueryui .  'css/ui-lightness/jquery-ui-1.10.0.custom.css' ?>' type='text/css' media='all'/> 
-          <script type="text/javascript"> 
+        <script>
         <?php  
             $m              = new Mongo();
-            // select a database
             $db             = $m->$db_name;
             $lessons        =   $db->lessons_created_by_guest;
             //TODO if not editing mode and lesson was just created Get won't help need to take from local storage
-            
             $the_object_id       =   new MongoId($_GET['objid']);
             $localPosted    =   $_GET['locale'];
             $cursor = $lessons->find(array("_id" => $the_object_id));
+            // Putting all the new lesson input
             echo "var lessons = [";
                 foreach ($cursor as $lessonStructure) {
-                    //echo "cursorexist";
-                    //  Unset the lesson ID
-                    //   echo " some lessons found";
                     $lessonStructure['id'] = '' . $lessonStructure['_id'];
                     unset($lessonStructure['_id']);
-                    // print_r($lessonStructure);
-                    // If the requested language is in the current json collection
-                    //echo "isset?  ".$lessonStructure['locale_' . $_GET[$localPosted]];
+
                     if (isset($lessonStructure['locale_' . $localPosted])) {
                         //  echo "isset ".$lessonStructure['locale_' . $_GET[$localPosted]];
                         $lessonStructure = $lessonStructure['locale_' . $localPosted];
@@ -73,8 +48,6 @@ require_once("files/utils/includeCssAndJsFiles.php");
                         // echo "is set steps";
                         $lessonSteps = $lessonStructure["steps"];
                     }
-                    //echo " printing lesson steps ";
-                    //print_r($lessonSteps);
                     $showItem = true;
                     foreach ($lessonSteps as $key => $value) {
                         "enterLessonSteps";
@@ -120,44 +93,10 @@ require_once("files/utils/includeCssAndJsFiles.php");
                 echo "]";
             ?>  
         </script>    
-        <script type="application/javascript" src="files/logo.js"></script> <!-- Logo interpreter -->
-        <script type="application/javascript" src="files/turtle.js"></script> <!-- Canvas turtle -->
-        <script type="application/javascript" src="files/jquery.tmpl.js"></script> <!-- jquerytmpl -->
-        <script type="application/javascript" src="files/Gettext.js"></script> 
         <script type="application/javascript" src="files/interface.js?locale=<?php echo $locale ?>"></script> 
-        <script type="application/javascript" src="files/jqconsole.js"></script> 
-        <script type="application/javascript" src="files/logo.js"></script> 
-        <script type="application/javascript" src="files/jquery.Storage.js"></script> 
-        <!-- <link rel='stylesheet' href='./files/css/interface.css' type='text/css' media='all'/>  --> 
-        <?php
-        if (isset($_GET['locale']))
-            $locale = $_GET['locale'];
-        if (!isset($locale)) {
-            $locale = "en_US";
-        }
-        $file_path = "locale/" . $locale . "/LC_MESSAGES/messages.po";
-        $po_file = "<link   rel='gettext' type='application/x-po' href='locale/" . $locale . "/LC_MESSAGES/messages.po'" . " />";
-
-
-        if (file_exists($file_path))
-            echo $po_file;
-        ?>
-        <script type="text/javascript">
-            var locale = "<?php echo $locale; ?>";
-        </script>
-
-
-<?php   
-    cssUtils::loadcss($locale, "./files/css/interface");
-?>    
-
     </head>
     <body> 
         <div id='lesson_preview'>
-        <header id="turtletitle">
-        </header>
-        <div id="main_sample">
-            
             <div id="logoer"> 
                 <div id="display"> 
                     <canvas id="sandbox" width="460" height="350" class="ui-corner-all ui-widget-content">   
@@ -180,46 +119,7 @@ require_once("files/utils/includeCssAndJsFiles.php");
                 <?php
                     $lu = new languageUtil("turtleTestDb", "rtlLanguages");
                     $isRtlLocale = $lu->findIfLocaleExist($locale);
-                    if ($isRtlLocale) {
-                ?>  
-
-                    <button id="nextlesson"> 
-                    <?php
-                    echo ($isRtlLocale) ? "&larr;" : "&rarr;";
-                    echo _("Next");
-                    ?> 
-                    </button>
-                    <button id="prevlesson">
-                        <?php
-                        echo ($isRtlLocale) ? "&rarr;" : "&larr;";
-                        echo _("Prev");
-                        ?>            
-                    </button>
-                        <?php
-                    } else {
-                        ?>     
-                    <button id="prevlesson">
-                    <?php
-                    echo ($isRtlLocale) ? "&rarr;" : "&larr;";
-                    echo _("Prev");
-                    ?>            
-                    </button>
-                    <button id="nextlesson"> 
-                        <?php
-                        echo ($isRtlLocale) ? "&larr;" : "&rarr;";
-                        echo _("Next");
-                        ?> 
-                    </button>
-
-                        <?php
-                    }
-                    ?>
-
+                ?>
             </div>
-
-        </div>
     </body>
 </html>
-<?php
-} // End case of loading real lesson
-?>
