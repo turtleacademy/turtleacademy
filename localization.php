@@ -62,10 +62,10 @@
             $locale_domain   =   $locale;
        $localeEnv = $locale_domain.".utf8" ; 
     } 
-    
-    $_SESSION['locale'] = $locale_domain;
-    $lang               =  substr($locale, 0, 2);
-    $dir = ($locale_domain == 'he_IL') ? 'rtl' : 'ltr';
+    $prefix_locale_domain   = "locale_" . $locale_domain; //Now use for saving lessons
+    $_SESSION['locale']     = $locale_domain;
+    $lang                   =  substr($locale, 0, 2);
+    $dir = ($locale_domain  == 'he_IL') ? 'rtl' : 'ltr';
     $cssright = ($dir == 'ltr') ? 'right' : 'left';
     $cssleft = ($dir == 'ltr') ? 'left' : 'right';
     //echo " locale env is " . $localeEnv ;
@@ -76,15 +76,6 @@
     bindtextdomain("messages", "./locale");
     textdomain("messages");
     
-    
-    /*
-     *     if (isset ($_SESSION["locale"]))
-        $locale =   $_SESSION["locale"];
-    if (isset ($_GET['l']))
-        $locale =   $_GET['l'];
-    if (isset ($_GET['locale']))
-        $locale =   $_GET['locale'];
-     */
     
 ?>
     <!-- In order to infrom js files on which locale are we right now -->
