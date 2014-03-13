@@ -19,6 +19,7 @@
     }
     if(strlen ($_SESSION['locale']) < 3)
         $_SESSION['locale'] = "en_us";
+    
     require_once("localization.php");
     require_once("files/footer.php");
     require_once("files/cssUtils.php");
@@ -129,7 +130,7 @@
                                     ?>
                                     <p>
                                         <a href='<?php echo $root_dir; ?>files/institute/addInstituteUser.php?l=<?php echo $locale_domain; ?>'>
-                                    <?php echo _("Manage my users"); ?>
+                                    <?php echo _("Manage my classes"); ?>
                                         </a>
                                     </p>
 
@@ -139,7 +140,7 @@
                             if (!$is_public_user_page) {
                             ?>
                             <p>
-                                <a href='<?php echo $root_dir; ?>program/lang/<?php echo  substr($locale_domain, 0, 2); ?>'>
+                                <a href='<?php echo $root_dir; ?>program/new/<?php echo  substr($locale_domain, 0, 2); ?>'>
                                     <?php echo _("Create a new program"); ?>
                                 </a>
                             </p>
@@ -226,6 +227,11 @@
                             <p>
                                 <a href='<?php echo $root_dir . "project/doc/" . $lang; ?>'>
                                 <?php echo _("Help"); ?>
+                                </a>
+                            </p>
+                            <p>
+                                <a href='<?php echo $root_dir . "mylessons.php" ; ?>'>
+                                <?php echo _("My lessons"); ?>
                                 </a>
                             </p>
                     </div><!-- end of user_menu -->
@@ -340,13 +346,16 @@
                                     <td>
                                         <a class='btn small info' href="<?php
                                             if ($is_public_user_page)
-                                                echo $root_dir . "users/programs/";
+                                                echo $root_dir . "view/programs/";
                                             else
-                                                echo $root_dir . "files/updateProgram.php?programid=";
+                                                echo $root_dir . "program/update/";
                                             echo $program['_id'];
                                             if (!$is_public_user_page) {
-                                                echo"&username=";
+                                                echo"/";
                                                 echo $username;
+                                                echo "/";
+                                                echo substr($locale,0,2);
+                                                
                                             }
                                             ?> 
                                         ">  <?php

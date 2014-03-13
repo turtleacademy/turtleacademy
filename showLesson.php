@@ -93,7 +93,7 @@ require_once("files/utils/languageUtil.php");
                 echo "]";
             ?>  
         </script>    
-        <script type="application/javascript" src="files/interface.js?locale=<?php echo $locale ?>"></script> 
+        <script type="application/javascript" src="<?php echo $root_dir ?>files/interface.js?locale=<?php echo $locale ?>"></script> 
     </head>
     <body> 
         <div id='lesson_preview'>
@@ -123,3 +123,4 @@ require_once("files/utils/languageUtil.php");
             </div>
     </body>
 </html>
+ 

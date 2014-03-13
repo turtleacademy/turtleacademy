@@ -14,10 +14,11 @@ require_once("localization.php");
 require_once("files/utils/languageUtil.php");
 require_once('files/utils/topbarUtil.php');
 ?>
-<html>
+<html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <?php
-        require_once("files/utils/includeCssAndJsFiles.php");
+        require_once('files/utils/includeCssAndJsFiles.php');
         includeCssAndJsFiles::include_all_page_files("learn");
         ?>
         <title>
@@ -27,103 +28,101 @@ require_once('files/utils/topbarUtil.php');
         $username = "Unknown";
         if (isset($_SESSION['username']))
             $username = $_SESSION['username'];
-        ?>        
-        <link rel='stylesheet' type='text/css' href='files/css/lessons.css' />
-        <script type="application/javascript" src="files/js/lesson.js"></script> <!-- lessonFunctions --> 
-        
+        ?>
+        <link rel='stylesheet' type='text/css' href='<?php echo $root_dir ?>files/css/lessons.css' />
+        <script type="application/javascript" src='<?php echo $root_dir ?>files/js/lesson.js'></script> <!-- lessonFunctions --> 
+
     </head>
     <?php
     if ($has_permission) { // Show the page for register user
         ?>
         <body>
-        <?php
-        topbarUtil::print_topbar("index");
-        $m = new Mongo();
-        $db = $m->$db_name;
-// select a collection (analogous to a relational database's table)
-        $db_lesson_collection = "lessons_created_by_guest";
-        $lessons = $db->$db_lesson_collection;
-        $locale = "en_US";
-        $languageGet = "l";
-        $localePrefix = "locale_";
-        $lessonFinalTitle = "_";
-        $lessonPrecedence = 100;
-        $lessonTurtleId = 100;
-        $localeCreated = "en_US";
-        if (isset($_GET[$languageGet]))
-            $locale = $_GET[$languageGet];
-//If we are in existing lesson we will enter editing mode 
-        if (isset($_GET['lesson'])) {
-            $lu = new lessonsUtil($locale, "locale_", $lessons, $_GET['lesson']);
-            $the_object_id = new MongoId($_GET['lesson']);
-            $cursor = $lessons->findOne(array("_id" => $the_object_id));
-            if (isset($cursor['localeCreated']))
-                $localeCreated = $cursor['localeCreated'];
-            $localSteps = $lu->get_steps_by_locale($localePrefix . $localeCreated);
-            $lessonFinalTitle = $lu->get_title_by_locale($localePrefix . $localeCreated);
-            $lessonPrecedence = $lu->get_precedence();
-            $lessonTurtleId = $lu->get_turtle_id();
-            if (strlen($lessonFinalTitle) <= 1)
-                $lessonFinalTitle = "No Title";
-        }
-        
-        function printElement($i, $flag, $step) {
+            <?php
+            topbarUtil::print_topbar("index");
+            $m = new Mongo();
+            $db = $m->$db_name;
+            $db_lesson_collection = "lessons_created_by_guest";
+            if (isset($_SESSION['Admin'])) {
+                $db_lesson_collection = "lessons";
+            }
+            $lessons = $db->$db_lesson_collection;
+
+            $lessonFinalTitle = "";
+            $lessonPrecedence = 100;
+            $lessonTurtleId = 100;
+
+            //If we are in existing lesson we will enter editing mode 
+            if (isset($_GET['lessonid'])) {
+                echo "Hello";
+                $lu = new lessonsUtil($locale, $lessons, $_GET['lessonid']); 
+                $the_object_id = new MongoId($_GET['lessonid']);
+                $cursor = $lessons->findOne(array("_id" => $the_object_id));
+                $lesson_created_locale = $cursor['localeCreated']; 
+                $localSteps = $lu->get_steps_by_locale("locale_" .$lesson_created_locale );
+                $lessonFinalTitle = $lu->get_title_by_locale("locale_" .$lesson_created_locale);
+                $lessonPrecedence = $lu->get_precedence();
+                $lessonTurtleId = $lu->get_turtle_id(); 
+                if (strlen($lessonFinalTitle) <= 1)
+                    $lessonFinalTitle = "No Title";
+                ?>
+            <script>
+                var editGuestLesson = true;
+            </script>
+            <?php
+            }
+
+            function printElement($i, $flag, $step) {
+                global $dir;
                 if ($flag) {
-                    $action = $step["action"];
-                    $solution = $step["solution"];
-                    $hint = $step["hint"];
+                    $action     = $step["action"];
+                    $solution   = $step["solution"];
+                    $hint       = $step["hint"];
                 } else {
-                    $action = "";
-                    $solution = "";
-                    $hint = "";
+                    $action     = "";
+                    $solution   = "";
+                    $hint       = "";
                 }
                 // <label class='control-label' > %%a: </lable>
-                $baseInputText = "<div class='form-input'><label class='lesson-label'> %%a </label><textarea class='input-xlarge' type='text'  name='%%b' id='%%b' placeholder='Step %%a'>%%c</textarea>                          
-                             </div>";
-                $toReplace = array("%%a", "%%b", "%%c");
-                $replaceWithAction = array(_("Action"), "action", $action);
-                $replaceWithSolution = array(_("Solution"), "solution", $solution);
-                $replaceWithHint = array(_("Hint"), "hint", $hint);
-                $elementAction = str_replace($toReplace, $replaceWithAction, $baseInputText);
-                $elementSolution = str_replace($toReplace, $replaceWithSolution, $baseInputText);
-                $elementHint = str_replace($toReplace, $replaceWithHint, $baseInputText);
+                $baseInputText          = "<div><label class='lesson-label' dir='$dir'> %%a </label><textarea class='lessonInfoElement  input-xlarge' type='text'  name='%%b' id='%%b' placeholder='Step %%a'>%%c</textarea></div>";
+                $toReplace              = array("%%a", "%%b", "%%c");
+                $replaceWithAction      = array(_("Action"), "action", $action);
+                $replaceWithSolution    = array(_("Solution"), "solution", $solution);
+                $replaceWithHint        = array(_("Hint"), "hint", $hint);
+                $elementAction          = str_replace($toReplace, $replaceWithAction, $baseInputText);
+                $elementSolution        = str_replace($toReplace, $replaceWithSolution, $baseInputText);
+                $elementHint            = str_replace($toReplace, $replaceWithHint, $baseInputText);
                 echo $elementAction;
                 echo $elementSolution;
                 echo $elementHint;
-                // echo "</fieldset></form>"; // Close the left lesson elements
+
             }
 
             function printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId) {
-                echo "<div class='leftLessonElem span7' style='margin-top:10px; margin-left: 0px;  height:350px;'> 
+                global $cssleft , $dir;
+                echo "<div class='leftLessonElem span7' dir='$dir' style='margin-top:10px; margin-left: 0px;  height:350px;'> 
                         <form class='form'>
                             <fieldset class='lesson-fieldset'> 
-                                <div class='form-input'> <label class='lesson-label'>" . _("Title") . " </label><textarea type='text'  name='title' id='title' placeholder='Step Title' class='input-xlarge' ></textarea>
+                                <div class=''> <label class='lesson-label' dir='$dir'>" . _("Title") . " </label><textarea type='text'  name='title' id='title' placeholder='Step Title' class='input-xlarge' ></textarea>
                                 </div>";
                 //<!--  Close div RightLessonElem --> 
                 printElement($i, false, null);
-                echo " <div class='form-input'>
-                                        <label class='lesson-label'> " . _("Explanation") . "</label>
+                echo " <div class=''>
+                                        <label class='lesson-label' dir='$dir'> " . _("Explanation") . "</label>
                                         <textarea rows='3' type='text'  name='explanation' id='explanation' class='dscText input-xlarge'></textarea>
                 </div> ";
                 if ($show) {
-                    echo "<div class='control-group'> 
-                                            <div class='controlsa'>
-                                                <textarea type='text'  name='precedence' id='precedence' placeholder='precedence' class='input-xlarge'>";
+                    echo "<div class=''> 
+                            <lable class='lesson-label' dir='$dir' > Precedence :</lable> 
+                            <textarea type='text'  name='precedence' id='precedence' placeholder='precedence' class='input-xlarge'>";
                     echo $lessonPrecedence;
-                    echo"</textarea>
-                                            </div>
-                                            <lable class='lesson-label' > Precedence : 
-                                            </lable>   
-                        </div> ";
-                    echo "<div class='control-group'> 
-                            <div class='controlsa'>
+                    echo"</textarea>";
+                    echo "<div class=''> 
+                            <lable class='lesson-label' dir='$dir'> TurtleId : 
+                            </lable>  
                                 <textarea type='text'  name='turtleId' id='turtleId' placeholder='turtleId' class='input-xlarge'>";
                     echo $lessonTurtleId;
-                    echo"</textarea>
-                            </div>
-                            <lable class='lesson-label' > TurtleId : 
-                            </lable>   
-                    </div> ";
+                    echo"</textarea>";
+                    echo "</div> ";
                 } //End of if show
                 echo "<div class='divActionBtn'>
                             <a class='btn' id='btnSaveLesson'>" . _("Save Lesson") . "</a>
@@ -137,7 +136,7 @@ require_once('files/utils/topbarUtil.php');
 //End of print left element
 
             function printRightLessonElemnt() {
-                echo "<div class='rightLessonElem ' style='margin-top:10px; margin-left: 0px; height:350px;width:780px;' > 
+                echo "<div class='rightLessonElem ' style='margin-top:10px; margin-left: 0px; height:350px;width:780px;' >
                                  <div id = 'lesson_preview'> 
                                     After saving the lesson data will appear here Instead of the demo console
                                    <div id='console' class='ui-corner-all ui-widget-content' style='width:10px';><!-- command box --><pre class='jqconsole jqconsole-blurred' style='height: 200px;'><div style='position: relative; width: 1px; height: 0px; overflow: hidden; left: 242px; top: 32px;'><textarea wrap='off' style='position: absolute; width: 2px;'></textarea></div><span class='jqconsole-header'>Hi
@@ -156,14 +155,17 @@ require_once('files/utils/topbarUtil.php');
             }
 
             function printLessonSteps() {
+                global $dir;
                 echo "<div id='lessonStep'>";
-                echo "<div id='stepNev'>";
+                echo "<div id='stepNavBody'>";
                 echo "<h3 class='muted'>" . _("lesson Steps");
-                if (isset($_GET['lesson']))
-                    echo " ↓(" . _("please choose step to edit") . ")";
+                if (isset($_GET['lessonid'])) {
+                    echo " ↓";
+                    echo _('please choose step to edit');
+                }
                 echo "</h3>";
-                echo "<div style='height:40px;'>";
-                echo "<ul id='lessonStepUl' class=' nav nav-pills'>";
+                echo "<div id='stepNav' dir='$dir'>";
+                echo "<ul id='lessonStepUl' dir='$dir' class=' nav nav-pills'>";
                 echo "</ul>";
                 echo "</div>";
                 //Inserting the step div 
@@ -201,36 +203,42 @@ require_once('files/utils/topbarUtil.php');
             }
             ?>
 
-
-
-    <?php
-    $i = 1; //Set default value to 1 in case there are no steps
-    if (isset($cursor["steps"]) && count($cursor["steps"]) > 0) {
-        $i = 0;
-        //Init the loacl Storage
-        ?>
-                <script type='text/javascript'>
-                $.Storage.remove("lessonStepsValues");
-                $.Storage.remove("active-step-num");
-                $.Storage.remove("lesson-total-number-of-steps");
+            <script type='text/javascript'>
                 $.Storage.remove("active-step");
-                $.Storage.remove("collection-name");
                 $.Storage.remove("username");
                 $.Storage.remove("turtleId");
-                var lessonStepValuesStorage = new Array(new Array());
-                $.Storage.set('lessonStepsValues', JSON.stringify(lessonStepValuesStorage, null, 2))
-                $.Storage.set("active-step", "lesson_step1");
-                $.Storage.set("lesson-total-number-of-steps", "0");
-                $.Storage.set("collection-name", "<?php echo $db_lesson_collection ?>");
-                $.Storage.set("locale", "<?php echo $localeCreated ?>");
-                $.Storage.set("username", "<?php echo $username; ?>");
-                $.Storage.set("turtleId", "<?php echo intval($lessonTurtleId) ?>");
+                $.Storage.remove("locale");
+                $.Storage.set("locale", "<?php echo $locale_domain ?>");
+                $.Storage.set("dontClearLocale", "true"); // Prevent clearing locale on lesson.js
+            </script>
+
+            <?php
+            $i = 1; //Set default value to 1 in case there are no steps
+            if (isset($cursor["steps"]) && count($cursor["steps"]) > 0) {
+                $i = 0;
+                //Init the loacl Storage
+                ?>
+
+                <script type='text/javascript'>
+                    $.Storage.remove("lessonStepsValues");
+                    $.Storage.remove("active-step-num");
+                    $.Storage.remove("lesson-total-number-of-steps");
+                    $.Storage.remove("collection-name");
+                    var lessonStepValuesStorage = new Array(new Array());
+                    $.Storage.set('lessonStepsValues', JSON.stringify(lessonStepValuesStorage, null, 2))
+                    $.Storage.set("active-step", "lesson_step1");
+                    $.Storage.set("lesson-total-number-of-steps", "0");
+                    $.Storage.set("collection-name", "<?php echo $db_lesson_collection ?>");
+                    
+                    $.Storage.set("username", "<?php echo $username; ?>");
+                    $.Storage.set("turtleId", "<?php echo intval($lessonTurtleId) ?>");
                 </script>
 
-        <?php
-        foreach ($localSteps as $step) {
-            $i++;
-            ?>
+                <?php
+                foreach ($localSteps as $step) {
+                    $i++;
+                    echo $i;
+                    ?>
                     <script type='text/javascript'>
                         //Here I am parsing the response from the ajax request regarding loading an existing lesson
                         var stepNumber = parseInt($.Storage.get("lesson-total-number-of-steps")) + 1;
@@ -254,39 +262,36 @@ require_once('files/utils/topbarUtil.php');
                         window.addStepVar(stepNumber, fullStep, false, "lessonStepsValues");
 
                     </script>
-            <?php
-        } //End of for each loop
-        ?>  
+                    <?php
+                } //End of for each loop
+                ?>  
                 <div class="container span22" style="float:none;" >
                     <div id="stepSection" style="margin-bottom:4px;" class="stepsSection">    
-                <?php
-                printLessonTitle(true, $lessonFinalTitle, $cursor);
-                printLessonSteps();
-                printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId);
-                printRightLessonElemnt();
-                ?>
+                        <?php
+                        printLessonTitle(true, $lessonFinalTitle, $cursor);
+                        printLessonSteps();
+                        printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId);
+                        printRightLessonElemnt();
+                        ?>
                     </div> <!-- End of stepSection -->
                 </div> <!-- container -->
 
-                <script type='text/javascript'> 
+                <script type='text/javascript'>
 
                     //Print Nav  
                     window.createStepNavVar();
-
-                    window.showFirstStepIfExist();
+                    window.showFirstStepIfExist('lessonStepsValues');
 
                 </script>
-        <?php
-    } //end of if lesson exist
-    else { //Starting case of creating a new lesson
-        ?>
+                <?php
+            } //end of if lesson exist
+            else { //Starting case of creating a new lesson
+                ?>
                 <script type='text/javascript'>
+                    selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>lesson/", "lesson.php" ,"en" ); 
                     var lessonTitle = $('#lessonTitle').val();
                     $.Storage.remove("collection-name");
                     $.Storage.remove("lessonTitle");
-                    $.Storage.remove("active-step");
-                    $.Storage.remove("username");
-                    $.Storage.remove("turtleId");
                     $.Storage.set("collection-name", "<?php echo $db_lesson_collection ?>");
                     $.Storage.set("lessonTitle", lessonTitle);
                     $.Storage.set("active-step", "lesson_step1");
@@ -295,17 +300,17 @@ require_once('files/utils/topbarUtil.php');
                 </script>
                 <div class="container span22" style="float:none;" >
                     <div id="stepSection" style="margin-bottom:4px;" class="stepsSection ">                                
-        <?php
-        printLessonTitle(false, $lessonFinalTitle, false);
-        printLessonSteps();
-        printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId);
-        printRightLessonElemnt();
-        ?>
+                        <?php
+                        printLessonTitle(false, $lessonFinalTitle, false);
+                        printLessonSteps();
+                        printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId);
+                        printRightLessonElemnt();
+                        ?>
                     </div>  <!-- Finish div stepSection -->  
                 </div> <!-- Finish stepContainer div -->
-                        <?php
-                    } //end of else (New Lesson) 
-                    ?> 
+                <?php
+            } //end of else (New Lesson) 
+            ?> 
             <div id="message" style="display: none;">
                 <div id="waiting" style="display: none;">
                     Please wait<br />

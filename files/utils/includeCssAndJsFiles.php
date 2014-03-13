@@ -27,7 +27,17 @@ class includeCssAndJsFiles {
                 break;
             case "learn":
                 $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/jqconsole.js' ></script>\n";
-                $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/interface.js?locale=".$locale_domain."'></script>\n";
+                global $localize;
+                $localize = array(
+                    'lesson' => _('lesson'),
+                    'hint' => _('hint'),
+                    'Solution'  => _('Solution'),
+                    'Welcome to the Turtle world' => _('Welcome to the Turtle world'),
+                    'Hi' => _('Hi'),
+                    'Error Loading History' => _('Error Loading History'),
+                    'Error' => _('Error')
+                );
+                $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/interface.js"/*?locale=".$locale_domain."*/."'></script>\n";
                 $additional_files = $additional_files . "<link rel='stylesheet' href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css'/>\n" ; 
                 $additional_files = $additional_files . "<link rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'/>\n" ; 
                 $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/doc.css' type='text/css' media='all'/>\n" ; 
@@ -73,6 +83,16 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
                $has_console         = true;
                $has_command_line     = true;
+                               global $localize;
+                $localize = array(
+                    'lesson' => _('lesson'),
+                    'hint' => _('hint'),
+                    'Solution'  => _('Solution'),
+                    'Welcome to the Turtle world' => _('Welcome to the Turtle world'),
+                    'Hi' => _('Hi'),
+                    'Error Loading History' => _('Error Loading History'),
+                    'Error' => _('Error')
+                );
                break;
            case "user-program":
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/codemirror/lib/codemirror.js' ></script>\n";
@@ -109,10 +129,11 @@ class includeCssAndJsFiles {
         }
         if ($hasLessons)
         {
-            if ($env == "local")
+            if ($env == "local") {
                 echo "<script type='application/javascript' src='".$root_dir."ajax/libs/jqueryui/1.10.0/js/jquery-ui-1.10.0.custom.js' ></script>";
-            else
+            } else {
                 echo "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>";
+            }
          }
         if ($hasAlerts)
         {
@@ -135,8 +156,7 @@ class includeCssAndJsFiles {
         //One css file that contain the flags and dropdown definitions
         echo "<link href='".$root_dir."files/dd/css/msdropdown/dd-all.css' rel='stylesheet' >";
         //echo "<link href='".$rootDir."files/dd/css/msdropdown/dd.css' rel='stylesheet' >";
-        //echo "<link href='".$rootDir."files/dd/css/msdropdown/flags.css' rel='stylesheet' >";
-         
+        //echo "<link href='".$rootDir."files/dd/css/msdropdown/flags.css' rel='stylesheet' >";      
          
     /* End drop down files */
 
@@ -205,6 +225,12 @@ class includeCssAndJsFiles {
     </script>
     <!-- End of Google Analytics Tracking -->  
     <?php
+    global $localize;
+    if (isset ($localize)) {
+        echo '<script type="application/javascript">';
+        echo 'gt='.json_encode($localize).';';
+        echo '</script>';
+    }
     echo $additional_files;
     }   
 }

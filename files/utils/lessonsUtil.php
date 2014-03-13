@@ -22,10 +22,9 @@ class lessonsUtil {
     private $turtleId   = 10 ;
     
     # Constructor  
-    public function __construct($locale,$localePrefix,$db,$lessonObjId)  
+    public function __construct($locale,$db,$lessonObjId)  
      {  
                 $this->locale = $locale;
-                $this->localePrefix = $localePrefix; 
                 $this->db = $db; 
                 $this->lessonObjId = $lessonObjId;
                 $this->precedence = 50 ;

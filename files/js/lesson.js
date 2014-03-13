@@ -23,31 +23,36 @@
             
             var showFirstStepIfExist = function showFirstStepIfExist(stepsType)
             {
-                if ($.Storage.get(stepsType))
-                {   
-                    
-                    if ($.Storage.get('active-step'))
-                    {
-                        var allsteps = JSON.parse($.Storage.get(stepsType));
-                        var currentSteps = allsteps[1];
-                        
-                        if (currentSteps != null)
+                //Can only coem from showLesoon.php in case we don't want 
+                //to present the value in textbox
+                if (typeof(dont_show_first_lesson) == "undefined" )
+                {
+                    if ($.Storage.get(stepsType))
+                    {   
+
+                        if ($.Storage.get('active-step'))
                         {
-                            if ( stepsType == "lessonStepsValues")
+                            var allsteps = JSON.parse($.Storage.get(stepsType));
+                            var currentSteps = allsteps[1];
+
+                            if (currentSteps != null)
                             {
-                                $('#title').val(currentSteps[0]);
-                                $('#action').val(currentSteps[1]);
-                                $('#solution').val(currentSteps[2]);
-                                $('#hint').val(currentSteps[3]);
-                                $('#explanation').val(currentSteps[4]);  
-                            }
-                            else
-                            {
-                                $('#title1').val(currentSteps[0]);
-                                $('#action1').val(currentSteps[1]);
-                                $('#solution1').val(currentSteps[2]);
-                                $('#hint1').val(currentSteps[3]);
-                                $('#explanation1').val(currentSteps[4]);      
+                                if ( stepsType == "lessonStepsValues")
+                                {
+                                    $('#title').val(currentSteps[0]);
+                                    $('#action').val(currentSteps[1]);
+                                    $('#solution').val(currentSteps[2]);
+                                    $('#hint').val(currentSteps[3]);
+                                    $('#explanation').val(currentSteps[4]);  
+                                }
+                                else
+                                {
+                                    $('#title1').val(currentSteps[0]);
+                                    $('#action1').val(currentSteps[1]);
+                                    $('#solution1').val(currentSteps[2]);
+                                    $('#hint1').val(currentSteps[3]);
+                                    $('#explanation1').val(currentSteps[4]);      
+                                }
                             }
                         }
                     }
@@ -201,7 +206,7 @@
                 
             var clearLocalStorage = function clearLocalStorage()
             {
-                var lessonid = $.getUrlVar('lesson');
+                var lessonid = $.getUrlVar('lessonid');
                 if (lessonid == null || lessonid.length < 3)
                 {
                     $.Storage.remove("lessonStepsValues");
@@ -210,7 +215,11 @@
                     //$.Storage.remove("active-step");
                     $.Storage.remove("ObjId");
                     $.Storage.remove("lessonTitle");
-                    $.Storage.remove("locale");
+                   
+                    if ( !$.Storage.get("dontClearLocale"))
+                    {
+                        $.Storage.remove("locale");
+                    }
                     $.Storage.remove("lessonStepsValuesTranslate");
                     $.Storage.remove("localeTransale");
                     $.Storage.remove("lessonTitleTrans"); 
@@ -222,12 +231,7 @@
                 else
                 {
                      $.Storage.remove("stepToRemove"); 
-                    $.Storage.remove("isStepRemoved"); 
-                    /*
-                        $.Storage.remove("lessonStepsValuesTranslate");
-                        $.Storage.remove("localeTransale");
-                        $.Storage.remove("lessonTitleTrans");    
-                    */
+                     $.Storage.remove("isStepRemoved"); 
                 }
             }
             
@@ -235,7 +239,7 @@
             {
                 //TODO get the working collection from storage if exist
                 // Making translation case more dynamic according to the isTranslate flag
-                $.getScript("files/jquery.Storage.js", function(){
+                $.getScript(rootDir + "files/jquery.Storage.js", function(){
                     //alert("Script loaded and executed.");
                 });
                 window.infoElementKeyUpEvent(isTranslate);
@@ -266,7 +270,7 @@
                  }
                 $.ajax({
                     type : 'POST',
-                    url : 'saveLessonData.php',
+                    url : rootDir + 'saveLessonData.php',
                     dataType : 'json',
                     data: {
                         steps : $.Storage.get(lessonSteps) , //Should be a parameter
@@ -294,7 +298,7 @@
                         //alert(data.msg);
                         alert("Lesson Saved");
                         var objid = $.Storage.get("ObjId");
-                        $("#lesson_preview").load('showLesson.php?locale=' + locale + '&objid=' + objid);
+                        $("#lesson_preview").load(rootDir + 'showLesson.php?locale=' + locale + '&objid=' + objid);
                     },        
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
                         $('#waiting').hide(500);
@@ -350,13 +354,13 @@
                 if (originLang != null && originLang.length > 2 && lessonid != null && lessonid.length > 2)
                 {
                     $.ajax({
-                        url: 'files/loadLessonSteps.php?lesson=' + lessonid + '&l=' + originLang + '&col=' + collection ,
-                        success: function(data) { 
+                        url: rootDir +'files/loadLessonSteps.php?lesson=' + lessonid + '&l=' + originLang + '&col=' + collection ,
+                        success: function(newdata) { 
                             var rdata;
-                            rdata = JSON.parse(data);
+                            rdata = JSON.parse(newdata);
                             $.Storage.set("lessonTitle" , rdata.title);
                             $('#lessonTitle').val(rdata.title);
-                            $('.result').html(data);
+                            $('.result').html(newdata);
                             //alert('Load was performed.');
                             var i = 1;
                         } ,
@@ -481,16 +485,36 @@
                      
                 if ($('.dropdown-toggle').length > 0)
                      $('.dropdown-toggle').dropdown();
-                window.clearLocalStorage();
-                window.clearStep();
-                var lessonid = $.getUrlVar('lesson');
-                var originLang = $.getUrlVar('lfrom');
-                var transLang = $.getUrlVar('ltranslate');
+                if (typeof  editGuestLesson == "undefined") {
+                    window.clearLocalStorage();
+                    window.clearStep();
+                }
+
+                var lessonid = $.getUrlVar('lessonid');
+                var originLang  ,transLang ;
+                if (typeof  editGuestLesson != undefined)
+                {
+                    //Get url
+                    var url         = window.location.href ;
+                    var myarr       = url.split("/");
+                    var arrlength   = myarr.length; 
+                    lessonid        = myarr[arrlength -2];
+                    originLang      = myarr[arrlength -1];
+                }
+
+                if ( typeof  $.getUrlVar('lfrom') != "undefined" )
+                     originLang = $.getUrlVar('lfrom').substring(0,5);
+                if ( typeof  $.getUrlVar('ltranslate') != "undefined" ) 
+                     transLang = $.getUrlVar('ltranslate').substring(0,5);
                 loadExistingLessonSteps(lessonid ,originLang , transLang );
                 //loadCKEditor();
-                createStepNavVar(false,false);
-                showFirstStepIfExist('lessonStepsValues');
-                showFirstStepIfExist('lessonStepsValuesTranslate');
+                if (typeof  editGuestLesson == "undefined")
+                {
+                    createStepNavVar(false,false);
+                    showFirstStepIfExist('lessonStepsValues');
+                    showFirstStepIfExist('lessonStepsValuesTranslate');
+                }
+                
                 
                 if (!$.Storage.get("ObjId"))
                 {
@@ -517,6 +541,7 @@
                      $.Storage.set('turtleId' , '80');
                 }
                 $('#addStep').live("click" , function() {
+                    var hee             = $.Storage.get('objid');
                     var val             = parseInt($.Storage.get("lesson-total-number-of-steps")) + 1;
                     var currentStep     =  getStepValues(false); 
                     var preActiveStep   = $.Storage.get('active-step-num');
