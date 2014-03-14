@@ -53,7 +53,6 @@ require_once('files/utils/topbarUtil.php');
 
             //If we are in existing lesson we will enter editing mode 
             if (isset($_GET['lessonid'])) {
-                echo "Hello";
                 $lu = new lessonsUtil($locale, $lessons, $_GET['lessonid']); 
                 $the_object_id = new MongoId($_GET['lessonid']);
                 $cursor = $lessons->findOne(array("_id" => $the_object_id));
@@ -237,7 +236,6 @@ require_once('files/utils/topbarUtil.php');
                 <?php
                 foreach ($localSteps as $step) {
                     $i++;
-                    echo $i;
                     ?>
                     <script type='text/javascript'>
                         //Here I am parsing the response from the ajax request regarding loading an existing lesson

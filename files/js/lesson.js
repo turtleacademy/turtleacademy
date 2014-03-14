@@ -237,7 +237,8 @@
             
             var saveLessonData = function saveLessonData(isTranslate)
             {
-                //TODO get the working collection from storage if exist
+                
+                ;
                 // Making translation case more dynamic according to the isTranslate flag
                 $.getScript(rootDir + "files/jquery.Storage.js", function(){
                     //alert("Script loaded and executed.");
@@ -273,35 +274,35 @@
                     url : rootDir + 'saveLessonData.php',
                     dataType : 'json',
                     data: {
-                        steps : $.Storage.get(lessonSteps) , //Should be a parameter
-                        numOfSteps : $.Storage.get('lesson-total-number-of-steps') ,
-                        lessonTitle : $.Storage.get(lessonTitle),
-                        ObjId : $.Storage.get('ObjId'),
-                        locale : $.Storage.get(lessonLocale),  //Should be a parameter
-                        precedence :$.Storage.get('precedence'),
-                        turtleId   :$.Storage.get('turtleId'),
-                        translate : isTranslate,
-                        isStepRemove  : isStepRemoved ,
-                        collection  : collectionName ,
-                        stepToRemove : stepToRemove ,
-                        username : user
+                        steps           : $.Storage.get(lessonSteps) , //Should be a parameter
+                        numOfSteps      : $.Storage.get('lesson-total-number-of-steps') ,
+                        lessonTitle     : $.Storage.get(lessonTitle),
+                        ObjId           : $.Storage.get('ObjId'),
+                        locale          : $.Storage.get(lessonLocale),  //Should be a parameter
+                        precedence      :$.Storage.get('precedence'),
+                        turtleId        :$.Storage.get('turtleId'),
+                        translate       : isTranslate,
+                        isStepRemove    : isStepRemoved ,
+                        collection      : collectionName ,
+                        stepToRemove    : stepToRemove ,
+                        username        : user
 
                     },
                         
                     success : function(data){
-                        $('#waiting').hide(500);
+                        $('#waiting').hide(100);
                         $('#lessonObjectId').val(data.objID.$id);
                         window.isLessonSaved =   true;
                         $.Storage.set("ObjId" , data.objID.$id);
                         $.Storage.set('isStepRemoved' , "false");   
-                        //$('#message').removeClass().addClass((data.error === true) ? 'error' : 'success').text(data.msg).show(500);
-                        //alert(data.msg);
-                        alert("Lesson Saved");
+                        //alert("Lesson Saved");
+                        if (typeof translateLesson != "undefined")
+                            alert("Translation Saved");
                         var objid = $.Storage.get("ObjId");
                         $("#lesson_preview").load(rootDir + 'showLesson.php?locale=' + locale + '&objid=' + objid);
                     },        
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
-                        $('#waiting').hide(500);
+                        $('#waiting').hide(100);
                         $('#message').removeClass().addClass('error')
                         .text(XMLHttpRequest.responseText).show(500);
                         $.Storage.set('isStepRemoved' , "false");  
@@ -360,7 +361,7 @@
                             rdata = JSON.parse(newdata);
                             $.Storage.set("lessonTitle" , rdata.title);
                             $('#lessonTitle').val(rdata.title);
-                            $('.result').html(newdata);
+                            //$.Storage.set('lessonStepsValues',JSON.stringify(rdata));
                             //alert('Load was performed.');
                             var i = 1;
                         } ,
@@ -380,6 +381,7 @@
                             rdata = JSON.parse(data);
                             $.Storage.set("lessonTitleTrans" , rdata.title);
                             $('#lessonTitlet').val(rdata.title);
+                            //$.Storage.set('lessonStepsValuesTranslate',JSON.stringify(rdata));
                         } ,
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert('en error occured');
@@ -485,15 +487,14 @@
                      
                 if ($('.dropdown-toggle').length > 0)
                      $('.dropdown-toggle').dropdown();
-                if (typeof  editGuestLesson == "undefined") {
+                if (typeof  editGuestLesson == "undefined" &&  typeof  translateLesson == "undefined") {
                     window.clearLocalStorage();
                     window.clearStep();
                 }
 
                 var lessonid = $.getUrlVar('lessonid');
                 var originLang  ,transLang ;
-                if (typeof  editGuestLesson != undefined)
-                {
+                if (typeof  editGuestLesson != "undefined"){
                     //Get url
                     var url         = window.location.href ;
                     var myarr       = url.split("/");
@@ -501,19 +502,24 @@
                     lessonid        = myarr[arrlength -2];
                     originLang      = myarr[arrlength -1];
                 }
-
-                if ( typeof  $.getUrlVar('lfrom') != "undefined" )
+                else {
+                    if ( typeof  $.getUrlVar('lesson') != "undefined" )
+                     lessonid = $.getUrlVar('lesson');
+                    if ( typeof  $.getUrlVar('lfrom') != "undefined" )
                      originLang = $.getUrlVar('lfrom').substring(0,5);
-                if ( typeof  $.getUrlVar('ltranslate') != "undefined" ) 
+                    if ( typeof  $.getUrlVar('ltranslate') != "undefined" ) 
                      transLang = $.getUrlVar('ltranslate').substring(0,5);
+                }
                 loadExistingLessonSteps(lessonid ,originLang , transLang );
-                //loadCKEditor();
                 if (typeof  editGuestLesson == "undefined")
                 {
                     createStepNavVar(false,false);
                     showFirstStepIfExist('lessonStepsValues');
                     showFirstStepIfExist('lessonStepsValuesTranslate');
                 }
+                else{
+                    window.saveLessonData(false);
+                } 
                 
                 
                 if (!$.Storage.get("ObjId"))
@@ -608,7 +614,7 @@
                     if ($.Storage.get("lessonStepsValues"))
                     
                     {
-                        allSteps = JSON.parse($.Storage.get("lessonStepsValues"));     
+                        allSteps = JSON.parse($.Storage.get("lessonStepsValues"));
                     }
                     else
                     {
@@ -625,6 +631,7 @@
 
                     if ($.Storage.get('active-step-num'))
                     {
+                        
                         allSteps.splice(parseInt($.Storage.get("active-step-num")),1,fullStep);              
                         $.Storage.set('lessonStepsValues',JSON.stringify(allSteps, null, 2));
                     } else { //Case of first step

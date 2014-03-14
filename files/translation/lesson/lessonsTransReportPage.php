@@ -1,24 +1,17 @@
 <?php
     $fileDirectory = "../../";
+    require_once("../../../environment.php");
+    require_once("../../../localization.php");
     require_once($fileDirectory."utils/translationUtil.php");
-    include_once($fileDirectory."inc/dropdowndef.php");
-    include_once($fileDirectory."inc/boostrapdef.php");
-    include_once($fileDirectory."inc/jquerydef.php");
 
-    
+    include_once($fileDirectory."utils/includeCssAndJsFiles.php");
+    includeCssAndJsFiles::include_all_page_files("index");
+
     echo "<link rel='stylesheet' href=' " . $fileDirectory ."css/lessonReport.css' type='text/css' media='all'/>";
-    
-    
+   
     if(session_id() == '') 
         session_start();
 
-    if (isset ($_GET['locale']))
-    {
-        $locale = $_GET['locale'];
-    }
-    else
-        $locale = "es_AR";
-    $_SESSION['locale'] = "en_US";
     $fullLocalePath     =   "locale_".$locale;
     
     $m = new Mongo();
@@ -28,7 +21,7 @@
     //Should be sorted by precedence
     $lessons->sort(array('precedence' => 1));
     $lang               = translationUtil::get_language($locale);
-    
+
     echo "<div> <h1> Lesson translate to " . $lang . " report </h1></div>";
     foreach ($lessons as $lesson)
     {
@@ -41,7 +34,7 @@
         if ($translated)
             $headerClass = "full_translate";
     ?>    
-    <div class="span12">
+    <div class="span12" style="height: 77px;">
         <h2 class="<?php echo $headerClass; ?>"> 
 
             <?php echo $title;?>

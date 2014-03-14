@@ -15,8 +15,6 @@ and open the template in the editor.
         <title>
         </title>      
         <script  type="text/javascript" src="ajax/libs/jquery/jquery.min.js"></script> <!--- equal to googleapis -->
-        <script  type="text/javascript" src="ckeditor/ckeditor.js"></script>
-        <script  type="text/javascript" src="ckeditor/adapters/jquery.js"></script>
         <script  type="text/javascript" src="alerts/jquery.alerts.js"></script>
         <script type="application/javascript" src="files/jquery.Storage.js"></script> <!-- Storage -->
         <script type="application/javascript" src="files/js/lesson.js"></script> <!-- lessonFunctions -->  
@@ -27,6 +25,9 @@ and open the template in the editor.
         <link rel='stylesheet' href='./files/bootstrap/css/bootstrap-responsive.min.css' type='text/css' media='all'/>
         <link rel='stylesheet' href='./files/bootstrap/css/bootstrap-responsive.css' type='text/css' media='all'/>       
         <script type="application/javascript" src="files/Gettext.js"></script>
+        <script>
+            var translateLesson = true;
+        </script>    
         
         <?php
                 $languageGet = "ltranslate";
@@ -82,7 +83,7 @@ and open the template in the editor.
 
 //If we are in existing lesson we will enter editing mode 
         if (isset($_GET['lesson'])) {
-            $lu = new lessonsUtil($locale, "locale_", $lessons, $_GET['lesson']);
+            $lu = new lessonsUtil($locale, $lessons, $_GET['lesson']);
             $the_object_id = new MongoId($_GET['lesson']);
             $cursor = $lessons->findOne(array("_id" => $the_object_id));
             $localSteps = $lu->get_steps_by_locale($localePrefix . $locale);
