@@ -229,11 +229,16 @@
                                 <?php echo _("Help"); ?>
                                 </a>
                             </p>
+                            <?php
+                            if (!$is_public_user_page) {
+                            ?>
                             <p>
                                 <a href='<?php echo $root_dir . "mylessons.php" ; ?>'>
                                 <?php echo _("My lessons"); ?>
                                 </a>
                             </p>
+                            <?php } ?>
+                            
                     </div><!-- end of user_menu -->
                     <div class=" span10 tab-pane " id="myMessages" >
                         <h2>

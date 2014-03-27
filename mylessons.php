@@ -47,7 +47,7 @@
                         }
                         $objID                              =    $lessonStructure['_id'];
                         $pending_status                     =    $lessonStructure['pending'];
-                        $lesson_created_locale              =    $lessonStructure['localeCreated'];
+                        $lesson_created_locale              =    substr($lessonStructure['localeCreated'],0,2);
                         //$translateToLanguage            
                         echo "<td>" . $title . "</td> " ;
                         $editLessonHref    = "<td><a class='btn small info'  href='lesson/$objID/$lesson_created_locale' >" . _('Edit') . "</a></td>";
@@ -56,7 +56,7 @@
                     ?> 
                     </tbody>  
                 </table>
-                    <div><a class='btn small info'  href='lesson/<?php echo $locale_domain;?>' >Create a new lesson</a></div>
+                    <div><a class='btn small info'  href='lesson/<?php echo substr($locale_domain,0,2);?>' >Create a new lesson</a></div>
 
             </div> <!-- Close span-->
         </div> <!-- Close Row-->
@@ -64,6 +64,6 @@
          echo "<span class='footer'>$footer</span>";
         ?>
         <script>
-                            selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>users/myLessons/", "users.php" ,"en" ); 
+                    selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>users/myLessons/", "users.php" ,"en" ); 
         </script>
             

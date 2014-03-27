@@ -34,6 +34,18 @@ require_once('files/utils/topbarUtil.php');
 
     </head>
     <?php
+    function curPageURL() {
+                $pageURL = 'http';
+                if (isset($_SERVER["HTTPS"])) {$pageURL .= "s";}
+                $pageURL .= "://";
+                if ($_SERVER["SERVER_PORT"] != "80") {
+                 $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+                } else {
+                 $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+                }
+                return $pageURL;
+            }
+    $curr_url = curPageURL();
     if ($has_permission) { // Show the page for register user
         ?>
         <body>
@@ -203,6 +215,7 @@ require_once('files/utils/topbarUtil.php');
             ?>
 
             <script type='text/javascript'>
+                selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo  substr($curr_url, 0, -2); ?>" , "lesson.php" ,"en" ); 
                 $.Storage.remove("active-step");
                 $.Storage.remove("username");
                 $.Storage.remove("turtleId");
@@ -286,7 +299,6 @@ require_once('files/utils/topbarUtil.php');
             else { //Starting case of creating a new lesson
                 ?>
                 <script type='text/javascript'>
-                    selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>lesson/", "lesson.php" ,"en" ); 
                     var lessonTitle = $('#lessonTitle').val();
                     $.Storage.remove("collection-name");
                     $.Storage.remove("lessonTitle");
