@@ -70,11 +70,6 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
             fy = (self.y - 0) / (self.y - y);
           } else if (y >= height) {
             fy = (self.y - height) / (self.y - y);
-            //Turtle academy handle NAN exception
-            if (self.y == y)
-            {
-                fy = 1
-            }
           }
 
           // intersection point (draw current to here)
@@ -101,8 +96,7 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
             wy = less ? height : 0;
           }
 
-            _go(self.x, self.y, ix, iy);
-    
+          _go(self.x, self.y, ix, iy);
 
           if (self.turtlemode === 'fence') {
             // FENCE - stop on collision
@@ -171,11 +165,12 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
     12: "salmon", 13: "purple", 14: "orange", 15: "gray"
   };
 
-  this.setcolor = function(color) {
+  function parseColor(color) {
     if (STANDARD_COLORS[color] !== undefined) {
-      this.color = STANDARD_COLORS[color];
+      return STANDARD_COLORS[color];
     } else {
-        //turtle academy
+        
+      //turtle academy
       var tran_color = false;
       for (var i = 0; i < 16; i++) {
         if (color == gt.gettext(STANDARD_COLORS[i]))
@@ -186,9 +181,12 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
             }
         
       }
-      if (!tran_color)
-        this.color = gt.gettext(color);
+      return this.color;
     }
+  }
+   
+  this.setcolor = function(color) {
+    this.color = parseColor(color);
     canvas_ctx.strokeStyle = this.color;
     canvas_ctx.fillStyle = this.color;
   };
