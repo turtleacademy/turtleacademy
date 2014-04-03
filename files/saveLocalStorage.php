@@ -20,8 +20,20 @@ $addNewToCmd = false; // If we will have to save a new user TO command
 if (isset($_POST['command'])) {
     $cmd = $_POST['command'];
     $trimmedcmd = trim($cmd);
+
     if (strcasecmp(_(substr($trimmedcmd, 0, 2)), "to") == 0) { //Case the TO command learned in other language
-        $tocmd = $trimmedcmd;
+        $trimmedcmd = preg_replace("/\r|\n/", " ", $trimmedcmd);
+        //remove redundant spaces to be only 1 space
+        while (strpos($trimmedcmd, '  ') > 0) {
+            $trimmedcmd = str_replace('  ', ' ', $trimmedcmd);
+        }
+        $all_off_to_commands = explode("end", $str);
+        $num_of_new_TO_commands = sizeof($all_off_to_commands) - 1;
+        for ($i = 0; $i < $num_of_new_TO_commands; $i++) {
+            $all_off_to_commands[$i] = $all_off_to_commands[$i] . " end"; //Only works for english now
+        }
+        //$pos            =   strpos($trimmedcmd , 'end');
+        //$tocmd = substr($trimmedcmd, 0 ,$pos + 3);
         $addNewToCmd = true;
     }
 }
@@ -69,36 +81,73 @@ if (!$resultcount > 0) {
         $stepsComletedData = $userDataExist['stepCompleted'];
     }
     //If The user has a privouse To command saved
-    $toCommands = array();
-    $new_cmd = array();
-    $pos            =   strpos($tocmd , 'to');
-    $return['position'] = $pos;
-    if ($pos == 0)
-    {
-        $the_cmd        =   substr($tocmd ,$pos + 2 , -3 );
-        $the_cmd_parts  =   explode(' ' , $the_cmd ) ;
-        $to_cmd_title   =   $the_cmd_parts[1];
-        $new_cmd = array('command' => $tocmd , "title" => $to_cmd_title );
-    }
-    if (isset($userDataExist['tocmd'])) {
-        $toCommands         = $userDataExist['tocmd']; 
-        $num_of_commands    =   sizeof($toCommands);
-        for ($i =0 ; $i < $num_of_commands; $i++)
-        {
-            if ($toCommands[$i]["title"] == $to_cmd_title)
-            {
-               $toCommands[$i]           =   $new_cmd; 
-               $addNewToCmd = false;
-               break;
+    if ($addNewToCmd) {
+        $toCommands = array();
+        $new_to_command_object = array();
+
+        //$the_cmd        =   substr($tocmd ,$pos + 2 , -3 );
+        //
+        //Running over the all new commands and creating objects of them
+        for ($i = 0; $i < $num_of_new_TO_commands; $i++) {
+            $the_cmd_parts = explode(' ', $all_off_to_commands[$i]);
+            if (isset($the_cmd_parts[1])) {
+                $to_cmd_title = $the_cmd_parts[1];
+                $new_to_command_object[$i] = array('command' => $all_off_to_commands[$i], "title" => $to_cmd_title);
             }
         }
-        if ($addNewToCmd) { 
-            $toCommands[]           =   $new_cmd;
+        //After created the objects we will check if the user already defined those commands before
+        if (isset($userDataExist['tocmd'])) {
+            $toCommands = $userDataExist['tocmd'];
+            $already_saved_commands_size = sizeof($toCommands);
+            $return["numofcommand"] = $already_saved_commands_size;
+            //Check we have at least 1 command in the memory
+            if ($already_saved_commands_size > 0) {
+                // Now for each 1 of the commands we need to check if the new command oveeride it
+                for ($i = 0; $i < $already_saved_commands_size; $i++) {
+                    //$return["command" . $i] = $toCommands[$i];
+                    $num_of_new_TO_commands = sizeof($new_to_command_object);
+                    //Case no more new commands
+                    if ($num_of_new_TO_commands == 0) {
+                        $addNewToCmd = false;
+                        break;
+                    }
+                    if (is_array($toCommands[$i])) {
+                        if (!isset($to_cmd_title))
+                            $to_cmd_title = " Fake";
+
+                        //Need to check if one of the new TO commands are already in in the commands list
+                        for ($j = 0; $j < $num_of_new_TO_commands; $j++) {
+                            if ($toCommands[$i]["title"] == $new_to_command_object[$j]["title"]) {
+                                $toCommands[$i] = $new_to_command_object[$j];
+                                //We already worked on the command we can remove it
+                                array_splice($new_to_command_object, $j, 1);
+                                break;
+                            }
+                        }
+                    }
+                }
+                //If there are more command to add
+                if ($addNewToCmd) {
+                    if (is_string($toCommands))
+                        $toCommands = array($new_to_command_object);
+                    else {
+                        for ($j = 0; $j < $num_of_new_TO_commands; $j++) {
+                            $toCommands[] = $new_to_command_object[$j];
+                        }
+                    }
+                }
+            } else {
+                $toCommands[] = $new_to_command_object[];
+            }
         }
-    } 
-    else {
-        $toCommands[] = $new_cmd;
-    } 
+        //Not addingg a new to command
+        else {
+            if (isset($userDataExist['tocmd'])) {
+                $toCommands = $userDataExist['tocmd'];
+            } else
+                $toCommands = array();
+        }
+    }
 
     $userActions = $userActions . " , " . $userActionsUpdate;
     $return['userActions'] = $userActions;
