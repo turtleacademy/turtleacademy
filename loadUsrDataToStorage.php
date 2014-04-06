@@ -19,23 +19,32 @@ if (isset($_SESSION['username']))
 
 function updateToCmd($m , $db)
 {
-        $userProgressCol    =   $db->user_progress;
+        $userProgressCol    =   $db->$db_progress_collection;
         $userQuery = array('username' => $_SESSION['username']);
         $cursor = $userProgressCol->findone($userQuery);
+        $user_to_command    = $cursor['tocmd'];   
         if ($cursor != null && isset($cursor['tocmd']))
         {         
-            $runcmd =    $cursor['tocmd'];
-            echo "localStorage.setItem('tocmd' ,'$runcmd' );";
+            $user_to_command    = $cursor['tocmd'];
+            //$user_to_command    = str_replace(array("\r", "\n"), " ", $user_to_command);
+            $runcmd             =    $user_to_command;
+            $num_of_to_cmds     =   sizeof($user_to_command);
+            $storage_tocmd_value = "localStorage.setItem('tocmd' ,'" ;
+            for ($i = 0 ; $i < $num_of_to_cmds ; $i++ ) 
+            {
+                $storage_tocmd_value .= $user_to_command[$i]["command"] . " ,";
+            }
+            $storage_tocmd_value .= "');";
+            echo $storage_tocmd_value;
                  
         }
-    
 }
 function updateLoclaStorageForLoggedUser($m , $db)
 {
     if (isset ($_SESSION['username']))
     {
         //echo "; var username = " . $_SESSION['username'] ;
-        $userProgressCol    =   $db->user_progress; 
+        $userProgressCol    =   $db->$db_progress_collection; 
         $userQuery = array('username' => $_SESSION['username']);
         $cursor = $userProgressCol->findone($userQuery);
         echo ";";

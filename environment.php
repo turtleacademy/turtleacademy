@@ -3,6 +3,8 @@
     $db_name              =   "turtleTestDb";
     $db_lesson_collection =   "lessons";
     //$dbLessonCollection  =   "lessons_translate";
+    $db_progress_collection =   "user_progress_next";
+    //user_progress_next  =   "user_progress";
     //$site_path            =   "http://turtleacademy.com/next/";
     //$site_path          =   "http://turtleacademy.com/";
     $site_path            =   "http://turtle.com/";
