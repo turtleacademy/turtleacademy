@@ -1,4 +1,15 @@
-    <?php        
+<?php        
+  require_once("../environment.php");
+if (session_id() == '')
+    session_start();
+
+$m = new Mongo();
+$db = $m->$db_name;
+
+$userProgressCol    =   $db->$db_progress_collection;
+$userQuery = array('username' => $_SESSION['username']);
+$cursor = $userProgressCol->findone($userQuery);
+
     $program_documentation =
       "<div id='documentation'>
                 <div id='doc-container' class ='span21'>
@@ -180,7 +191,7 @@
                                         <td style='background-color: salmon;'>12: salmon
                                         <td style='background-color: purple;'>13: purple
                                         <td style='background-color: orange;'>14: orange
-                                    <tr>
+                                    <tr> 
                                         <td style='background-color: gray;'>15: gray
                                 </table>
                                 </p>
@@ -209,9 +220,53 @@
                             <li>
                                 <h5> random (x)</h5>
                                 <p> Will choose a random number between 0 - (x-1)</p>                               
-                            </li>
-                        </ul> 
-                    </div>
+                            </li><h4>Your functions</h4>";
+                if ($cursor != null && isset($cursor['tocmd']))
+                {         
+                    
+                    $user_functions_arr         =    $cursor['tocmd'];
+                   // $user_functions_arr     =   explode(',',$user_functions);
+                    foreach($user_functions_arr as $singel_function)
+                    {
+                        
+                        $function_cammind = $singel_function["command"];
+                        $pos              =   strpos($function_cammind , 'to');
+                        if ($pos >= 0)
+                        {
+                            $the_cmd        =   substr($function_cammind ,$pos + 2 , -3 );
+                            $the_cmd_parts  =  explode(' ' , $the_cmd ) ;
+                            $program_documentation .=  "<li><h5> " . $the_cmd_parts[1] ;
+                            
+                            $has_param = true;
+                            for ($i = 2 ; $i < sizeof($the_cmd_parts) ; $i++)
+                            {
+                                if ($has_param)
+                                {
+                                    if (strpos($the_cmd_parts[$i] , ':') !== false)
+                                    {
+                                        $program_documentation .=  " " .$the_cmd_parts[$i];
+                                    }
+                                    else {
+                                        $has_param = false;
+                                        $program_documentation .= "</h5><p>";
+                                        $program_documentation .= $the_cmd_parts[$i] . " ";
+                                    }
+                                        
+                                }
+                                else
+                                    $program_documentation .= $the_cmd_parts[$i] . " ";
+                            }
+                            $program_documentation .= "</p></li>";
+                        }
+
+                    }
+
+                }
+                else{
+                    $program_documentation .= " No function defined";
+                }
+                 $program_documentation .= "</ul>
+                </div>
                 </div>      
             </div>"; 
     ?>

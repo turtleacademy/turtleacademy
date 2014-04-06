@@ -1,7 +1,8 @@
 <?php
 
 require_once 'utils/badgesUtil.php';
-
+require_once("../environment.php");
+ 
 if (!isset($_SESSION)) {
     session_start();
 }
@@ -10,37 +11,41 @@ $username = "username";
 if (isset($_SESSION[$username])) {
     $user = $_SESSION[$username];
 } else {
-    echo "";
-    exit();
+    echo "No User Name set";
+    //exit();
 }
 //If we tought the turtle a new TO command it will be save seperately 
 $cmd = "";
 $tocmd = "";
 $addNewToCmd = false; // If we will have to save a new user TO command
+$date = date('Y-m-d H:i:s');
+$userActions = ""; // Will represent the user history already save for the user
+$userActionsUpdate = ""; // The new user actions that should be save to history
+
 if (isset($_POST['command'])) {
+    
     $cmd = $_POST['command'];
     $trimmedcmd = trim($cmd);
 
     if (strcasecmp(_(substr($trimmedcmd, 0, 2)), "to") == 0) { //Case the TO command learned in other language
         $trimmedcmd = preg_replace("/\r|\n/", " ", $trimmedcmd);
+        $trimmedcmd = preg_replace('/[ \t]+/', " ", $trimmedcmd);
         //remove redundant spaces to be only 1 space
         while (strpos($trimmedcmd, '  ') > 0) {
             $trimmedcmd = str_replace('  ', ' ', $trimmedcmd);
         }
-        $all_off_to_commands = explode("end", $str);
+        $all_off_to_commands = explode("end", $trimmedcmd);
         $num_of_new_TO_commands = sizeof($all_off_to_commands) - 1;
         for ($i = 0; $i < $num_of_new_TO_commands; $i++) {
-            $all_off_to_commands[$i] = $all_off_to_commands[$i] . " end"; //Only works for english now
+            $all_off_to_commands[$i] = trim($all_off_to_commands[$i]) . " end"; //Only works for english now
         }
-        //$pos            =   strpos($trimmedcmd , 'end');
-        //$tocmd = substr($trimmedcmd, 0 ,$pos + 3);
         $addNewToCmd = true;
     }
+    $userActionsUpdate = $date . " ->" . $trimmedcmd;//Case of saving program 
 }
 $return['username'] = $user;
 $stepsComletedData = "";
-$userActions = ""; // Will represent the user history already save for the user
-$userActionsUpdate = ""; // The new user actions that should be save to history
+
 $isLessonStep = false;
 $isHistory = false;
 $date = date('Y-m-d H:i:s');
@@ -53,11 +58,11 @@ if (isset($_POST['lclStoragevalues'])) {
 if (isset($_POST['userHistory'])) {
     $userActionsUpdate = $date . " ->" . $_POST['userHistory'];
     $return['userActions'] = $userActionsUpdate;
-    $isHistory = true;
+    $isHistory = true; 
 }
 $m = new Mongo();
 $db = $m->turtleTestDb;
-$userProgress = "user_progress";
+$userProgress = $db_progress_collection;
 $userProgressCol = $db->$userProgress;
 //Checking if the user already has some data
 $userQuery = array('username' => $user);
@@ -73,7 +78,7 @@ if (!$resultcount > 0) {
     $result = $userProgressCol->insert($structure, array('safe' => true));
     $newDocID = $structure['_id'];
     $return['programID'] = $newDocID;
-} else { //Updating existing user
+} else { //Updating existing user 
     $return['isNewUser'] = false;
     // if ($isLessonStep)
     $userActions = $userDataExist['userHistory'];
@@ -85,8 +90,6 @@ if (!$resultcount > 0) {
         $toCommands = array();
         $new_to_command_object = array();
 
-        //$the_cmd        =   substr($tocmd ,$pos + 2 , -3 );
-        //
         //Running over the all new commands and creating objects of them
         for ($i = 0; $i < $num_of_new_TO_commands; $i++) {
             $the_cmd_parts = explode(' ', $all_off_to_commands[$i]);
@@ -104,11 +107,8 @@ if (!$resultcount > 0) {
             if ($already_saved_commands_size > 0) {
                 // Now for each 1 of the commands we need to check if the new command oveeride it
                 for ($i = 0; $i < $already_saved_commands_size; $i++) {
-                    //$return["command" . $i] = $toCommands[$i];
-                    $num_of_new_TO_commands = sizeof($new_to_command_object);
-                    //Case no more new commands
-                    if ($num_of_new_TO_commands == 0) {
-                        $addNewToCmd = false;
+
+                    if ($addNewToCmd == false) {
                         break;
                     }
                     if (is_array($toCommands[$i])) {
@@ -121,6 +121,9 @@ if (!$resultcount > 0) {
                                 $toCommands[$i] = $new_to_command_object[$j];
                                 //We already worked on the command we can remove it
                                 array_splice($new_to_command_object, $j, 1);
+                                $num_of_new_TO_commands = sizeof($new_to_command_object);
+                                if ($num_of_new_TO_commands == 0)
+                                    $addNewToCmd = false;
                                 break;
                             }
                         }
@@ -137,7 +140,7 @@ if (!$resultcount > 0) {
                     }
                 }
             } else {
-                $toCommands[] = $new_to_command_object[];
+                $toCommands = $new_to_command_object;
             }
         }
         //Not addingg a new to command
@@ -147,6 +150,14 @@ if (!$resultcount > 0) {
             } else
                 $toCommands = array();
         }
+    }
+    //Not adding TO commmand
+    else{
+        if (isset($userDataExist['tocmd'])) {
+            $toCommands = $userDataExist['tocmd'];
+        }
+        else
+            $toCommands = array();
     }
 
     $userActions = $userActions . " , " . $userActionsUpdate;

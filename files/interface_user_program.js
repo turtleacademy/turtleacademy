@@ -154,6 +154,7 @@ $(function() {
             }
         });
     });  
+
     $("#btn_create").click(function() {    
         jConfirm('Do you want to save existing program changes?'  , 'New program', function(r) {
             if (r)
@@ -162,7 +163,7 @@ $(function() {
             }
             else
             {
-                location.href = sitePath + "/program/lang" + localShort;
+                location.href = sitePath + "/program/new/" + localShort;
             } 
         });
     }); 
@@ -179,6 +180,7 @@ $(function() {
     });  
     $("#btn_save_program").click(function() {    
         saveprogram(true,true);
+        alert('Program was successfully Saved');
     }); 
     $("#program-info-header").editable("click", function(e){
         //alert(e.value);
@@ -201,9 +203,8 @@ $(function() {
                         username : username
                     },
 
-                    success : function(data){
-                       
-                                location.href = sitePath + "/program/lang/"  + localShort;
+                    success : function(data){                 
+                                location.href = sitePath + "/program/new/"  + localShort;
                                         
                     },       
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -213,7 +214,7 @@ $(function() {
             }
             else
             {
-                location.href = sitePath + "/program/lang/" + locale;
+                location.href = sitePath + "/program/new/" + locale;
             } 
         });
 
@@ -241,7 +242,7 @@ $(function() {
             alert("Only register user can save their programs , you must log-in");
             return;
         }
-        if (programname == "Program 1")
+        if (programname == "program 1")
             var programtitle    =   prompt("Your program name is ",programname);
         else
             var programtitle = programname;
@@ -262,16 +263,34 @@ $(function() {
                 },
 
                 success : function(data){
+                        //Saving the tocmd to the user history if exist
+                        $.ajax({
+                            type : 'POST',
+                            url : sitePath + '/files/saveLocalStorage.php',
+                            dataType : 'json',
+                            data: {
+                                command      : programCode
+                            },
+                            success: function(data) { 
+                                var rdata;
+                            } ,
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert(XMLHttpRequest.responseText);
+                            }
+                        });
                     if (isRedirect)
                     {
                         var pathname = window.location.pathname;
                         if (isSave)
                             {
-                                var temppath = sitePath + "/files/updateProgram.php";
-                                location.href = temppath + "?programid=" + data.programId.$id + "&username=" + data.username ;
+                                //var temppath = sitePath + "/files/updateProgram.php";
+                                //location.href = temppath + "?programid=" + data.programId.$id + "&username=" + data.username ;
+                                var temppath = sitePath + "/program/update/";
+                                location.href = temppath + data.programId.$id + "/" + data.username + "/" + localShort ;
+                                
                             }
                         else
-                            location.href = sitePath + "/program/lang/" + localShort;
+                            location.href = sitePath + "/program/new/" + localShort;
                     }                 
                 },       
                 error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -313,7 +332,9 @@ $(function() {
                     jConfirm('Do you want to move to the new program span page ?'  , 'Span program', function(r) {
                         if (r)
                         {
-                             location.href = sitePath + "files/updateProgram.php?programid=" + new_prog_page + "&&username=" + username;
+                            
+                           // location.href = sitePath + "files/updateProgram.php?programid=" + new_prog_page + "&&username=" + username;
+                             location.href = sitePath + "/program/update/" + new_prog_page + "/" + username + "/" + localShort;
                         }
                     });           
                 },       
@@ -361,7 +382,27 @@ $(function() {
         canvas_element.width, canvas_element.height);
 
     g_logo = new LogoInterpreter(turtle, stream);
-    //Runing the TO commands
+        //Loading and running the TO commands
+    if ($.Storage.get("tocmd"))
+    {
+        var self_defined_functions = $.Storage.get('tocmd'); 
+        toCommandArr = self_defined_functions.split(','); 
+        var numOfCommands  =   toCommandArr.length ;
+        //var commandLen = 0; 
+        var commandToRun ;
+        for(var i = 0; i < numOfCommands; i++)  
+        {
+                commandToRun = toCommandArr[i];
+                try
+                {
+                    g_logo.run(commandToRun);
+                }catch (e) {
+                // DO NOTHING FOR NOW
+                // jqconsole.Write(gt.gettext('Error') +': ' + e + '\n');
+                }
+            
+        }
+    }
    
 
 });
