@@ -7,8 +7,13 @@ $m = new Mongo();
 $db = $m->$db_name;
 
 $userProgressCol    =   $db->$db_progress_collection;
-$userQuery = array('username' => $_SESSION['username']);
-$cursor = $userProgressCol->findone($userQuery);
+$show_logged_in_user_to_commands = true;
+if (!isset($_SESSION['username']))
+    $show_logged_in_user_to_commands = false;
+else {      
+    $userQuery = array('username' => $_SESSION['username']);
+    $cursor = $userProgressCol->findone($userQuery);
+}
 
     $program_documentation =
       "<div id='documentation'>
@@ -221,50 +226,54 @@ $cursor = $userProgressCol->findone($userQuery);
                                 <h5> random (x)</h5>
                                 <p> Will choose a random number between 0 - (x-1)</p>                               
                             </li><h4>Your functions</h4>";
-                if ($cursor != null && isset($cursor['tocmd']))
-                {         
-                    
-                    $user_functions_arr         =    $cursor['tocmd'];
-                   // $user_functions_arr     =   explode(',',$user_functions);
-                    foreach($user_functions_arr as $singel_function)
-                    {
-                        
-                        $function_cammind = $singel_function["command"];
-                        $pos              =   strpos($function_cammind , 'to');
-                        if ($pos >= 0)
+                if ($show_logged_in_user_to_commands)
+                {
+                    if ($cursor != null && isset($cursor['tocmd']))
+                    {         
+
+                        $user_functions_arr         =    $cursor['tocmd'];
+                        if (sizeof($user_functions_arr) > 0 && is_array($user_functions_arr))
                         {
-                            $the_cmd        =   substr($function_cammind ,$pos + 2 , -3 );
-                            $the_cmd_parts  =  explode(' ' , $the_cmd ) ;
-                            $program_documentation .=  "<li><h5> " . $the_cmd_parts[1] ;
-                            
-                            $has_param = true;
-                            for ($i = 2 ; $i < sizeof($the_cmd_parts) ; $i++)
+                            foreach($user_functions_arr as $singel_function)
                             {
-                                if ($has_param)
+
+                                $function_cammind = $singel_function["command"];
+                                $pos              =   strpos($function_cammind , 'to');
+                                if ($pos >= 0)
                                 {
-                                    if (strpos($the_cmd_parts[$i] , ':') !== false)
+                                    $the_cmd        =   substr($function_cammind ,$pos + 2 , -3 );
+                                    $the_cmd_parts  =  explode(' ' , $the_cmd ) ;
+                                    $program_documentation .=  "<li><h5> " . $the_cmd_parts[1] ;
+
+                                    $has_param = true;
+                                    for ($i = 2 ; $i < sizeof($the_cmd_parts) ; $i++)
                                     {
-                                        $program_documentation .=  " " .$the_cmd_parts[$i];
+                                        if ($has_param)
+                                        {
+                                            if (strpos($the_cmd_parts[$i] , ':') !== false)
+                                            {
+                                                $program_documentation .=  " " .$the_cmd_parts[$i];
+                                            }
+                                            else {
+                                                $has_param = false;
+                                                $program_documentation .= "</h5><p>";
+                                                $program_documentation .= $the_cmd_parts[$i] . " ";
+                                            }
+
+                                        }
+                                        else
+                                            $program_documentation .= $the_cmd_parts[$i] . " ";
                                     }
-                                    else {
-                                        $has_param = false;
-                                        $program_documentation .= "</h5><p>";
-                                        $program_documentation .= $the_cmd_parts[$i] . " ";
-                                    }
-                                        
+                                    $program_documentation .= "</p></li>";
                                 }
-                                else
-                                    $program_documentation .= $the_cmd_parts[$i] . " ";
+
                             }
-                            $program_documentation .= "</p></li>";
                         }
-
+                    } 
+                    else{
+                        $program_documentation .= " No function defined";
                     }
-
-                }
-                else{
-                    $program_documentation .= " No function defined";
-                }
+                } //End if user is logged in and we need to show his To commands
                  $program_documentation .= "</ul>
                 </div>
                 </div>      
