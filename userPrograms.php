@@ -17,7 +17,6 @@
     require_once('files/utils/userUtil.php');
     require_once('files/utils/pagination.php');
 
-
     ?>
 
 <script> 
@@ -106,6 +105,12 @@
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/lastUpdated/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
+                                    <th class='span6'>
+                                        <?php echo _("Total Score"); 
+                                            echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
+                                            echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
+                                         ?>    
+                                    </th>
                                     <th class='span4'><?php echo _("Actions"); ?></th>
                                 </tr>
                             </thead>
@@ -113,8 +118,8 @@
                             <?php
                             $allPrograms = userUtil::find_public_programs();
                             // Here we will determine how to sort the user programs
-                            $sortColumn = 'precedence';
-                            $sortDirection = 1;
+                            $sortColumn = 'totalRankScore';
+                            $sortDirection = -1;
                             if (isset($_GET['column']))
                             {
                                 $sortColumn = $_GET['column'];
@@ -213,6 +218,7 @@
                                     <td><?php echo $program['programName'] ?></td>
                                     <td><?php echo $program['dateCreated'] ?></td>
                                     <td><?php echo $program['lastUpdated'] ?></td>
+                                    <td><?php echo $program['totalRankScore'] ?></td>
                                     <td>
                                         <a class='btn small info' href="<?php
                                             echo $root_dir . "view/programs/";

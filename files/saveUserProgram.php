@@ -31,7 +31,7 @@
             "lastUpdated" => $lastUpdated , "programName" => $programtitle ,
              "code" => $programCode , "numOfComments" => "0" , "comments" => "" ,"precedence" => "99" ,
             "img" => $img  , "sonPrograms" => "" , "fatherProgram" =>  "",
-            "ranks" => "" , "numOfRanks" => "0" , "totalRankScore" => "0");
+            "ranks" => "" , "numOfRanks" => intval(0) , "totalRankScore" => intval(0));
         $result = $user_Programs_Collection->insert($structure, array('safe' => true));
         $newDocID = $structure['_id'];
         $return['programId'] = $newDocID; 
