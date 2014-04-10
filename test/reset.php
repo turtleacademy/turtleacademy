@@ -66,7 +66,6 @@ include_once("files/inc/jquerydef.php");
             //        submitHandler: function() { alert("submitted!"); }
             //});
             $(document).ready(function(){
-                var gt = new Gettext({'domain' : 'messages'});
                 $('#topbar').dropdown();
                 $('#username_in').focus();
             
@@ -84,13 +83,13 @@ include_once("files/inc/jquerydef.php");
                     },
                     messages: {
                         password: {
-                            required: gt.gettext("Please enter your username"), 
-                            minlength: gt.gettext("Your username must contain at least 4 characters")
+                            required: <?php echo '"'._("Please enter your username").'"'?>, 
+                            minlength: <?php echo '"'._("Your username must contain at least 4 characters").'"'?>
                         },
                         retypepassword: {
-                            required    : gt.gettext("Please enter your password"),
-                            minlength   : gt.gettext("Your password must contain at least 5 characters"),
-                            equalTo     : gt.gettext("password and retype password should be the same")  
+                            required    : <?php echo '"'._("Please enter your password").'"'?>,
+                            minlength   : <?php echo '"'._("Your password must contain at least 5 characters").'"'?>,
+                            equalTo     : <?php echo '"'._("password and retype password should be the same").'"'?>
                         }
                     } 
                 }); 

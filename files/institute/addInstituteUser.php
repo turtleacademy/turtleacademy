@@ -24,7 +24,6 @@ require_once ('../utils/topbarUtil.php');
         <script src="<?php echo $root_dir; ?>ajax/libs/jquery/validator/dist/jquery.validate.js" type="text/javascript"></script>
         <script type='text/javascript'> 
             $(document).ready(function(){
-                var gt = new Gettext({'domain' : 'messages'});
                 $('#topbar').dropdown();
                 $('#username_in').focus();
                 
@@ -41,14 +40,14 @@ require_once ('../utils/topbarUtil.php');
                     },
                     messages: {
                         username: {
-                            required: gt.gettext("Please enter your username"), 
-                            minlength: gt.gettext("Your username must contain at least 4 characters")
+                            required: <?php echo '"'._("Please enter your username").'"'?>, 
+                            minlength: <?php echo '"'._("Your username must contain at least 4 characters").'"'?>
                         },
                         password: {
-                            required: gt.gettext("Please enter your password"),
-                            minlength: gt.gettext("Your password must contain at least 5 characters")
+                            required: <?php echo '"'._("Please enter your password").'"'?>,
+                            minlength: <?php echo '"'._("Your password must contain at least 5 characters").'"'?>
                         },
-                        email: gt.gettext("Please enter a valid email address")
+                        email: <?php echo '"'._("Please enter a valid email address").'"'?>
                     }
                 }); 
                 try {

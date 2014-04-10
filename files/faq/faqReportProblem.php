@@ -30,7 +30,6 @@ require_once("faqSideNav.php");
         -->
         <script type='text/javascript'> 
             $(document).ready(function(){
-                var gt = new Gettext({'domain' : 'messages'});
                 $('#topbar').dropdown();
                 $('#username_in').focus();
                 $('#username_in').focus();
@@ -52,12 +51,12 @@ require_once("faqSideNav.php");
                     messages: {
                         
                         problem: {
-                            required: gt.gettext("Please enter the comment content"), 
-                            minlength: gt.gettext("Content should contain at least 3 Characters")
+                            required: <?php echo '"'._("Please enter the comment content").'"'?>, 
+                            minlength: <?php echo '"'._("Content should contain at least 3 Characters").'"'?>
                         },
                         email: {
-                            required: gt.gettext("Please enter your email address"),
-                            minlength: gt.gettext("Please enter a valid email address")
+                            required: <?php echo '"'._("Please enter your email address").'"'?>,
+                            minlength: <?php echo '"'._("Please enter a valid email address").'"'?>
                         }
                     }
                 });                   
