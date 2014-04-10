@@ -30,7 +30,7 @@ require_once("faqSideNav.php");
         --> 
         <script type='text/javascript'> 
             $(document).ready(function(){
-          
+         
                 $('#topbar').dropdown();
                 $('#username_in').focus();
                 $('#username_in').focus();
