@@ -16,6 +16,7 @@
     require_once('files/utils/badgesUtil.php');
     require_once('files/utils/userUtil.php');
     require_once('files/utils/pagination.php');
+    require_once('files/utils/timeUtil.php');
 
     ?>
 
@@ -216,8 +217,8 @@
                                         </a>
                                     </td>
                                     <td><?php echo $program['programName'] ?></td>
-                                    <td><?php echo $program['dateCreated'] ?></td>
-                                    <td><?php echo $program['lastUpdated'] ?></td>
+                                    <td><?php echo FormatTime(strtotime($program['dateCreated']))?></td>
+                                    <td><?php echo FormatTime(strtotime($program['lastUpdated'])) ?></td>
                                     <td><?php echo $program['totalRankScore'] ?></td>
                                     <td>
                                         <a class='btn small info' href="<?php

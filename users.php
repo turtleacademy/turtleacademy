@@ -27,6 +27,7 @@
     require_once('files/utils/topbarUtil.php');
     require_once('files/utils/badgesUtil.php');
     require_once('files/utils/userUtil.php');
+    require_once('files/utils/timeUtil.php');
 
     if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
@@ -346,8 +347,8 @@
                             ?>
                                 <tr>
                                     <td><?php echo $program['programName'] ?></td>
-                                    <td><?php echo $program['dateCreated'] ?></td>
-                                    <td><?php echo $program['lastUpdated'] ?></td>
+                                    <td><?php echo FormatTime(strtotime($program['dateCreated'])) ?></td>
+                                    <td><?php echo FormatTime(strtotime($program['lastUpdated'])) ?></td>
                                     <td>
                                         <a class='btn small info' href="<?php
                                             if ($is_public_user_page)
