@@ -10,10 +10,11 @@ $user = "Unknown";
 $username = "username";
 if (isset($_SESSION[$username])) {
     $user = $_SESSION[$username];
-} else {
-    echo "No User Name set";
-    //exit();
-}
+} 
+else 
+{
+
+
 //If we tought the turtle a new TO command it will be save seperately 
 $cmd = "";
 $tocmd = "";
@@ -22,22 +23,24 @@ $date = date('Y-m-d H:i:s');
 $userActions = ""; // Will represent the user history already save for the user
 $userActionsUpdate = ""; // The new user actions that should be save to history
 
+$all_off_to_commands =  array();
 if (isset($_POST['command'])) {
     
     $cmd = $_POST['command'];
     $trimmedcmd = trim($cmd);
-
+    
     if (strcasecmp(_(substr($trimmedcmd, 0, 2)), "to") == 0) { //Case the TO command learned in other language
+        
         $trimmedcmd = preg_replace("/\r|\n/", " ", $trimmedcmd);
         $trimmedcmd = preg_replace('/[ \t]+/', " ", $trimmedcmd);
         //remove redundant spaces to be only 1 space
         while (strpos($trimmedcmd, '  ') > 0) {
             $trimmedcmd = str_replace('  ', ' ', $trimmedcmd);
         }
-        $all_off_to_commands = explode("end", $trimmedcmd);
-        $num_of_new_TO_commands = sizeof($all_off_to_commands) - 1;
+        $all_off_to_new_commands = explode("end", $trimmedcmd);
+        $num_of_new_TO_commands = sizeof($all_off_to_new_commands) - 1;
         for ($i = 0; $i < $num_of_new_TO_commands; $i++) {
-            $all_off_to_commands[$i] = trim($all_off_to_commands[$i]) . " end"; //Only works for english now
+            $all_off_to_commands[$i] = trim($all_off_to_new_commands[$i]) . " end"; //Only works for english now
         }
         $addNewToCmd = true;
     }
@@ -74,7 +77,7 @@ $return['numberOfMathingUsers'] = $resultcount;
 if (!$resultcount > 0) {
     $return['isNewUser'] = true;
     $structure = array("username" => $user, "stepCompleted" => $stepsComletedData
-        , "userHistory" => $userActionsUpdate, "lastUpdate" => $date, "tocmd" => $tocmd);
+        , "userHistory" => $userActionsUpdate, "lastUpdate" => $date, "tocmd" => $all_off_to_commands);
     $result = $userProgressCol->insert($structure, array('safe' => true));
     $newDocID = $structure['_id'];
     $return['programID'] = $newDocID;
@@ -173,4 +176,5 @@ if (isset($_SESSION[$username])) {
 }
 
 echo json_encode($return);
+} // End if username is set
 ?>
