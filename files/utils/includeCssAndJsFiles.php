@@ -4,30 +4,30 @@ class includeCssAndJsFiles {
     public static function include_all_page_files($pageName) 
     {
         $additional_files = "";
-        global $_SESSION , $root_dir , $locale_domain , $site_path; 
-        $has_navigator   = false;
-        $has_console     = false;
-        $has_lessons     = false;
-        $has_alerts      = false;
-        $has_command_line = false;
+        global $_SESSION , $root_dir , $locale_domain , $site_path , $localize;; 
+        $has_navigator          = false;
+        $has_console            = false;
+        $has_lessons            = false;
+        $has_alerts             = false;
+        $has_command_line       = false;
+        $add_turtle_commands    = false;
         switch ($pageName) {
             case "index":
                 $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index.css' type='text/css' media='all'/>";
-                
             break;
             case "donate":
-                $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/donation.css' type='text/css' media='all'/>";
+                $additional_files    = "<link rel='stylesheet' href='".$roogt_dir."files/css/donation.css' type='text/css' media='all'/>";
             break;
             case "brainpop":
-                $has_navigator       = true;
-                $has_console         = true;
-                $has_lessons         = true;
+                $has_navigator        = true;
+                $has_console          = true;
+                $has_lessons          = true;
                 $has_command_line     = true;
-               $additional_files = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
+                $additional_files     = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
+                $add_turtle_commands  = true;            
                 break;
             case "learn":
                 $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/jqconsole.js' ></script>\n";
-                global $localize;
                 $localize = array(
                     'lesson' => _('lesson'),
                     'hint' => _('hint'),
@@ -35,6 +35,16 @@ class includeCssAndJsFiles {
                     'Welcome to the Turtle world' => _('Welcome to the Turtle world'),
                     'Hi' => _('Hi'),
                     'Error Loading History' => _('Error Loading History'),
+
+                    //Logo.js
+                    'Command and number should be seperate by space e.g forward 50 and not forward50' => _('Command and number should be seperate by space e.g forward 50 and not forward50'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'end' => _('end'),
+                    "Please don't try to override primitive functions" => _("Please don't try to override primitive functions"),
+                    //Carousel
+                    '>>' => _('>>'),'<<' => _('<<'),
+        
                     'Error' => _('Error')
                 );
                 $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/interface.js"/*?locale=".$locale_domain."*/."'></script>\n";
@@ -47,6 +57,7 @@ class includeCssAndJsFiles {
                 $has_console         = true;
                 $has_lessons         = true;
                 $has_command_line     = true;
+                $add_turtle_commands  = true;
                 break;
            case "news":
                 $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/news.css' type='text/css' media='all'/>\n" ;
@@ -93,6 +104,7 @@ class includeCssAndJsFiles {
                     'Error Loading History' => _('Error Loading History'),
                     'Error' => _('Error')
                 );
+                $add_turtle_commands  = true;
                break;
            case "user-program":
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/codemirror/lib/codemirror.js' ></script>\n";
@@ -102,10 +114,9 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/codemirror/addon/display/placeholder.js' ></script>\n";
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/codemirror/addon/selection/active-line.js' ></script>\n";
                $additional_files = $additional_files ."<script type='application/javascript' src='" . $root_dir . "files/codemirror/mode/logo/logo.js' ></script>\n";
-                $additional_files = $additional_files . "<link rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'/>\n" ; 
+               $additional_files = $additional_files . "<link rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css'/>\n" ; 
 
-               $additional_files = $additional_files . "<link   href='".$root_dir."files/codemirror/mode/logo/logo.css' rel='stylesheet' >";
-               
+               $additional_files = $additional_files . "<link   href='".$root_dir."files/codemirror/mode/logo/logo.css' rel='stylesheet' >";             
                $additional_files = $additional_files . "<link   href='".$root_dir."files/codemirror/lib/codemirror_turtle.css' rel='stylesheet' >";
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/jqconsole.js' ></script>\n";
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "ajax/libs/jquery/editable/jquery.editable.js'></script>";
@@ -113,14 +124,50 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files . "<script type='application/javascript' src='" . $root_dir . "files/interface_user_program.js?locale=" . $locale_domain."'></script>";
                $has_command_line      = true;
                $has_alerts           = true;
+               $add_turtle_commands  = true;
                break;
         }
 
-    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line);
+    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands);
     }
-    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line)
+    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands)
     {
-        global $root_dir,$env , $locale_domain,$site_path;
+        global $root_dir,$env , $locale_domain,$site_path , $localize;
+        //Userd in Turtle.js will be added for all the objects
+        $localize['black'] = _('black');$localize['blue'] = _('blue');$localize['lime'] = _('lime');$localize['cyan'] = _('cyan');
+        $localize['red'] = _('red');$localize['magenta'] = _('magenta');$localize['yellow'] = _('yellow');$localize['white'] = _('white');
+        $localize['brown'] = _('brown');$localize['tan'] = _('tan');$localize['green'] = _('green');$localize['aquamarine'] = _('aquamarine');
+        $localize['salmon'] = _('salmon');$localize['purple'] = _('purple');$localize['orange'] = _('orange');$localize['gray'] = _('gray');
+                
+        if ($add_turtle_commands)
+        {
+                //command
+                $localize['fd'] = _('fd');$localize['forward'] = _('forward');
+                $localize['back'] = _('back');$localize['bk'] = _('bk');
+                $localize['left'] = _('left');$localize['lt'] = _('lt');
+                $localize['rt'] = _('rt');$localize['right'] = _('right');
+                $localize['cs'] = _('cs');$localize['clearscreen'] = _('clearscreen');
+                $localize['pu'] = _('pu');$localize['penup'] = _('penup');
+                $localize['pd'] = _('pd');$localize['pendown'] = _('pendown');
+                $localize['ht'] = _('ht');$localize['hideturtle'] = _('hideturtle');
+                $localize['st'] = _('st');$localize['showturtle'] = _('showturtle');
+                $localize['setwidth'] = _('setwidth');$localize['home'] = _('home');
+                $localize['setx'] = _('setx');$localize['sety'] = _('sety');$localize['setxy'] = _('setxy');
+                $localize['setheading'] = _('setheading');$localize['arc'] = _('arc');
+                $localize['pos'] = _('pos');$localize['heading'] = _('heading');
+                $localize['towards'] = _('towards');
+                $localize['repeat'] = _('repeat');$localize['repcount'] = _('repcount');
+                $localize['for'] = _('for');
+                $localize['to'] = _('to');$localize['end'] = _('end');
+                $localize['make'] = _('make');$localize['list'] = _('list');
+                $localize['first'] = _('first');$localize['butfirst'] = _('butfirst');
+                $localize['last'] = _('last');$localize['butlast'] = _('butlast');
+                $localize['item'] = _('item');$localize['pick'] = _('pick');
+                $localize['setcolor'] = _('setcolor');$localize['fill'] = _('fill');
+                $localize['filled'] = _('filled');
+                $localize['sum'] = _('sum');$localize['minus'] = _('minus');$localize['random'] = _('random');
+                
+        }
         /* Load JQuery files */
         if ($env== "local"){ 
             echo "<script type='application/javascript' src='".$root_dir."files/dd/js/jquery/jquery-1.8.2.min.js' ></script>";
@@ -169,7 +216,7 @@ class includeCssAndJsFiles {
         //    echo "<script src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js'>";
         if ($hasNavigator)
         {    
-            echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
+            //echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
         }
         echo "<link href='".$root_dir."files/bootstrap/css/bootstrap.all.css' rel='stylesheet' >" ;
 
@@ -177,7 +224,6 @@ class includeCssAndJsFiles {
     /* loading some other files */
         if (!isset($locale_domain))
             $locale_domain = "en_US"; 
-        echo "<script type='application/javascript' src='".$site_path."files/Gettext.js' ></script>" ; 
         // Loading getText related files according to locale
         $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
         $po_file = "<link   rel='gettext' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
