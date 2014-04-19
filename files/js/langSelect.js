@@ -5,7 +5,7 @@
  function selectLanguage (locale , dir , indexPage , indexLocale)
  {
             $('.dropdown-toggle').dropdown();
-            $.Storage.set("locale",locale);
+            //$.Storage.set("locale",locale);
             //Show selected lanugage from dropdown                   
             try { 
                     var pages = $("#selectedLanguage").msDropdown({on:{change:function(data, ui) {
