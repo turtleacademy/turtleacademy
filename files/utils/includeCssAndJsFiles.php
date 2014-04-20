@@ -24,6 +24,25 @@ class includeCssAndJsFiles {
                 $has_lessons          = true;
                 $has_command_line     = true;
                 $additional_files     = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
+                $localize = array(
+                    'lesson' => _('lesson'),
+                    'hint' => _('hint'),
+                    'Solution'  => _('Solution'),
+                    'Welcome to the Turtle world' => _('Welcome to the Turtle world'),
+                    'Hi' => _('Hi'),
+                    'Error Loading History' => _('Error Loading History'),
+
+                    //Logo.js
+                    'Command and number should be seperate by space e.g forward 50 and not forward50' => _('Command and number should be seperate by space e.g forward 50 and not forward50'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'end' => _('end'),
+                    "Please don't try to override primitive functions" => _("Please don't try to override primitive functions"),
+                    //Carousel
+                    '>>' => _('>>'),'<<' => _('<<'),
+        
+                    'Error' => _('Error')
+                );
                 $add_turtle_commands  = true;            
                 break;
             case "learn":
@@ -53,6 +72,7 @@ class includeCssAndJsFiles {
                 $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/doc.css' type='text/css' media='all'/>\n" ; 
                 $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/interface.css' type='text/css' media='all'/>\n" ;
                 $additional_files = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
+
                 $has_navigator       = true;
                 $has_console         = true;
                 $has_lessons         = true;
@@ -92,7 +112,7 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/doc.css'/> "; 
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/playground.css'/> "; 
                $additional_files = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
-               $has_console         = true;
+              $has_console         = true;
                $has_command_line     = true;
                                global $localize;
                 $localize = array(
@@ -128,9 +148,9 @@ class includeCssAndJsFiles {
                break;
         }
 
-    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands);
+    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands , $pageName);
     }
-    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands)
+    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands , $pageName)
     {
         global $root_dir,$env , $locale_domain,$site_path , $localize;
         //Userd in Turtle.js will be added for all the objects
@@ -191,17 +211,22 @@ class includeCssAndJsFiles {
         {
             echo "<script type='application/javascript' src='".$root_dir."files/jquery.tmpl.js' ></script>";
         }
-        echo "<script type='application/javascript' src='".$root_dir."files/jquery.Storage.js' ></script>";
+        if ($pageName == "learn" || $pageName == "user-program" || $pageName == "brainpop" || $pageName == "playground" 
+            || $pageName == "users" || $pageName == "registration" )
+        {
+            echo "<script type='application/javascript' src='".$root_dir."files/jquery.Storage.js' ></script>";
+            echo "<script type='application/javascript' src='".$root_dir."loadUsrDataToStorage.php?locale=".$locale_domain."' ></script>\n" ;
+        }
         
         //echo "<link   href='".$rootDir."ajax/libs/jqueryui/1.10.0//css/ui-lightness/jquery-ui-1.10.0.custom.css' rel='stylesheet' >";
     /* End load Jquery files */
-        echo "<script type='application/javascript' src='".$root_dir."loadUsrDataToStorage.php?locale=".$locale_domain."' ></script>\n" ;
+        //echo "<script type='application/javascript' src='".$root_dir."loadUsrDataToStorage.php?locale=".$locale_domain."' ></script>\n" ;
     /* Starat DropDown files */
         
         echo "<script type='application/javascript' src='".$root_dir."files/dd/js/msdropdown/jquery.dd.min.js' ></script>";
         
         //One css file that contain the flags and dropdown definitions
-        echo "<link href='".$root_dir."files/dd/css/msdropdown/dd-all.css' rel='stylesheet' >";
+        //echo "<link href='".$root_dir."files/dd/css/msdropdown/dd-all.css' rel='stylesheet' >";
         //echo "<link href='".$rootDir."files/dd/css/msdropdown/dd.css' rel='stylesheet' >";
         //echo "<link href='".$rootDir."files/dd/css/msdropdown/flags.css' rel='stylesheet' >";      
          
@@ -213,7 +238,7 @@ class includeCssAndJsFiles {
         //echo "<script type='application/javascript' src='".$rootDir."files/bootstrap/js/bootstrap.js' ></script>" ; 
         echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap.min.js' ></script>" ; 
         // else
-        //    echo "<script src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js'>";
+        //    echo "<script src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js'>"; 
         if ($hasNavigator)
         {    
             //echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
@@ -245,7 +270,7 @@ class includeCssAndJsFiles {
         {
             echo "<script type='application/javascript' src='".$root_dir."readMongo.php?locale=".$locale_domain."' ></script>\n" ;  
         }
-        echo "<script type='application/javascript' src='".$root_dir."files/js/langSelect.js' ></script>\n" ; 
+        //echo "<script type='application/javascript' src='".$root_dir."files/js/langSelect.js' ></script>\n" ; 
         echo "<script type='application/javascript' src='".$root_dir."files/logo.js' ></script>\n" ; 
         echo "<script type='application/javascript' src='".$root_dir."files/turtle.js' ></script>\n" ; 
         if ($has_command_line)
@@ -253,9 +278,9 @@ class includeCssAndJsFiles {
             echo "<script type='application/javascript' src='".$root_dir."files/floodfill.js' ></script>\n" ; 
         }
         
-        
-        echo "<link rel='stylesheet' href='".$root_dir."files/css/topbar.css' type='text/css' media='all'/>"; 
-        echo "<link rel='stylesheet' href='".$root_dir."files/css/footer.css' type='text/css' media='all'/>";
+        echo "<link rel='stylesheet' href='".$root_dir."files/css/topbarAndFooter.css' type='text/css' media='all'/>";
+        //echo "<link rel='stylesheet' href='".$root_dir."files/css/topbar.css' type='text/css' media='all'/>"; 
+        //echo "<link rel='stylesheet' href='".$root_dir."files/css/footer.css' type='text/css' media='all'/>";
   ?> 
     <!-- Google Analytics Tracking --> 
     <script type="application/javascript"> 

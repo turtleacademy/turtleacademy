@@ -1,0 +1,205 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 20, 2014, 3:01:12 PM
+    Author     : Lucio
+*/
+
+root { 
+    display: block;
+}
+.pull-right#loggedUserUl{
+    float: right;
+}
+.pull-left#loggedUserUl{
+    float: left;
+}
+ #turtleHeaderTitle , #turtleHeaderUl , #turtleHeaderLoggedUser  , #turtleHeaderLogIn{
+    margin-top: 25px; 
+} 
+#turtleHeaderLanguage{
+  width : 140px;  
+  margin-top: 28px;
+  height: 14px; 
+} 
+#dLabel{
+    color:#ffffff; 
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    line-height: 19px;
+}
+ .nav.pull-right#turtleHeaderUl , .nav.pull-right#turtleHeaderLogIn{
+    float: right;
+}
+.nav.pull-left#turtleHeaderUl , nav.pull-left#turtleHeaderLogIn{
+    float: left; 
+}
+.pull-left ul li ul{
+    left:-1px;
+}
+#ddmenu{
+  width: 160px;
+  text-align: left;
+  color: rgb(0, 136, 204);
+  background-color: white;
+  z-index: 1000;
+  position: absolute;
+  padding-right: 20px;
+  right: -1px;
+}
+.topbar div .dropdown-menu li a.innerLink{
+     color: rgb(0, 136, 204);
+     background-color: rgba(0, 0, 0,0);
+}
+#turtleHeaderUlLogin{
+   color:black; 
+}
+#ddusermenu{
+    background-color: white;
+    width: 100px;
+}
+#ddusermenu > li {
+    color : white ;
+}
+#turtleHeaderLoggedUser{
+    width:160px;
+    font-size: 13px; 
+    margin-right: 50px;
+    
+}
+#selectedLanguage{
+
+    width : 140px; 
+}
+#selectedLanguage_title{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 20px;
+    height: 20px; 
+}
+#topbarContainer , #topbarfill{ 
+   float : none ;
+   background-color: white;
+}
+#topbarMainDiv{
+    position: static;
+    background-color: white;
+}
+#topbarfill{
+    filter : none;
+}
+#menuRegBtn {
+    margin-top: 1px; 
+    margin-left: 2px;
+    border-radius: 10px 10px 10px 10px;
+    height: 16px; 
+    font-size:15px;line-height:normal;padding:5px 14px 9px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;
+    color:white;background-color:blue;background-repeat:repeat-x;background-image:-khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));background-image:-moz-linear-gradient(top, #049cdb, #0064cd);background-image:-ms-linear-gradient(top, #049cdb, #0064cd);background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));background-image:-webkit-linear-gradient(top, #049cdb, #0064cd);background-image:-o-linear-gradient(top, #049cdb, #0064cd);background-image:linear-gradient(top, #049cdb, #0064cd);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#049cdb', endColorstr='#0064cd', GradientType=0);text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);border-color:#0064cd #0064cd #003f81;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);}
+.btn.active,.btn:active{-webkit-box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.25),0 1px 2px rgba(0, 0, 0, 0.05);
+}
+/* #turtleHeaderLogIn >li:first-child  */
+#turtleHeaderUl > li   {
+    color:black;
+    font-size: 15px;
+   
+    background-color: #E8E8E6;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border : solid 1px ;
+    border-color: #c3c3c3 ;
+}
+/* #turtleHeaderLogIn >li:first-child > a */
+ #turtleHeaderUl > li >a{ 
+   height : 8px;
+    
+}
+/*  , #turtleHeaderLogIn > li:first-child */
+#turtleHeaderUl > li{
+     border-radius: 10px 10px 10px 10px;
+      height: 30px; 
+      line-height: 30px;
+      margin-top: 3px;
+      margin-left: 2px;
+}
+.nava:hover{
+    color:black;
+}
+ #turtleHeaderUl > li >a ,#turtleHeaderUlLogin{ 
+    color:black;
+    padding-top: 4px;
+    text-decoration: none;
+}
+#registrateBtn{
+    margin-top: 3px;
+    height: 30px;
+}
+
+.flagIcon{
+    height: 50px;
+}
+
+ul{
+    list-style: disc; 
+}
+.ddChild > ul {
+    direction : ltr;
+} 
+:lang(he)#turtleimg , :lang(he)#turtleHeaderUl ,:lang(he)#turtleHeaderTitle 
+, /*:lang(he)#turtleHeaderLanguage ,*/ :lang(he)#turtleHeaderUl li{
+     float: right;
+}
+:lang(he)#turtleHeaderLogin{
+    direction: rtl;
+}
+
+.flagIcon{
+    height: 50px;
+}
+#footer{
+    float:none;
+    margin-left: auto;
+    margin-right:auto;
+    width : 940px;
+    /* background-color : #F7F7F7; */
+}
+#footer li {
+    list-style: none;
+    display: inline;
+    background-color: ghostwhite;
+    border : none;
+    
+    width : 200px;
+    font-weight: bold;
+    font:15px arial,sans-serif;
+
+    
+} 
+#footer_elem{
+    height: 20px;
+}
+:lang(he)#footer_elem li{
+    float : right;
+}
+#footer_elem li{
+    float : left;
+}
+
+#footer li a {
+    font-weight: bold;
+    font:15px arial,sans-serif;
+    width : 250px;
+} 
+#turtleAt{
+    float : none;
+}
+#footer > div {
+    width : 940px;
+}
+ul{
+    list-style: disc; 
+}
