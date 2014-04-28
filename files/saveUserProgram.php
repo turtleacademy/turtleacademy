@@ -31,7 +31,7 @@
             "lastUpdated" => $lastUpdated , "programName" => $programtitle ,
              "code" => $programCode , "numOfComments" => "0" , "comments" => "" ,"precedence" => "99" ,
             "img" => $img  , "sonPrograms" => "" , "fatherProgram" =>  "",
-            "ranks" => "" , "numOfRanks" => intval(0) , "totalRankScore" => intval(0));
+            "ranks" => "" , "numOfRanks" => intval(0) , "numOfSpinOffs" => intval(0) , "totalRankScore" => intval(0));
         $result = $user_Programs_Collection->insert($structure, array('safe' => true));
         $newDocID = $structure['_id'];
         $return['programId'] = $newDocID; 
@@ -51,7 +51,8 @@
         $son_progrms        =   $criteria["sonPrograms"];
         $ranks              =   $criteria["ranks"];
         $num_of_ranks       =   $criteria["numOfRanks"];
-        $rank_total_score   =   $criteria["totalRankScore"];     
+        $rank_total_score   =   $criteria["totalRankScore"];
+        $numOfSpinOffs      =   $criteria["numOfSpinOffs"];
         if (!isset($_POST['programCode']))
         {
              $programCode = $criteria["code"]; 
@@ -60,7 +61,7 @@
         $structure = array("username" => $username, "dateCreated" => $dateCreated , "displayInProgramPage" => $ispublic , 
             "lastUpdated" => $lastUpdated , "programName" => $programtitle ,"code" => $programCode ,
             "numOfComments" => $num_comments , "comments" => $comments ,"precedence" => $precedence , "img" => $img,
-            "sonPrograms" => $son_progrms , "fatherProgram" =>  $father_program,
+            "sonPrograms" => $son_progrms , "numOfSpinOffs" => $numOfSpinOffs , "fatherProgram" =>  $father_program,
             "ranks" => $ranks , "numOfRanks" => $num_of_ranks , "totalRankScore" => $rank_total_score);
         $result = $user_Programs_Collection->update($criteria, array('$set' => $structure));     
     }

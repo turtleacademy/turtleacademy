@@ -43,12 +43,13 @@
         $username       = $_GET['username'];
         $is_mail_user     = false;
         if (strpos($username, '_email') !== false)
+        {
             $is_mail_user     = true;
+        }
         if ($is_mail_user)
         {
             $username = userUtil :: find_mail_user($username , "_email");
         }
-        //echo $username;
         $display_username = $username;
         if (strpos($display_username, '@') !== false) {
             $name_before_adding_mail_address = explode('@', $display_username);
@@ -323,6 +324,46 @@
                             echo _("Your Programs");
                             ?>
                         </h2>
+                        <?php
+                            if ($is_public_user_page)
+                                $user_programs = userUtil::find_user_public_programs($username);
+                            else
+                                $user_programs = userUtil::find_user_programs($username);
+                            $i = 0 ;
+                         foreach ($user_programs as $program) { 
+                             $i++;
+                            ?>
+                                <div id="user-singel-program" >
+                                    <div id ="user-singel-program-image" > 
+                                           <a  href="<?php
+                                            if ($is_public_user_page)
+                                                echo $root_dir . "view/programs/";
+                                            else
+                                                echo $root_dir . "program/update/";
+                                            echo $program['_id'];
+                                            if (!$is_public_user_page) {
+                                                echo"/" . $username . "/".$lang;                                       
+                                            }
+                                            ?> 
+                                            ">  
+                                               <img  src="<?php echo $program['img'] ?>"/>;
+                                            </a>
+                                    </div>   
+                                    <div id ="user-singel-program-description" >
+                                        <p><?php echo $program['programName'] ?>
+                                        <div>
+                                        <span> <?php echo _("Vote"); ?> </span> 
+                                          <span><?php echo $program['numOfRanks'] ?> </span>                            
+                                        </div>  
+                                        </p>
+                                        
+                                    </div>
+    
+                                </div>
+                            <?php
+                            } // End of foreach loop
+                            ?> 
+                        <!--
                         <table class='zebra-striped ads' id="my_lessons" lang="<?php echo $lang ?>">
                             <thead>
                                 <tr>
@@ -378,6 +419,7 @@
                             ?> 
                             </tbody>  
                         </table>
+                        -->
                     </div><!-- end of center content -->
                 </div>
             <?php
