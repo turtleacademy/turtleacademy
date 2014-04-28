@@ -60,7 +60,7 @@ td.mini-thumbnail{
     color: black !important;
     display: block;
     margin: 0 0 10px;
-    font-size: 16px;
+    font-size: 16px; 
     line-height: 20px;
     word-break: break-all;
     word-wrap: break-word;
@@ -76,4 +76,20 @@ td.mini-thumbnail{
 .ui-dialog-title{
     font-size: 18px;
     height: 20px;
+}
+#user-singel-program{ 
+    width: 220px ; 
+    height: 200px;
+    float: left
+}
+#user-singel-program-image > a > img{
+    width :180px;
+    height : 120px;
+}
+#user-singel-program-description{
+    height:80px;
+    width:100px;
+}
+#user-singel-program-description > p {
+    font-weight:bold;
 }
