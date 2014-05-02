@@ -47,7 +47,7 @@
         <meta name="author" content="">
         <?php
         require_once("files/utils/includeCssAndJsFiles.php");
-        includeCssAndJsFiles::include_all_page_files("users");
+        includeCssAndJsFiles::include_all_page_files("user-program-page");
         echo "<link rel='stylesheet' href='".$root_dir."files/css/pagination.css' type='text/css' media='all'/>"; 
         echo "<script type='application/javascript' src='".$root_dir."files/floodfill.js' ></script>\n" ; 
         ?>
@@ -132,7 +132,9 @@
                                 else {
                                     $sortDirection = -1;
                                 }
-                            }                                
+                            }  
+                          
+                            
                             $allPrograms->sort(array($sortColumn => $sortDirection));
                             // End of sorting the user programs
                             

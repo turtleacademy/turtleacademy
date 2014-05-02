@@ -11,6 +11,7 @@ class includeCssAndJsFiles {
         $has_alerts             = false;
         $has_command_line       = false;
         $add_turtle_commands    = false;
+        $run_logo_command       = true;
         switch ($pageName) {
             case "index":
                 $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index.css' type='text/css' media='all'/>";
@@ -92,10 +93,14 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files .  "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>"; //Because of the messeging dialog
                break;           
            case "users":
-               $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/users.css'/> "; 
+               $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/users.css'/> ";
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/badges.css'/> "; 
                $additional_files = $additional_files . "<link href='".$root_dir."files/bootstrap/css/jquery-ui.css' rel='stylesheet' >" ;
                $has_lessons = true; // Because of messeging dialog
+               break;
+            case "user-program-page":
+               $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/users.css'/> ";
+               $run_logo_command = false;
                break;
             case "faq":
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/index.css'/> "; 
@@ -148,9 +153,9 @@ class includeCssAndJsFiles {
                break;
         }
 
-    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands , $pageName);
+    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands , $pageName , $run_logo_command);
     }
-    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands , $pageName)
+    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands , $pageName , $run_logo_command)
     {
         global $root_dir,$env , $locale_domain,$site_path , $localize;
         //Userd in Turtle.js will be added for all the objects
@@ -178,7 +183,7 @@ class includeCssAndJsFiles {
                 $localize['towards'] = _('towards');
                 $localize['repeat'] = _('repeat');$localize['repcount'] = _('repcount');
                 $localize['for'] = _('for');
-                $localize['to'] = _('to');$localize['end'] = _('end');
+                $localize['to'] = _('to');$localize['end'] = _('end');$localize['END'] = _('END');
                 $localize['make'] = _('make');$localize['list'] = _('list');
                 $localize['first'] = _('first');$localize['butfirst'] = _('butfirst');
                 $localize['last'] = _('last');$localize['butlast'] = _('butlast');
@@ -221,14 +226,9 @@ class includeCssAndJsFiles {
         //echo "<link   href='".$rootDir."ajax/libs/jqueryui/1.10.0//css/ui-lightness/jquery-ui-1.10.0.custom.css' rel='stylesheet' >";
     /* End load Jquery files */
         //echo "<script type='application/javascript' src='".$root_dir."loadUsrDataToStorage.php?locale=".$locale_domain."' ></script>\n" ;
-    /* Starat DropDown files */
+    /* Start DropDown files */
         
-        echo "<script type='application/javascript' src='".$root_dir."files/dd/js/msdropdown/jquery.dd.min.js' ></script>";
-        
-        //One css file that contain the flags and dropdown definitions
-        //echo "<link href='".$root_dir."files/dd/css/msdropdown/dd-all.css' rel='stylesheet' >";
-        //echo "<link href='".$rootDir."files/dd/css/msdropdown/dd.css' rel='stylesheet' >";
-        //echo "<link href='".$rootDir."files/dd/css/msdropdown/flags.css' rel='stylesheet' >";      
+        echo "<script type='application/javascript' src='".$root_dir."files/dd/js/msdropdown/jquery.dd.min.js' ></script>";    
          
     /* End drop down files */
 
@@ -270,9 +270,11 @@ class includeCssAndJsFiles {
         {
             echo "<script type='application/javascript' src='".$root_dir."readMongo.php?locale=".$locale_domain."' ></script>\n" ;  
         }
-        //echo "<script type='application/javascript' src='".$root_dir."files/js/langSelect.js' ></script>\n" ; 
-        echo "<script type='application/javascript' src='".$root_dir."files/logo.js' ></script>\n" ; 
-        echo "<script type='application/javascript' src='".$root_dir."files/turtle.js' ></script>\n" ; 
+        if ($run_logo_command)
+        {
+            echo "<script type='application/javascript' src='".$root_dir."files/logo.js' ></script>\n" ; 
+            echo "<script type='application/javascript' src='".$root_dir."files/turtle.js' ></script>\n" ; 
+        }
         if ($has_command_line)
         {
             echo "<script type='application/javascript' src='".$root_dir."files/floodfill.js' ></script>\n" ; 
