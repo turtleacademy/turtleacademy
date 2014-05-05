@@ -4,7 +4,7 @@ class includeCssAndJsFiles {
     public static function include_all_page_files($pageName) 
     {
         $additional_files = "";
-        global $_SESSION , $root_dir , $locale_domain , $site_path , $localize;; 
+        global $_SESSION , $root_dir , $locale_domain , $site_path , $localize;
         $has_navigator          = false;
         $has_console            = false;
         $has_lessons            = false;
@@ -17,7 +17,7 @@ class includeCssAndJsFiles {
                 $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index.css' type='text/css' media='all'/>";
             break;
             case "donate":
-                $additional_files    = "<link rel='stylesheet' href='".$roogt_dir."files/css/donation.css' type='text/css' media='all'/>";
+                $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/donation.css' type='text/css' media='all'/>";
             break;
             case "brainpop":
                 $has_navigator        = true;
@@ -79,7 +79,7 @@ class includeCssAndJsFiles {
                 $has_lessons         = true;
                 $has_command_line     = true;
                 $add_turtle_commands  = true;
-                break;
+                break; 
            case "news":
                 $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/news.css' type='text/css' media='all'/>\n" ;
                break;
@@ -87,6 +87,7 @@ class includeCssAndJsFiles {
                $additional_files = $additional_files . "<link rel='stylesheet' type='text/css' href='" . $root_dir . "files/css/registration.css' /> ";
                $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/zocial.css' type='text/css' media='all'/>\n" ;
                $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."ajax/libs/jquery/validator/dist/jquery.validate.js'></script>\n";
+               $run_logo_command = false;
                break;
            case "doc":
                $additional_files = $additional_files . "<link rel='stylesheet' href='".$root_dir."files/css/doc.css' type='text/css' media='all'/>\n" ;
@@ -171,6 +172,7 @@ class includeCssAndJsFiles {
                 $localize['back'] = _('back');$localize['bk'] = _('bk');
                 $localize['left'] = _('left');$localize['lt'] = _('lt');
                 $localize['rt'] = _('rt');$localize['right'] = _('right');
+                $localize['label'] = _('label');$localize['pos'] = _('pos');$localize['print'] = _('print');
                 $localize['cs'] = _('cs');$localize['clearscreen'] = _('clearscreen');
                 $localize['pu'] = _('pu');$localize['penup'] = _('penup');
                 $localize['pd'] = _('pd');$localize['pendown'] = _('pendown');
@@ -217,7 +219,7 @@ class includeCssAndJsFiles {
             echo "<script type='application/javascript' src='".$root_dir."files/jquery.tmpl.js' ></script>";
         }
         if ($pageName == "learn" || $pageName == "user-program" || $pageName == "brainpop" || $pageName == "playground" 
-            || $pageName == "users" || $pageName == "registration" )
+            || $pageName == "users")
         {
             echo "<script type='application/javascript' src='".$root_dir."files/jquery.Storage.js' ></script>";
             echo "<script type='application/javascript' src='".$root_dir."loadUsrDataToStorage.php?locale=".$locale_domain."' ></script>\n" ;
