@@ -35,23 +35,19 @@ $.extend({
 
 function loadLesson(lessonID)
 {
-    var gt = new Gettext({
+   /* var gt = new Gettext({
         'domain' : 'messages'
-    });
+    });*/
     //Set the activeLesson
     activeLesson = lessonID;
     var lessonDisplayNum = lessonID +1;
-    var LessonTitleTranslated = gt.gettext("lesson");    
+    //var LessonTitleTranslated = gt.gettext("lesson");    
     //Clear the accordion
     $( "#accordion" ).replaceWith('<div id="accordion" style="color:#4aa329">');
 
     // Render the template with the lessons data
     $.tmpl( "lessonTemplate", lessons[lessonID], {}).appendTo( "#accordion" );
-    var lesson_title = "lesson";
-    if (typeof lessons[lessonID] != 'undefined') {
-        lesson_title = lessons[lessonID].title ;
-    }
-    $( "#accordionLessonTitle" ).replaceWith('<div id="accordionLessonTitle">'+ LessonTitleTranslated +lessonDisplayNum+ ': ' +lesson_title+ '</div>');
+    $( "#accordionLessonTitle" ).replaceWith('<div id="accordionLessonTitle">'+ gt['lesson'] +lessonDisplayNum+ ': ' +lessons[lessonID].title+ '</div>');
     //$('<div id="accordionLessonTitle">' +lessons[lessonID].title+ '</div>').prependTo( "#accorPlusNav" );
     $( "#accordion" ).accordion({
         //      icons: icons,
@@ -106,9 +102,9 @@ $(function() {
     // Compile templates used later
     // The header template
     
-    var gt = new Gettext({
+ /*   var gt = new Gettext({
         'domain' : 'messages'
-    });
+    });*/
 
     var markup =
     '<div id="rs-carousel" class="rs-carousel">'     
@@ -150,10 +146,10 @@ $(function() {
     + '<p>{{html explanation}}</p> '
     + '<p>{{html action}}</p>'
     + '{{if hint.length > 0}}'
-    +  '<button class="btn">' + gt.gettext("hint") + '</button>' 
+    +  '<button class="btn">' + gt['hint'] + '</button>' 
     +  '<p id="(${Id})" style="display: none;color:black;">{{html hint}}</p>' 
     + '{{/if}}'
-    +  '<button class="btn">' + gt.gettext("Solution") + '</button>' 
+    +  '<button class="btn">' + gt['Solution'] + '</button>' 
     + '<p id="(${Id})" style="display: none;color:black;">{{html solution}}</p>'
     +'<p id="' + turtleid+'${$index +1}"> </p>'
               
@@ -246,9 +242,9 @@ $(function() {
     loadLesson(0);
 
     // Creating the console.   
-    window.jqconsole = $('#console').jqconsole(gt.gettext("Hi") + "\n" + gt.gettext("Welcome to the Turtle world"), '> ');
+    window.jqconsole = $('#console').jqconsole(gt['Hi'] + "\n" + gt['Welcome to the Turtle world'], '> ');
     
-    if ($('html').attr('dir') == 'rtl') //Should be check comparing to array contaning all RTL languages
+    if ($('html').attr('dir') === 'rtl') //Should be check comparing to array contaning all RTL languages
     {
         // chk
         $('#console').find(".jqconsole").height('200px').css('direction','rtl');
@@ -293,7 +289,7 @@ $(function() {
     //jqconsole.history = JSON.parse($.Storage.get("logo-history"));
     } catch (e) {
         // Write the failure to our console
-        jqconsole.Write(gt.gettext('Error Loading History') +': ' + e + '\n');
+        jqconsole.Write(gt['Error Loading History'] +': ' + e + '\n');
     }
     
     var handler = function(command) {
@@ -308,7 +304,7 @@ $(function() {
                 //Saving the history to db
                 $.ajax({
                     type : 'POST',
-                    url : '/files/saveLocalStorage.php',
+                    url : sitePath + '/files/saveLocalStorage.php',
                     dataType : 'json',
                     data: {
                         userHistory  :   $.Storage.get('logo-history'),
@@ -323,7 +319,7 @@ $(function() {
                         var rdata;
                     } ,
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert('en error occured');
+                        alert(XMLHttpRequest.responseText);
                     }
                 });
                 
@@ -349,7 +345,7 @@ $(function() {
                         }
                     $.ajax({
                         type : 'POST',
-                        url : '/files/saveLocalStorage.php',
+                        url : sitePath + '/files/saveLocalStorage.php',
                         dataType : 'json',
                         data: {
                             lclStoragevalues  :   lclStorageValue
@@ -363,7 +359,7 @@ $(function() {
                             var rdata;
                         } ,
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            alert('en error occured');
+                            alert(XMLHttpRequest.responseText); 
                         }
                     });
                     //End of saving user data
@@ -376,7 +372,7 @@ $(function() {
                     var errorString = command;
                     $.ajax({
                         type : 'POST',
-                        url : '/files/saveUserError.php', 
+                        url : sitePath + '/files/saveUserError.php', 
                         dataType : 'json',
                         data: {
                             errorStep   :   errorStep,
@@ -386,7 +382,7 @@ $(function() {
                             var rdata;
                         } ,
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            alert('en error occured');
+                            alert(XMLHttpRequest.responseText); 
                         }
                     });
                   
@@ -394,7 +390,7 @@ $(function() {
                 }
             } catch (e) {
                 // Write the failure to our console
-                jqconsole.Write(gt.gettext('Error') +': ' + e + '\n');
+                jqconsole.Write(gt['Error'] +': ' + e + '\n');
             }
         }
         jqconsole.Prompt(true, handler, function(command) {
@@ -446,10 +442,10 @@ $(function() {
     //Loading and running the TO commands
     if ($.Storage.get("tocmd"))
     {
-        var history = $.Storage.get('tocmd'); 
-        toCommandArr = history.split(','); 
+        var self_defined_functions = $.Storage.get('tocmd'); 
+        toCommandArr = self_defined_functions.split(','); 
         var numOfCommands  =   toCommandArr.length ;
-        var commandLen = 0; 
+        //var commandLen = 0; 
         var commandToRun ;
         for(var i = 0; i < numOfCommands; i++)  
         {
@@ -479,60 +475,57 @@ $(function() {
     }  
 
     // Defining all the properties for building the lesson carousel
+    var opts = {};
+    opts['autoScroll'] = false;
+    opts['continuous'] = false;
+    opts['easing'] = "swing";
+    opts['itemsPerPage'] = 4;
+    opts['itemsPerTransition'] = "auto";
+    opts['nextPrevActions'] = true;
+    if ($('html').attr('dir') == 'rtl'){
+        opts['insertNextAction'] =  function () {
+            return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-prev"><i id="carouselNextBtn" class="icon-fixed-width icon-backward"></i></a>').appendTo("#headnext");
+        }
+        opts['insertPrevAction'] =  function () {
+            return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-forward"></i></a>').appendTo("#headprev");
+        }
+    }
+    else
+    {
+        opts['insertPrevAction'] =  function () {
+            return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-backward"></i></a>').appendTo("#headprev");
+        }
+        opts['insertNextAction'] =  function () {
+            return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-next"><i id="carouselNextBtn" class="icon-fixed-width icon-forward"></i></a>').appendTo("#headnext");
+        }
+    }
+    opts['orientation'] = "horizontal";
+    opts['pagination'] = true;
+    opts['speed'] = "normal"; 
+ 
+    $('.rs-carousel').carousel(opts); 
     
-    if (typeof no_carousel == 'undefined') { //No_carousel is present only on creating lesson by guest in showleasson.php
-        var opts = {};
-        opts['autoScroll'] = false;
-        opts['continuous'] = false;
-        opts['easing'] = "swing";
-        opts['itemsPerPage'] = 4;
-        opts['itemsPerTransition'] = "auto";
-        opts['nextPrevActions'] = true;
-        if ($('html').attr('dir') == 'rtl'){
-            opts['insertNextAction'] =  function () {
-                return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-prev"><i id="carouselNextBtn" class="icon-fixed-width icon-backward"></i></a>').appendTo("#headnext");
-            }
-            opts['insertPrevAction'] =  function () {
-                return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-forward"></i></a>').appendTo("#headprev");
-            }
-        }
-        else
+    //Handling pressing back and forward on the lesson carousel
+    
+    $("#lessonCarouselPrev").click(function() { 
+        /*
+        if (activeLesson >= numOfLessonPerPage) //Only if we are not in the first page
         {
-            opts['insertPrevAction'] =  function () {
-                return $('<a href="#" id="lessonCarouselPrev" class="rs-carousel-action rs-carousel-action-prev"><i class="icon-fixed-width icon-backward"></i></a>').appendTo("#headprev");
-            }
-            opts['insertNextAction'] =  function () {
-                return $('<a href="#" id="lessonCarouselNext" class="rs-carousel-action rs-carousel-action-next"><i id="carouselNextBtn" class="icon-fixed-width icon-forward"></i></a>').appendTo("#headnext");
-            }
+           var currentPage = Math.floor(activeLesson / numOfLessonPerPage ) ;
+           var newLessonToLoad = (currentPage - 1) * numOfLessonPerPage + (numOfLessonPerPage - 1);
+           loadNewLessonSteps(activeLesson,newLessonToLoad); 
         }
-        opts['orientation'] = "horizontal";
-        opts['pagination'] = true;
-        opts['speed'] = "normal"; 
-
-        $('.rs-carousel').carousel(opts); 
-
-        //Handling pressing back and forward on the lesson carousel
-
-        $("#lessonCarouselPrev").click(function() { 
-            /*
-            if (activeLesson >= numOfLessonPerPage) //Only if we are not in the first page
-            {
-               var currentPage = Math.floor(activeLesson / numOfLessonPerPage ) ;
-               var newLessonToLoad = (currentPage - 1) * numOfLessonPerPage + (numOfLessonPerPage - 1);
-               loadNewLessonSteps(activeLesson,newLessonToLoad); 
-            }
-            */
-        });
-        $("#lessonCarouselNext").click(function() { 
-            /*
-            var currentPage = Math.floor(activeLesson / numOfLessonPerPage) ; 
-            if (currentPage < numOfPages) 
-            {
-               var newLessonToLoad = (currentPage + 1) * numOfLessonPerPage;
-               loadNewLessonSteps(activeLesson,newLessonToLoad); 
-            }
-            */
-        });
-    } // End or craeting lesson carusel
+        */
+    });
+    $("#lessonCarouselNext").click(function() { 
+        /*
+        var currentPage = Math.floor(activeLesson / numOfLessonPerPage) ; 
+        if (currentPage < numOfPages) 
+        {
+           var newLessonToLoad = (currentPage + 1) * numOfLessonPerPage;
+           loadNewLessonSteps(activeLesson,newLessonToLoad); 
+        }
+        */
+    });
 });
  
