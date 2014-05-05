@@ -42,7 +42,7 @@ class topbarUtil {
             "es" => true,
             "de" => true,
             "nl" => true,
-            "it" => false,
+            "it" => true,
             "pt" => true,
             "pl" => false,
             "fi" => false,
@@ -275,8 +275,7 @@ class topbarUtil {
 /*                        if ($signUpDisplay) {*/
                             ?>       
                             <ul class="nav <?php echo "pull-$cssright "; ?>" id="turtleHeaderLogIn" lang="<?php echo $lang ?>"> 
-                                <li> <a class='nava' href="<?php echo $rootDir; ?>registration.php" id="turtleHeaderUlLogin" lang="<?php echo $lang ?>"><?php echo _("Login"); ?></a></li> 
-                                <li id="registrateBtn" ><a id="menuRegBtn" href="<?php echo $rootDir; ?>registration.php" ><?php echo _("Sign Up for free"); ?></a></li>
+                                <li id="registrateBtn"><a id="menuRegBtn" href="<?php echo $rootDir; ?>registration.php" ><?php echo _("Login");echo "/";echo _("Sign Up")?></a></li>
                             </ul>                         
                 <?php
             //} //End of if condition ? show signUP
@@ -291,4 +290,4 @@ class topbarUtil {
 // Close function printTopBar
 }
 
-// Close class topbarUtil            
+// Close class topbarUtil           
