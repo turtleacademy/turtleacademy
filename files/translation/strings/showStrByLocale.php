@@ -2,6 +2,7 @@
 <?php
     require_once("../../../environment.php");
     require_once("../../../localization.php"); 
+    require_once("../../../localization_js.php");
     require_once("../../utils/collectionUtil.php");
     require_once("../../utils/includeCssAndJsFiles.php"); 
     includeCssAndJsFiles::include_all_page_files("string-translate"); 

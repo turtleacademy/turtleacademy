@@ -2,9 +2,10 @@
     $fileDirectory = "../../";
     require_once("../../../environment.php");
     require_once("../../../localization.php");
+    require_once("../../../localization_js.php");
     require_once($fileDirectory."utils/translationUtil.php");
 
-    include_once($fileDirectory."utils/includeCssAndJsFiles.php");
+    require_once($fileDirectory."utils/includeCssAndJsFiles.php");
     includeCssAndJsFiles::include_all_page_files("index");
 
     echo "<link rel='stylesheet' href=' " . $fileDirectory ."css/lessonReport.css' type='text/css' media='all'/>";
