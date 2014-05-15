@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
     <?php
@@ -13,15 +13,26 @@
     ?>
 <html dir="<?php echo $dir ?>" lang="<?php echo $locale_domain ?>">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <?php
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false) {
+            echo "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE10'>";
+        }
+        else{
+           echo "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"; 
+        }
+           
+        ?> 
         <title>
         <?php
+        
             echo _("Turtle Academy - learn logo programming in your browser");
             echo _(" free programming materials for kids");
         ?> 
         </title>
+         
         <?php
         // Loading relevant js and css files
+        require_once("localization_js.php");
         require_once("files/utils/includeCssAndJsFiles.php"); 
         includeCssAndJsFiles::include_all_page_files("learn");
         require_once("files/utils/loadCrousel.php");
