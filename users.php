@@ -17,8 +17,6 @@
         $display_page = false;
         echo "<center><h1 id='redirect'> You will be redirected in order to log in </h1></center>";
     }
-    if(strlen ($_SESSION['locale']) < 3)
-        $_SESSION['locale'] = "en_us";
     
     require_once("localization.php");
     require_once("files/footer.php");
@@ -78,6 +76,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <?php
+        require_once("localization_js.php");
         require_once("files/utils/includeCssAndJsFiles.php");
         includeCssAndJsFiles::include_all_page_files("users");
         ?>
@@ -351,10 +350,26 @@
                                     </div>   
                                     <div id ="user-singel-program-description" >
                                         <p><?php echo $program['programName'] ?>
+                                        <?php
+                                            if ($program['numOfRanks'] > 0)
+                                            {
+                                        ?>    
                                         <div>
-                                        <span> <?php echo _("Vote"); ?> </span> 
-                                          <span><?php echo $program['numOfRanks'] ?> </span>                            
+                                            <span> <?php echo _("Vote") ?> </span>
+                                            <span><?php echo $program['numOfRanks'] ?> </span>                            
                                         </div>  
+                                        <?php
+                                            }
+                                            if ($program['numOfSpinOffs'] > 0)
+                                            {
+                                        ?> 
+                                        <div>
+                                            <span> <?php echo _("Spin-Offs"); ?> </span> 
+                                            <span><?php echo $program['numOfSpinOffs'] ?> </span>                          
+                                        </div>  
+                                        <?php
+                                            }
+                                            ?>
                                         </p>
                                         
                                     </div>

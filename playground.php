@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <?php
 if (session_id() == '')
@@ -13,7 +12,14 @@ require_once('files/utils/topbarUtil.php');
 ?>
 <html>
     <head> 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <?php
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false) {
+            echo "<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE10'>";
+        }
+        else{
+           echo "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"; 
+        }       
+        ?> 
         <title>
         <?php
             echo _("Turtle Academy - learn logo programming in your browser");
@@ -21,6 +27,7 @@ require_once('files/utils/topbarUtil.php');
         ?>  
         </title>      
         <?php
+            require_once("localization_js.php");
             require_once("files/utils/includeCssAndJsFiles.php"); 
             includeCssAndJsFiles::include_all_page_files("playground");  
         ?> 

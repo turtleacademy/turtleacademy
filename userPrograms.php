@@ -9,6 +9,7 @@
 
     $display_page = true;
     require_once("localization.php");
+    require_once("localization_js.php");
     require_once("files/footer.php");
     require_once("files/cssUtils.php");
     require_once("files/utils/languageUtil.php");
@@ -23,20 +24,20 @@
 <script> 
     var program_images = "" ;
     function do_logo(id ,cmd) {
-    $('#'+id).css('width', '60px').css('height', '40px').append('<canvas id="'+id+'c" width="60" height="40" style="position: absolute; z-index: 0;"></canvas>' +
-        '<canvas id="'+id+'t" width="60" height="40" style="position: absolute; z-index: 1;"></canvas>');
-    var canvas_element2 = document.getElementById(id+"c");
-    var turtle_element2 = document.getElementById(id+"t");
-    var turtle2 = new CanvasTurtle(
-    canvas_element2.getContext('2d'),
-    turtle_element2.getContext('2d'),
-    canvas_element2.width, canvas_element2.height);
-    var rate = 0.1;
-    g_logo2 = new LogoInterpreter(turtle2, null );
-    g_logo2.setRatio(rate);
-    cmd = cmd + " ht";
-    g_logo2.run(cmd);
-} 
+        $('#'+id).css('width', '60px').css('height', '40px').append('<canvas id="'+id+'c" width="60" height="40" style="position: absolute; z-index: 0;"></canvas>' +
+            '<canvas id="'+id+'t" width="60" height="40" style="position: absolute; z-index: 1;"></canvas>');
+        var canvas_element2 = document.getElementById(id+"c");
+        var turtle_element2 = document.getElementById(id+"t");
+        var turtle2 = new CanvasTurtle(
+        canvas_element2.getContext('2d'),
+        turtle_element2.getContext('2d'),
+        canvas_element2.width, canvas_element2.height);
+        var rate = 0.1;
+        g_logo2 = new LogoInterpreter(turtle2, null );
+        g_logo2.setRatio(rate);
+        cmd = cmd + " ht";
+        g_logo2.run(cmd);
+    } 
 </script>
 
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">
@@ -183,10 +184,18 @@
                                 <tr>
                                     <td class="span1"><?php echo $i;?></td>
                                     <?php
-                                    if (strlen($program['img']) > 20)
+                                    if (isset($program['img_60_40']) && strlen($program['img_60_40'])> 20)
                                     {
-                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img'].'">';
+                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img_60_40'].'">';
+                                    }
+                                    elseif (isset($program['img_200_130']) && strlen($program['img_200_130'])> 20)
+                                    {
+                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img_200_130'].'">';
                                     } 
+                                    elseif (strlen($program['img']) > 20)
+                                    {
+                                      echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img'].'">';  
+                                    }
                                     else{
                                 ?>
                                         <td id="logo<?php echo $i;?>" > 
@@ -233,8 +242,9 @@
                                             <?php
                                                 echo _("View");
                                                 if (strlen($program['img']) < 20 )
-                                                    $programImage = $programImage . "do_logo('logo" .$i ."','" . $newstr . "');** " ;
-
+                                                {
+                                                   //$programImage = $programImage . "do_logo('logo" .$i ."','" . $newstr . "');** " ; 
+                                                }
                                             ?>
                                         </a>
                                     </td>
@@ -257,8 +267,10 @@
                 echo $footer;
             ?>
             </div>
+
         <script>
                     $(document).ready(function() {
+
                      selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>programs/", "users.php" ,"en" );         
                     
                     function saveProgramImage(programtitle  , programid , username , canvasid)
@@ -291,60 +303,7 @@
                                 }
                             });
                         }
-                    }
-                      <?php
-                        $images = explode("**", $programImage);
-                        foreach ($images as $image)
-                        {
-                            ?>
-                                    
-                            try
-                            {
-                                <?php 
-                                    //For now ignoring the problem when User programs contains '' " signs
-                                    if ( substr_count($image, "'")  == 4 )
-                                    {
-                                    echo $image; echo "\n"; 
-                                    
-                                    }
-                                  ?>
-                            }
-                            catch(err)
-                            {
-                            //Handle errors here
-                            }
-                                
-                        <?php
-                        }
-                        $i = 0;
-                        foreach ($allPrograms as $program) {                              
-                                $i++;
-                                if ($i == $start)
-                                    $display_program_in_page = true;
-                                if ($i == $start + $limit )
-                                    $display_program_in_page = false;
-                                if ($display_program_in_page)
-                                {
-                                    //(programname  , programCode , programid , username ,canvasid)
-                                    $progTitle = $program['programName'];
-                                    $progCodeBeforeEdit  = $program['code'];
-                                    $progCode = str_replace("\n", " ", $progCodeBeforeEdit);
-                                    $progId    = $program['_id'];
-                                    $username  = $program['username'];
-                                    $progImg   = $program['img'];
-                                    $canvasid  = "logo" .$i ."c";
-                                   
-                                    if (strlen($progImg) < 20 )
-                                    { 
-                                       echo "try{ ";
-                                        echo "saveProgramImage(\"$progTitle\"  , '$progId' , '$username' , '$canvasid'); ";
-                                        echo " } catch(err) {} ; \n";
-                                    }
-                                     
-                                }// End if it's a program we need to $progCode in this page
-                            } // End of foreach loop
-                     ?>
-                             
+                    }              
                  });
         </script>
 

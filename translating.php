@@ -5,12 +5,38 @@ and open the template in the editor.
 <?php
     require_once("environment.php");
     require_once("localization.php");
+    require_once("localization_js.php");
     require_once("files/footer.php");
     require_once("files/cssUtils.php");
 ?>
 <!DOCTYPE html>
 <html>
     <head>
+        <?php
+            global $localize;
+                    $localize = array(
+                    'Are you sure you want to delete the lesson' => _('Are you sure you want to delete the lesson'),
+                    'Your lessson has been deleted' => _('Your lessson has been deleted'),
+                    'successfully deleted'  => _('successfully deleted'),
+                    'an error occured' => _('an error occured'),
+                    'Lesson title should contain at least 2 caracters' => _('Lesson title should contain at least 2 caracters'),
+                    'Add lesson step' => _('Add lesson step'),
+
+                    //Logo.js
+                    'Command and number should be seperate by space e.g forward 50 and not forward50' => _('Command and number should be seperate by space e.g forward 50 and not forward50'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'Don\'t know how to {name}' => _('Don\'t know how to {name}'),
+                    'end' => _('end'),
+                    "Please don't try to override primitive functions" => _("Please don't try to override primitive functions"),
+                    //Carousel
+                    '>>' => _('>>'),'<<' => _('<<'),
+        
+                    'Error' => _('Error')
+                );
+            echo '<script type="application/javascript">';
+            echo 'gt='.json_encode($localize).';';
+            echo '</script>';
+        ?>   
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>
         </title>      
@@ -18,13 +44,11 @@ and open the template in the editor.
         <script  type="text/javascript" src="alerts/jquery.alerts.js"></script>
         <script type="application/javascript" src="files/jquery.Storage.js"></script> <!-- Storage -->
         <script type="application/javascript" src="files/js/lesson.js"></script> <!-- lessonFunctions -->  
-        <script type="application/javascript" src="files/Gettext.js"></script> <!-- Using JS GetText -->
         <link rel='stylesheet' href='./files/css/lessons.css' type='text/css' media='all'/>
         <link rel='stylesheet' href='./alerts/jquery.alerts.css' type='text/css' media='all'/>
         <link rel='stylesheet' href='./files/bootstrap/css/bootstrap.css' type='text/css' media='all'/>
         <link rel='stylesheet' href='./files/bootstrap/css/bootstrap-responsive.min.css' type='text/css' media='all'/>
         <link rel='stylesheet' href='./files/bootstrap/css/bootstrap-responsive.css' type='text/css' media='all'/>       
-        <script type="application/javascript" src="files/Gettext.js"></script>
         <script>
             var translateLesson = true;
         </script>    
