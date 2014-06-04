@@ -3,7 +3,7 @@
 if (session_id() == '')
     session_start();
 
-$m = new Mongo();
+$m = new MongoClient();
 $db = $m->$db_name;
 
 $userProgressCol    =   $db->$db_progress_collection;
@@ -236,37 +236,38 @@ else {
                         {
                             foreach($user_functions_arr as $singel_function)
                             {
-
-                                $function_cammind = $singel_function["command"];
-                                $pos              =   strpos($function_cammind , 'to');
-                                if ($pos >= 0)
+                                if (isset($singel_function["command"]))
                                 {
-                                    $the_cmd        =   substr($function_cammind ,$pos + 2 , -3 );
-                                    $the_cmd_parts  =  explode(' ' , $the_cmd ) ;
-                                    $program_documentation .=  "<li><h5> " . $the_cmd_parts[1] ;
-
-                                    $has_param = true;
-                                    for ($i = 2 ; $i < sizeof($the_cmd_parts) ; $i++)
+                                    $function_cammind = $singel_function["command"];
+                                    $pos              =   strpos($function_cammind , 'to');
+                                    if ($pos >= 0)
                                     {
-                                        if ($has_param)
+                                        $the_cmd        =   substr($function_cammind ,$pos + 2 , -3 );
+                                        $the_cmd_parts  =  explode(' ' , $the_cmd ) ;
+                                        $program_documentation .=  "<li><h5> " . $the_cmd_parts[1] ;
+
+                                        $has_param = true;
+                                        for ($i = 2 ; $i < sizeof($the_cmd_parts) ; $i++)
                                         {
-                                            if (strpos($the_cmd_parts[$i] , ':') !== false)
+                                            if ($has_param)
                                             {
-                                                $program_documentation .=  " " .$the_cmd_parts[$i];
+                                                if (strpos($the_cmd_parts[$i] , ':') !== false)
+                                                {
+                                                    $program_documentation .=  " " .$the_cmd_parts[$i];
+                                                }
+                                                else {
+                                                    $has_param = false;
+                                                    $program_documentation .= "</h5><p>";
+                                                    $program_documentation .= $the_cmd_parts[$i] . " ";
+                                                }
+
                                             }
-                                            else {
-                                                $has_param = false;
-                                                $program_documentation .= "</h5><p>";
+                                            else
                                                 $program_documentation .= $the_cmd_parts[$i] . " ";
-                                            }
-
                                         }
-                                        else
-                                            $program_documentation .= $the_cmd_parts[$i] . " ";
+                                        $program_documentation .= "</p></li>";
                                     }
-                                    $program_documentation .= "</p></li>";
                                 }
-
                             }
                         }
                     } 

@@ -1,24 +1,23 @@
 <?php
-
 //TODO check why when translating .. the title is being changin
 //TODO check why not all cache steps are being saved
 if (session_id() == '')
     session_start();
 require_once("environment.php");
 
-$m = new Mongo();
+$m = new MongoClient();
 $db = $m->$db_name;
-
 
 //updateLoclaStorageForLoggedUser($m , $db);
 
 if (isset($_SESSION['username']))
 {
  updateToCmd($m , $db);
-}
+} 
 
-function updateToCmd($m , $db)
+function updateToCmd($m , $db) 
 {
+    global $db_progress_collection;
         $userProgressCol    =   $db->$db_progress_collection;
         $userQuery = array('username' => $_SESSION['username']);
         $cursor = $userProgressCol->findone($userQuery);
@@ -32,7 +31,11 @@ function updateToCmd($m , $db)
             $storage_tocmd_value = "localStorage.setItem('tocmd' ,'" ;
             for ($i = 0 ; $i < $num_of_to_cmds ; $i++ ) 
             {
-                $storage_tocmd_value .= $user_to_command[$i]["command"] . " ,";
+                if (isset ($user_to_command[$i]) && is_array($user_to_command[$i]))
+                {
+                    if(isset($user_to_command[$i]["command"]))
+                    $storage_tocmd_value .= $user_to_command[$i]["command"] . " ,";
+                }
             }
             $storage_tocmd_value .= "');";
             echo $storage_tocmd_value;
@@ -41,6 +44,7 @@ function updateToCmd($m , $db)
 }
 function updateLoclaStorageForLoggedUser($m , $db)
 {
+    global $db_progress_collection;
     if (isset ($_SESSION['username']))
     {
         //echo "; var username = " . $_SESSION['username'] ;
