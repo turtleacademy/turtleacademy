@@ -27,7 +27,7 @@
         $stepError              =   $errorStep . " - " . $errorString;
        
     }   
-    $m                      =   new Mongo();
+    $m                      =   new MongoClient();
     $db                     =   $m->turtleTestDb;
     $userProgress           =   "user_errors";
     $userProgressCol        =   $db->$userProgress;   
@@ -40,7 +40,7 @@
     if (!$resultcount > 0 ) 
     { 
         $structure = array("username" => $user, "stepError" => $stepError);
-        $result = $userProgressCol->insert($structure, array('safe' => true));
+        $result = $userProgressCol->insert($structure);
         $return["Insert"] = "insert";
     } 
     else //Updating existing user

@@ -76,7 +76,7 @@ if (isset($_SESSION[$username])) {
         $return['isNewUser'] = true;
         $structure = array("username" => $user, "stepCompleted" => $stepsComletedData
             , "userHistory" => $userActionsUpdate, "lastUpdate" => $date, "tocmd" => $all_off_to_commands);
-        $result = $userProgressCol->insert($structure, array('safe' => true));
+        $result = $userProgressCol->insert($structure);
         $newDocID = $structure['_id'];
         $return['programID'] = $newDocID;
     } else { //Updating existing user 
