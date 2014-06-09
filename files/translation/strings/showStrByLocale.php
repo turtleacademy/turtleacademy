@@ -1,5 +1,6 @@
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <?php
+    error_reporting(E_ERROR | E_PARSE);
     require_once("../../../environment.php");
     require_once("../../../localization.php"); 
     require_once("../../../localization_js.php");
@@ -33,7 +34,11 @@
                                 <tr>
                                     <td></td>
                                     <td id='str<?php echo $i ?>'><?php echo $str['str'] ?></td>
-                                    <td id='page<?php echo $i ?>'><?php echo $str['page'] ?></td>
+                                    <td id='page<?php echo $i ?>'><?php if (isset($str['page']))
+                                                                                    echo $str['page'];
+                                                                        else 
+                                                                            echo $str['pagecode']; 
+                                                                    ?></td>
                                     <td id='context<?php echo $i ?>'><?php echo $str['context'] ?></td>
                                     <td>
                                         <!--<input type='text' id='input<?php echo $i ?>' value='<?php echo $str["translate"]["locale_" . $locale] ?>'></input> -->

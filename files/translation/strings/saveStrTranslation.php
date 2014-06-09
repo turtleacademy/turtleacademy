@@ -1,4 +1,5 @@
 <?php
+    error_reporting(E_ERROR | E_PARSE);
     $str        = $_POST['str'];
     $page       = $_POST['page'];
     $context    = $_POST['context'];
@@ -29,7 +30,8 @@
             $display        =   $strExist['display'];
             $pagecode       =   $strExist['pagecode'];
 
-            $strTranslate[$locale] = $translationInput . " - " . $lastUpdated;
+           // $strTranslate[$locale] = $translationInput . " - " . $lastUpdated;
+            $strTranslate[$locale] = $translationInput ;
             $return["info"] = $locale ." was affected"; 
 
             $result     =   $strcol->update($strExist, array("str" => $str , "page" => $page ,"pagecode" => $pagecode , "context" => $context ,
