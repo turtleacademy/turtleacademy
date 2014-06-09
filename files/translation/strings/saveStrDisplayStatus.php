@@ -8,6 +8,7 @@
     $display_pl       = $_POST['display_pl'];
     $display_nl       = $_POST['display_nl'];
     $display_fi       = $_POST['display_fi'];
+    $display_fi       = $_POST['display_it'];
     $pagecode         = $_POST['pagecode'];
      
     $flag = true ;
@@ -17,7 +18,7 @@
        
     
 
-        $m      = new Mongo();
+        $m      = new MongoClient();
         $db     = $m->turtleTestDb;
         $strcol = $db->stringTranslation;
         
@@ -49,6 +50,7 @@
             $display["pl_PL"]   =   $display_pl;
             $display["nl_NL"]   =   $display_nl;
             $display["fi_FI"]   =   $display_fi;
+            $display["it_IT"]   =   $display_it;
             
 
             

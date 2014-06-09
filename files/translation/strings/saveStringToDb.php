@@ -16,7 +16,7 @@
         echo "Your String is " .$str . " "  . ".<br />";
         echo "Your Page is " .$page . " "  . ".<br />";
         echo "Your Context is " .$context . " "  . ".<br />";
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->stringTranslation;
         
@@ -39,22 +39,11 @@
         }
         else //Updating existing user
         {
-            $zh             =   $strExist['translate']['locale_zh_CN'];
-            $es             =   $strExist['translate']['locale_es_AR'];
-            $de             =   $strExist['translate']['locale_de_DE'];
-            $pt             =   $strExist['translate']['locale_pt_BR'];
-            $pl             =   $strExist['translate']['locale_pl_PL'];
-            $nl             =   $strExist['translate']['locale_nl_NL'];
-            $fi             =   $strExist['translate']['locale_fi_FI'];
+            $translate      =   $strExist['translate'];
             $pagecode       =   $strExist['pagecode'];
-            $display        =   $strExist['display'];
-            $translateArr   =    array("locale_zh_CN" => $zh ,"locale_es_AR" => $es , 
-            "locale_he_IL" => "" ,"locale_ru_RU" => $ru , "locale_pt_BR" => $pt , "locale_de_DE" => $de ,"locale_pl_PL"=>$pl ,
-                  "locale_nl_NL" => $nl , "locale_fi_FI" => $fi   );
-           
+            $display        =   $strExist['display'];        
             $result     =   $strcol->update($strExist, array("str" => $str , "page" => $page ,"pagecode"=> $pagecode , "context" => $context ,
-                                                                "locale_zh_CN" => $zh ,"locale_es_AR" => $es , "locale_de_DE" => $de ,
-                                                                    "locale_pt_BR" => $pt ,"locale_pl_PL" => $pl , "locale_nl_NL" => $nl , "locale_fi_FI" => $fi ));
+                                                            "translate" => $translate , "display" => $display  ));
             echo " String was successfully Updated" ;
         }
     }  

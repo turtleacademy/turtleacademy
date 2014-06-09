@@ -12,4 +12,5 @@
     $stu ->add_new_locale("nl_NL");
     $stu ->add_new_locale("fi_FI");
     $stu ->add_new_locale("hr_HR");
+    $stu ->add_new_locale("it_IT");
 ?> 

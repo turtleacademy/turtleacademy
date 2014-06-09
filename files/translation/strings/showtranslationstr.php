@@ -22,6 +22,7 @@
                         <th class='span3'>Polish</th>
                         <th class='span3'>Finnish</th>
                         <th class='span3'>Duetch</th>
+                        <th class='span3'>Italian</th>
                         <th class='span5'>Display Lang</th>
                     </tr>
                 </thead>
@@ -42,6 +43,7 @@
                             $pl         =   $str["translate"]["locale_pl_PL"];
                             $nl         =   $str["translate"]["locale_nl_NL"];
                             $fi         =   $str["translate"]["locale_fi_FI"];
+                            $it         =   $str["translate"]["locale_it_IT"];
                             $displayArr =   $str["display"];
 
                   ?>           
@@ -56,6 +58,7 @@
                                     <td><?php echo $pl; ?></td>
                                     <td><?php echo $fi; ?></td>
                                     <td><?php echo $nl; ?></td>
+                                    <td><?php echo $it; ?></td>
                                     
                                     <td>
                                         <div class="controls span5">
@@ -67,7 +70,8 @@
                                                 <input type="checkbox" value="option6" id="display_pl<?php echo $i ?>" <?php if ($displayArr['pl_PL'] == "true") echo "checked=true";?>> PL
                                                 <input type="checkbox" value="option6" id="display_fi<?php echo $i ?>" <?php if ($displayArr['fi_FI'] == "true") echo "checked=true";?>> FI
                                                 <input type="checkbox" value="option6" id="display_nl<?php echo $i ?>" <?php if ($displayArr['nl_NL'] == "true") echo "checked=true";?>> NL
-
+                                                <input type="checkbox" value="option6" id="display_it<?php echo $i ?>" <?php if ($displayArr['it_IT'] == "true") echo "checked=true";?>> IT
+    
                                       </div>
                                     </td>
                                     <td>
@@ -93,6 +97,7 @@
                         var display_pl       = $('#' + 'display_pl' + id).is(":checked"); 
                         var display_nl       = $('#' + 'display_nl' + id).is(":checked"); 
                         var display_fi       = $('#' + 'display_fi' + id).is(":checked"); 
+                        var display_it       = $('#' + 'display_it' + id).is(":checked");
 
                         var pagecode         = $('#' + 'pagecode' + id).val();
                         var str              = $('#' + thestring).text();
@@ -112,6 +117,7 @@
                                 display_pl :   display_pl,
                                 display_nl :   display_nl,
                                 display_fi :   display_fi,
+                                display_it :   display_it,
                                 pagecode   :   pagecode
                             },
                             success: function(data) { 

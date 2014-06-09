@@ -10,7 +10,7 @@
     if ($flag)
     {
 
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->stringTranslation;
         

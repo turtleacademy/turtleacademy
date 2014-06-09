@@ -4,11 +4,13 @@
     $pzh        = $_POST['progress_zh'];
     $pes        = $_POST['progress_es'];
     $phe        = $_POST['progress_he'];
+    $pit        = $_POST['progress_it'];
     
     $fru        = $_POST['finish_ru'];
     $fzh        = $_POST['finish_zh'];
     $fes        = $_POST['finish_es'];
     $fhe        = $_POST['finish_he'];
+    $fit        = $_POST['finish_it'];
    
     $comments   = $_POST['comments'];
     
@@ -19,7 +21,7 @@
     if ($flag)
     {
 
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->lessons_translate_status;
         
@@ -44,11 +46,13 @@
             $progress['locale_es_AR'] = $pes;
             $progress['locale_ru_RU'] = $pru;
             $progress['locale_he_IL'] = $phe;
+            $progress['locale_it_IT'] = $pit;
             
             $completed['locale_zh_CN'] = $fzh;
             $completed['locale_es_AR'] = $fes;
             $completed['locale_ru_RU'] = $fru;
             $completed['locale_he_IL'] = $fhe;
+            $completed['locale_it_IT'] = $fit;
 
             $result     =   $strcol->update($lessonExist, array("title" => $title , "comments" => $comments , "lesson_id" => $lessonid ,
                                                                 "in_progress" => $progress ,"completed" => $completed ));
