@@ -218,7 +218,10 @@ class Swift_Transport_StreamBuffer
     if (isset($this->_in)
       && fwrite($this->_in, $bytes))
     {
-      return ++$this->_sequence;
+        if (isset($this->_sequence))
+            return ++$this->_sequence;
+        else
+            return 0;
     }
   }
   
