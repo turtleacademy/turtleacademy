@@ -6,10 +6,13 @@ require_once("../localization.php");
 require_once("cssUtils.php");
 require_once("utils/languageUtil.php");
 require_once('utils/topbarUtil.php');
+require_once('utils/userUtil.php');
 require_once('utils/programUtil.php');
+error_reporting(E_ERROR | E_PARSE);
 ?>
 <link rel="stylesheet" href="<?php echo $site_path; ?>/files/codemirror/lib/codemirror_turtle.css">
 <?php
+    date_default_timezone_set('America/Los_Angeles');
     $logged_in_user = false;
     $sendTo = "";
     if (isset($_SESSION['username']))
@@ -19,7 +22,7 @@ require_once('utils/programUtil.php');
     }
     $sendTo = "";
     $program_id = $_GET['programid'];
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $programs = "programs";
     $programs_collection = $db->$programs;
@@ -63,9 +66,12 @@ require_once('utils/programUtil.php');
                                          ?>
                                          <a class='' href="<?php
                                                 echo $root_dir . "users/profile/";
-                                                echo $comment['user'];
-                                                ?>"> 
-                                                 <?php echo $comment['user']; ?>
+                                                $user = userUtil::strip_user_email($comment['user']);
+                                                echo $user['name'];
+                                                if ($user['email'])
+                                                    echo "_email";
+                                                ?>">
+                                                 <?php echo $user['name']; ?>
                                          </a>
                                          <?php
                                          echo "</span>";    
@@ -85,7 +91,7 @@ require_once('utils/programUtil.php');
                    ?>
                 </div>
                 <script>      
-                          $("#btn_comment").click(function() {  
+        $("#btn_comment").click(function() {  
         //programid username
         if (username != null)
             {

@@ -1,6 +1,7 @@
 <?php
     require_once("../environment.php");
     require_once("utils/collectionUtil.php");
+    date_default_timezone_set('America/Los_Angeles');
     
     $username                   =   $_POST['username'];
     $program_id                 =   $_POST['programid'];

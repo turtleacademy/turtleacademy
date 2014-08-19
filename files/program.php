@@ -3,6 +3,8 @@
 <?php
 if (session_id() == '')
     session_start();
+error_reporting(E_ERROR | E_PARSE);
+
 require_once("../environment.php");
 require_once("../localization.php");
 require_once("../localization_js.php");
@@ -69,7 +71,7 @@ if (isset($_SESSION['username']))
             if ($is_update || $is_view)
             {
                 $program_id = $_GET['programid'];
-                $m = new Mongo();
+                $m = new MongoClient();
                 $db = $m->turtleTestDb;
                 $programs = "programs";
                 $programs_collection = $db->$programs;

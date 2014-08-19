@@ -4,7 +4,7 @@
      public static function varify_user($username , $password) 
      {
            $password = md5($password); 
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->users;
            
@@ -12,7 +12,9 @@
            $resultcount     = $users->count($userQuery);
            //Case no user found
            if ($resultcount == 0)
+           {
                return false;
+           }
            else
            {
                self::user_login_log($username , $db);
@@ -20,9 +22,24 @@
                return true;
            }
      }
+     /*
+      * Stripping the email address from the user name
+      */
+     
+     public static function strip_user_email($username)
+     {
+        $hasMail = false;
+        if (strpos($username, '@') !== false) {
+            $name_before_adding_mail_address  = explode('@', $username);
+            $username     = $name_before_adding_mail_address[0];
+            $hasMail = true;
+        }
+        $user['name'] = $username ; $user['email'] = $hasMail ;
+        return $user;
+     }
      public static function get_user_institute_email($username)
      {
-         $m = new Mongo();
+         $m = new MongoClient();
          $db = $m->turtleTestDb;	
          $users = $db->users;
          $userQuery       = array('username' => $username );
@@ -32,7 +49,7 @@
      }
      public static function find_mail_user($username,$reg) //username_email
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->users;
            //echo "user name is " . $username . " reg is " . $reg;
@@ -77,7 +94,7 @@
       */
      public static function show_user_lessons($username) 
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->lessons_created_by_guest;
            if ($username == "lucio")
@@ -97,7 +114,7 @@
      
     public static function find_user_programs($username) 
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $programs = $db->programs;
 
@@ -113,7 +130,7 @@
       */
      public static function get_institiute_user_programs($email)
      {
-        $m                  = new Mongo();
+        $m                  = new MongoClient();
         $db                 = $m->turtleTestDb;	
         $users              = $db->users;
         $programs           = $db->programs;
@@ -135,7 +152,7 @@
      }
      public static function find_user_public_programs($username) 
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $programs = $db->programs;
 
@@ -149,12 +166,13 @@
      
      public static function find_public_programs() 
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $programs = $db->programs;
 
 
            $userProgramQuery       =  array('$or' => array(array('displayInProgramPage' => true), array('displayInProgramPage' => 'true')));
+           //$programs->ensureIndex(array('totalRankScore' => 1));
            $results     = $programs->find($userProgramQuery);
            return $results;
            //Case no user found          
@@ -165,7 +183,7 @@
       */
      public static function add_property_to_user_collection ($property , $val)
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->users;
            $cursor = $users->find();
@@ -180,7 +198,7 @@
       */ 
      public static function copy_db_openid_user_to_users($username)
      {
-         $m = new Mongo();
+         $m = new MongoClient();
          $db = $m->turtleTestDb;	
          $usersOpenId = $db->user_open_id;
          $users = $db->users;
@@ -209,7 +227,7 @@
      }
      public static function get_user_new_messages_indication($username)
      {
-            $m = new Mongo(); 
+            $m = new MongoClient(); 
             $db = $m->turtleTestDb;
             $strcol = $db->messages;
             $newMessagesQuery     = array ('sendto' => $username , 'read' => false);
@@ -226,7 +244,7 @@
       */ 
     public static function copy_db_all_openid_users_to_users()
      {
-         $m = new Mongo();
+         $m = new MongoClient();
          $db = $m->turtleTestDb;	
          $users_open_id_col = $db->user_open_id;
          $users = $db->users;
@@ -268,7 +286,7 @@
       */
      public static function get_institiute_users_by_institue_admin_email ($email)
      {
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;	
         $users = $db->users;
         $userQuery       = array('institute_email' => $email);
@@ -278,7 +296,7 @@
      
     public static function get_num_of_varified_users() 
      {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->users;
            

@@ -18,7 +18,7 @@
     require_once('files/utils/userUtil.php');
     require_once('files/utils/pagination.php');
     require_once('files/utils/timeUtil.php');
-
+    error_reporting(E_ERROR | E_PARSE);
     ?>
 
 <script> 
@@ -137,6 +137,7 @@
                           
                             
                             $allPrograms->sort(array($sortColumn => $sortDirection));
+                            $allPrograms->limit(500); 
                             // End of sorting the user programs
                             
                             $limit = 15;
@@ -184,6 +185,11 @@
                                 <tr>
                                     <td class="span1"><?php echo $i;?></td>
                                     <?php
+                                      // echo '<td id="logo'.$i.'"><img width="60" height="40" src= ' .$site_path .'picscript.php?id='.$program['_id'].'>';
+                                       echo '<td id="logo'.$i.'"><img width="60" height="40" src= ' .$site_path .'images/small/'.$program['_id'].'.png>';
+                                    //$png = $program['_id'] . ".png";
+                                    // echo '<td id="logo'.$i.'"><img width="60" height="40" src= '.$png.'>';
+                                    /*
                                     if (isset($program['img_60_40']) && strlen($program['img_60_40'])> 20)
                                     {
                                         echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img_60_40'].'">';
@@ -197,29 +203,24 @@
                                       echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img'].'">';  
                                     }
                                     else{
-                                ?>
-                                        <td id="logo<?php echo $i;?>" > 
-                                <?php
+                                        echo '<td id="logo'.$i.'">';
                                     }
+                                     * 
+                                     */
                                     ?>
 
                                     </td>
                                     <td>
                                         <a class='' href="<?php
                                             echo $root_dir . "users/profile/";
-                                            $programCreator    = $program['username'];
-                                            $hasMail = false;
-                                            if (strpos($programCreator, '@') !== false) {
-                                                $hasMail            =   true;
-                                                $name_before_adding_mail_address  = explode('@', $programCreator);
-                                                $programCreator     = $name_before_adding_mail_address[0];
-                                            }
-                                            echo $programCreator;
-                                            if ($hasMail)
+                                            $user = userUtil::strip_user_email($program['username']);
+                                            
+                                            echo $user['name'];
+                                            if ($user['email'])
                                                 echo "_email";
                                             ?>"> 
                                             <?php
-                                                echo $programCreator;
+                                                echo $user['name'];
                                                 $code = $program['code'];
 
                                                 $newstr = str_replace("\n", " ", $code);
