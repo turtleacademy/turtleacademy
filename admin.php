@@ -22,45 +22,33 @@
     require_once("files/footer.php");
     require_once("files/cssUtils.php");
     require_once("files/utils/userUtil.php");
-    $show = false ;
+    $display = false ;
     $permission_num            = 1;
     if (isset ($_SESSION['permision']))
         $permission_num            =   $_SESSION['permision'] ;
     //echo $permissionNum;
     
-    $permission_for_edit_lesson        = array(1,100);
-    $permmision_translate_chinese           = array(1,2);
-    $permission_translte_spanish           = array(1,2);
-    $permission_translte_german            = array(1,103);
-    $permission_translte_russain           = array(1,107);
-    $permission_translte_arbic               = array(1,108);
-    $permission_translte_thai              = array(1,109);
-    $permission_approve_lesson           = array(1); 
+    $permission_for_edit_lesson         = array(1,100);
+    $permmision_translate_chinese       = array(1,2);
+    $permission_translte_spanish        = array(1,2);
+    $permission_translte_german         = array(1,103);
+    $permission_translte_russain        = array(1,107);
+    $permission_translte_arbic          = array(1,108);
+    $permission_translte_thai           = array(1,109);
+    $permission_approve_lesson          = array(1); 
     //echo "PermissionNumberIs".$permissionNum;
 
-    /*
-    if (isset($_SESSION['Admin']) && $_SESSION['Admin'] == true)
-    {
-        var_dump($_SESSION);
-        $show = true ;
-    }
-    * 
-    */
+    
     if (isset($_SESSION['username']))
     {
             echo "Hello ";
             echo $_SESSION['username'];
             if ($_SESSION['username'] == "admin")
-                $show = true ;
+                $display = true ;
     }
 
-    /*
-    * To change this template, choose Tools | Templates
-    * and open the template in the editor.
-    */
-    //$show = true ;
 
-    if ($show)
+    if ($display)
     {
         $num_of_users =   userUtil::get_num_of_varified_users();
         $locale = "en_US"; // Setting default
@@ -71,6 +59,9 @@
         echo "<div> <span class='title'> <b> Lessons </b> 
                 <a href='".$root_dir ."lessons.php'> <span class='lessonh'> Go to lessons page </span> </a>
              </div>";
+        echo "<div> <span class='title'> <b> Programs </b> 
+             <a href='".$root_dir ."test/programs.php'> <span class='lessonh'> Set program creator </span> </a>
+          </div>";
         echo "<div> <span class='title'> <b> News </b>
                 <a href='".$root_dir ."files/turtleNews/insertNewsItem.php'> <span class='lessonh'> Insert News Item </span> </a>
                 <a href='".$root_dir ."files/turtleNews/newsTrans.php'> <span class='lessonh'> News Translation</span> </a>

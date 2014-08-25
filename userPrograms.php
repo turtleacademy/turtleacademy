@@ -86,8 +86,8 @@
                         <table class='zebra-striped ads' id="my_lessons" lang="<?php echo $lang ?>">
                             <thead>
                                 <tr>
-                                    <th class='span1'><?php echo _("num"); ?></th>
-                                    <th class='span2'><?php echo _("pic"); ?></th>
+                                    <th class='span1'><?php echo _("#"); ?></th>
+                                    <th class='span2'><?php echo _("picture"); ?></th>
                                     <th class='span4'>
                                         <?php echo _("creator"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/username/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
@@ -100,15 +100,15 @@
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/programName/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
-                                    <th class='span4'><?php echo _("Date Created"); ?></th>
+                                    <th class='span4'><?php echo _("Created"); ?></th>
                                     <th class='span5'>
-                                        <?php echo _("Last updated"); 
+                                        <?php echo _("Updated"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/lastUpdated/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/lastUpdated/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
                                     <th class='span6'>
-                                        <?php echo _("Total Score"); 
+                                        <?php echo _("Score"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    

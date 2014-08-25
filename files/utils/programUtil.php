@@ -2,7 +2,7 @@
      class programUtil {
         public static function find_public_programs() 
         {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;	
             $programs = $db->programs;
 
@@ -15,7 +15,7 @@
        
         public static function find_program_comments($program_id) 
         {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;	
             $programcol = $db->programs;
             $program = $programcol->findOne(array("_id" => $program_id));
@@ -26,7 +26,7 @@
         //Getting the user rank for the program
         public static function program_ave_rank($program_id) 
         {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;	
             $programcol = $db->programs;
             $program = $programcol->findOne(array("_id" => $mongoid));
@@ -41,10 +41,30 @@
             return $program['comments'];
             //Case no user found          
         }
+        /*
+         * Input : $program_id - a mongo object ID representing the new program
+         * Return: the program object
+         */
+        public static function get_program_by_id($program_id)
+        {
+            $m = new MongoClient();
+            $db = $m->turtleTestDb;	
+            $programcol = $db->programs;
+            $program = $programcol->findOne(array("_id" => $program_id));
+            
+            return $program;
+            //Case no user found  
+        }
         
+        /*
+         * Input  : $program_id - a mongo object ID representing the new program
+         * Input  : $username - a string representing the username
+         * Return : The user rank 
+         */
+             
         public static function program_rank_by_user($program_id , $username) 
         {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;	
             $programcol = $db->programs;
             $program = $programcol->findOne(array("_id" => $program_id));
@@ -64,6 +84,42 @@
             }
             return $user_prev_rank;
             //Case no user found          
+        }
+        
+        /*
+         * In case some programs don't have a username assignned 
+         */
+         public static function program_anonymous_user() 
+        {
+            $m = new MongoClient();
+            $db = $m->turtleTestDb;	
+            $programcol = $db->programs; 
+            $program = $programcol->find(array("username" => ""));
+            
+            return count($program);
+            //Case no user found          
+        }
+        
+        public static function set_program_username($mongoid , $username)
+        {
+            $m = new MongoClient();
+            $db = $m->turtleTestDb;	
+            $programcol = $db->programs; 
+            $criteria = $programcol->findOne(array("_id" => $mongoid));
+            $cursor = $criteria; 
+            $cursor["username"] =   $username;
+            $result = $programcol->update($criteria,$cursor);
+        }
+        
+        public static function set_program_title($mongoid , $title)
+        {
+            $m = new MongoClient();
+            $db = $m->turtleTestDb;	
+            $programcol = $db->programs; 
+            $criteria = $programcol->findOne(array("_id" => $mongoid));
+            $cursor = $criteria; 
+            $cursor["programName"] =   $title;
+            $result = $programcol->update($criteria,$cursor);
         }
      }  
 ?>
