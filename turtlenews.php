@@ -3,11 +3,14 @@ if (session_id() == '')
     session_start();
 require_once("environment.php");
 require_once("localization.php");
+require_once("localization_js.php");
 require_once("files/footer.php");
 require_once("files/cssUtils.php");
 require_once ('files/utils/topbarUtil.php');
-
-$m = new Mongo();
+require_once('files/utils/timeUtil.php');
+error_reporting(E_ERROR | E_PARSE);
+date_default_timezone_set('America/Los_Angeles');
+$m = new MongoClient();
 $db = $m->turtleTestDb;
 $newscol = $db->news;
 
@@ -33,42 +36,7 @@ $newsItems->sort(array('date' => -1));
     ?>
 
         <div id="turtleNewsBody" class="span16 columns" lang="<?php echo $lang ?>"> 
-            <h2><?php echo _("The Turtle news"); ?></h2>
-            <p><?php echo _("Here you will find updates about the turtle development"); ?></p>          
-            <!-- News Items topbar menu nav -->
-            <div id="navbarExample" class="navbar navbar-static" lang="<?php echo $lang ?>">
-                <div class="navbar-inner" id="navbar-inner-id">
-                    <div class="container" style="width: auto;">
-                        <a id="newsBarBrand" class="brand" lang="<?php echo $lang ?>" href="#">
-                        <?php 
-                            echo _('TurtleAcademy');
-                            echo " ";
-                            echo _("news"); 
-                        ?>
-                        </a>
-                        <ul class="nav newsmenu">
-                            <?php
-                            foreach ($newsItems as $newsItem) {
-                                $headline = $newsItem['headline'];
-                                $context = $newsItem['context'];
-                                $itemid = $newsItem['itemid'];
-                                $date = $newsItem['date'];
-                                if ($locale_domain != "en_US") {
-                                    $localestr = "locale_" . $locale_domain;
-                                    if (isset($newsItem['headline_translate'][$localestr]))
-                                        $headline = $newsItem['headline_translate'][$localestr];
-                                    if (isset($newsItem['context_translate'][$localestr]))
-                                        $context = $newsItem['context_translate'][$localestr];
-                                }
-                                ?>
-                                    <!-- <li class="active newsmenu"><a href="#<?php echo $itemid ?>"> <?php echo $headline ?></a></li> -->
-                            <?php 
-                            } 
-                            ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <h1><?php echo _("The Turtle news"); ?></h1>
             <!-- End of News Items topbar menu nav -->
             <?php
                 $i = 1;
@@ -78,8 +46,9 @@ $newsItems->sort(array('date' => -1));
                     $context = $newsItem['context'];
                     $itemid = $newsItem['itemid'];
                     $date = $newsItem['date'];
-                    $dateTime = new DateTime($date);
-                    $newdate    =    date_format($dateTime, 'Y-m-d');
+                    $newdate =  FormatTime(strtotime($date));
+                    //$dateTime = new DateTime($date);
+                    //$newdate    =    date_format($dateTime, 'Y-m-d');
                     if ($locale_domain != "en_US") {
                         $localestr = "locale_" . $locale_domain;
                         if (isset($newsItem['headline_translate'][$localestr]) )

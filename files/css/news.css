@@ -41,7 +41,8 @@ root {
 }
 .newsItemTitle
 {
-    background-color: #afeeee;
+    border-radius: 10px 10px 10px 10px;
+    background-color: #E8E8E8;
     color : black;
 }
 :lang(he)#newsBarBrand{
