@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * 
+ * @param type $info    'username' => $username,
+                        'email' => $email,
+                        'key' => $key,
+                        'locale' => $locale,
+                        'msgWelcome' => _("Welcome to TurtleAcademy"),
+                        'msgReset'  => _("TurtleAcademy password reset")
+ * @param type $format  -- HTML OR TEXT
+ * @param string $sitePath  Website address
+ * @param type $templateType Which template do we choose
+ * @return type
+ */
 function format_email($info, $format , $sitePath , $templateType){
         if (!isset($sitePath))
         {
@@ -20,7 +33,8 @@ function format_email($info, $format , $sitePath , $templateType){
 	$template = ereg_replace('{KEY}', $info['key'], $template);
 	$template = ereg_replace('{SITEPATH}','http://site-path.com', $template);
 		*/
-        $locale   = $info['locale'];
+        $locale     =   "en_US";
+        $locale     =   $info['locale'];
         if ($locale != "en_US")
             $template = str_replace('{LOCALE}', $locale, $template);
         else
@@ -35,41 +49,70 @@ function format_email($info, $format , $sitePath , $templateType){
 
 }
 
-//send the welcome letter
-function send_email($info , $sitePath , $templateType = "signup_template" , $locale = "en_us"){
-		
+function format_email_ready($info, $format , $sitePath , $templateType){
+        if (!isset($sitePath))
+        {
+            echo " noSITEPATH";
+            $sitePath = 'http://turtleacademy.com';
+        }
+	$root = $_SERVER['DOCUMENT_ROOT'].'/files/registration';
+	$template = file_get_contents($root .'/' .$templateType . '.'.$format); 
+;
+        $template = str_replace('{USERNAME}', $info['username'], $template);
+        $template = str_replace('{EMAIL}', $info['email'], $template);
+	return $template;
+
+}
+
+function send_email_ready($info , $sitePath , $templateType = "newyear" ){		
 	//format each email
-    
-	$body = format_email($info,'html' , $sitePath , $templateType);
-	$body_plain_txt = format_email($info,'txt' , $sitePath , $templateType);
-        //echo " email array format begining";
-        //print_r($body);
-        //echo "body plain text = " . $body_plain_txt;
-        
-        //echo "Email array format end";
+	$body           = format_email_ready($info,'html' , $sitePath , $templateType);
+	$body_plain_txt = format_email_ready($info,'txt'  , $sitePath , $templateType);
+
 	//setup the mailer
         $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
             ->setUsername('noreply@turtleacademy.com')
             ->setPassword('noreply11');
-	//$transport = Swift_MailTransport::newInstance();
+        
 	$mailer             = Swift_Mailer::newInstance($transport);
 	$message            = Swift_Message::newInstance();
+        $strWelcomeMsg      = $info['msgWelcome'];
         
+        $message ->setSubject($strWelcomeMsg);
+        
+	$message ->setFrom(array('noreply@turtleacademy.com' => 'TurtleAcademy'));
+	$message ->setTo(array($info['email'] => $info['username']));
+	$message ->setBody($body_plain_txt);
+	$message ->addPart($body, 'text/html');
+	$result = $mailer->send($message);
+	return $result;	
+}
+//send the welcome letter
+function send_email($info , $sitePath , $templateType = "signup_template" , $locale = "en_us"){		
+	//format each email
+	$body           = format_email($info,'html' , $sitePath , $templateType);
+	$body_plain_txt = format_email($info,'txt'  , $sitePath , $templateType);
+
+	//setup the mailer
+        $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
+            ->setUsername('noreply@turtleacademy.com')
+            ->setPassword('noreply11');
+        
+	$mailer             = Swift_Mailer::newInstance($transport);
+	$message            = Swift_Message::newInstance();
         $strWelcomeMsg      = $info['msgWelcome'];
         $strResetMsg        = $info['msgReset'];
+        
         if ($templateType == "resetpass_template")
             $message ->setSubject($strResetMsg);
         else
             $message ->setSubject($strWelcomeMsg);
+        
 	$message ->setFrom(array('noreply@turtleacademy.com' => 'TurtleAcademy'));
 	$message ->setTo(array($info['email'] => $info['username']));
-	
 	$message ->setBody($body_plain_txt);
 	$message ->addPart($body, 'text/html');
-	//echo "The will be the final message" ;
-        //print_r($message);
 	$result = $mailer->send($message);
-	//echo "Results are = " .$result;
 	return $result;	
 }
 function send_email_test($info){
@@ -107,22 +150,15 @@ function show_errors($action){
                 else
                     $listyle    =   "<li style='color:red;'>";
 		if(is_array($action['text'])){
-	
-			//loop out each error
-			foreach($action['text'] as $text){
-				$error .= "$listyle<p>$text</p></li>"."\n";
-			
-			}	
-		
+                    //loop out each error
+                    foreach($action['text'] as $text){
+                        $error .= "$listyle<p>$text</p></li>"."\n";
+                    }	
 		}else{  
-			//single error
-			$error .= "<li><p>$action[text]</p></li>";
-		
+                    //single error
+                    $error .= "<li><p>$action[text]</p></li>";
 		}
-		
 		$error .= "</ul>"."\n";
-		
 	}
 	return $error;
-
 }
