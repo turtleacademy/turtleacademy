@@ -3,8 +3,8 @@
 if (session_id() == '')
     session_start();
 //$fullPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";  
-$phpDirPath = "files/registration/inc/php/";
-$inc_dir_path = "files/registration/inc/";
+$phpDirPath = "files/email/inc/php/";
+$inc_dir_path = "files/email/inc/";
 //$relPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";
 $ddPath = "files/test/dd/";
 $jqueryui = "ajax/libs/jqueryui/1.10.0/";
@@ -66,7 +66,6 @@ include_once("files/inc/jquerydef.php");
             //        submitHandler: function() { alert("submitted!"); }
             //});
             $(document).ready(function(){
-                var gt = new Gettext({'domain' : 'messages'});
                 $('#topbar').dropdown();
                 $('#username_in').focus();
             
@@ -84,13 +83,13 @@ include_once("files/inc/jquerydef.php");
                     },
                     messages: {
                         password: {
-                            required: gt.gettext("Please enter your username"), 
-                            minlength: gt.gettext("Your username must contain at least 4 characters")
+                            required: <?php echo '"'._("Please enter your username").'"'?>, 
+                            minlength: <?php echo '"'._("Your username must contain at least 4 characters").'"'?>
                         },
                         retypepassword: {
-                            required    : gt.gettext("Please enter your password"),
-                            minlength   : gt.gettext("Your password must contain at least 5 characters"),
-                            equalTo     : gt.gettext("password and retype password should be the same")  
+                            required    : <?php echo '"'._("Please enter your password").'"'?>,
+                            minlength   : <?php echo '"'._("Your password must contain at least 5 characters").'"'?>,
+                            equalTo     : <?php echo '"'._("password and retype password should be the same").'"'?>
                         }
                     } 
                 }); 
@@ -167,7 +166,7 @@ include_once("files/inc/jquerydef.php");
 //Handling case of submit
 if (isset($_POST['password'])) {
     //1. Need to update user with the new password
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $usersRemindPass = $db->users_remind_pass;
     $users = $db->users;
@@ -186,7 +185,7 @@ if (isset($_POST['password'])) {
     $criteria_update['password'] = $pass;
     $update_users = $users->update($criteria, $criteria_update);
     //2. Need to remove user from user_remind_password 
-    $result = $usersRemindPass->remove(array('email' => $email), array("safe" => true));
+    $result = $usersRemindPass->remove(array('email' => $email), array("w" => 1));
     echo "Congratulation you have change yoru password succeessfully." ." ";
     echo "Please <a href='registration.php'> Login </a> using your new password";
 }
@@ -205,7 +204,7 @@ if (empty($_GET['email']) || empty($_GET['key'])) {
             }
         }
         if ($action['result'] != 'error' && !$istest) {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;
             $usersremind = $db->users_remind_pass;
             $users = $db->users;

@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+
 <?php
 if (session_id() == '')
     session_start();
-$phpDirPath = "files/registration/inc/php/";
+$phpDirPath = "files/email/inc/php/";
 include_once $phpDirPath . 'config.php';
 include_once $phpDirPath . 'functions.php';
 require_once ('environment.php');
 require_once ("localization.php");
+require_once ("localization_js.php");
 require_once ("files/cssUtils.php");
 require_once ('files/openid.php');
 require_once ('files/utils/topbarUtil.php');
+require_once $phpDirPath . 'swift/swift_required.php';
 ?>
 <html dir="<?php echo $dir ?>" lang="en">
     <head>
@@ -63,6 +65,9 @@ require_once ('files/utils/topbarUtil.php');
                         email : {
                             required: true,
                             email: true
+                        } ,
+                        email_re: {
+                            equalTo: '#email'
                         }
                     },
                     messages: {
@@ -74,7 +79,8 @@ require_once ('files/utils/topbarUtil.php');
                             required: <?php echo '"'._("Please enter your password").'"'?>,
                             minlength: <?php echo '"'._("Your password must contain at least 5 characters").'"'?>
                         },
-                        email: <?php echo '"'._("Please enter a valid email address").'"'?>
+                        email: <?php echo '"'._("Please enter a valid email address").'"'?> ,
+                        email_re : <?php echo '"'._("Please retype your email address correctly").'"'?>
                     }
                 }); 
                 $("#forgot-password-form").validate({
@@ -128,8 +134,8 @@ require_once ('files/utils/topbarUtil.php');
     </head>
     <body>
     <?php
-        $googleid = createOpenIdObject('https://www.google.com/accounts/o8/id', "loginopen.php");
-        $yahooid = createOpenIdObject('https://me.yahoo.com', "loginopen.php");
+        //$googleid = createOpenIdObject('https://www.google.com/accounts/o8/id', "loginopen.php");
+        //$yahooid = createOpenIdObject('https://me.yahoo.com', "loginopen.php");
         //setup some variables/arrays
         $action = array();
         $action['result'] = null;
@@ -157,7 +163,7 @@ require_once ('files/utils/topbarUtil.php');
 
             if ($action['result'] != 'error') {
                 $password = md5($password);
-                $m = new Mongo();
+                $m = new MongoClient();
                 $db = $m->turtleTestDb;
                 $users = $db->users;
 
@@ -169,7 +175,7 @@ require_once ('files/utils/topbarUtil.php');
 
 
                 if ($isTestUser) { //Case of testing we will insert to db
-                    addUserToDb($username, $password, $email, $users, $db);
+                    addUserToDbAndSendCondirmationMail($username, $password, $email, $users, $db);
                 } else if ($existEmail > 0) { //Check if email already exist
                     $action['result'] = 'error';
                     array_push($text, _("Email is being used by a registered user") . " " . _("if you forgot your password please press reset password"));
@@ -177,7 +183,7 @@ require_once ('files/utils/topbarUtil.php');
                     $action['result'] = 'error';
                     array_push($text, _("Username is already exist in the system") . " " . _("please choose another username"));
                 } else {
-                    addUserToDb($username, $password, $email, $users, $db);
+                    addUserToDbAndSendCondirmationMail($username, $password, $email, $users, $db);
                 }
             }
             $action['text'] = $text;
@@ -187,7 +193,7 @@ require_once ('files/utils/topbarUtil.php');
             //varifaction it's a mail will be done by js
             $email = $_POST['email_pwd'];
             //$password = md5($password);	
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;
             $users = $db->users;
             //Query if email already exist and approved
@@ -202,7 +208,7 @@ require_once ('files/utils/topbarUtil.php');
                 $key = $username . $email;
                 $key = md5($key);
                 $userStructure = array("userid" => $userid, "key" => $key, "email" => $email);
-                $userConfirmResult = $users->insert($userStructure, array('safe' => true));
+                $userConfirmResult = $users->insert($userStructure, array('w' => 1));
                 
                 if ($userConfirmResult) {
                     //include the swift class
@@ -215,7 +221,8 @@ require_once ('files/utils/topbarUtil.php');
                         'key' => $key,
                         'locale' => $locale,
                         'msgWelcome' => _("Welcome to TurtleAcademy"),
-                        'msgReset' => _("TurtleAcademy password reset"));
+                        'msgReset' => _("TurtleAcademy password reset")
+                        );
                     //send the email
                     if (send_email($info, $site_path, "resetpass_template")) {
                         $action['result'] = 'success';
@@ -235,9 +242,6 @@ require_once ('files/utils/topbarUtil.php');
         //Printing the topbar menu
         topbarUtil::print_topbar("registration");
         ?>
-
-
-
         <div class="container">
             <div class='row'>
                 <!-- Main hero unit for a primary marketing message or call to action -->
@@ -253,7 +257,13 @@ require_once ('files/utils/topbarUtil.php');
                             <div class="input" lang="<?php echo $dir ?>">
                                 <input id="email" name="email" size="30" type="text" class='xlarge'/>
                             </div>
-                        </div>        
+                        </div>     
+                        <div class="clearfix" lang="<?php echo $dir ?>">
+                            <label for="email_re" id="signUpEmailLbl"><?php echo _("Retype email"); ?></label>
+                            <div class="input" lang="<?php echo $dir ?>"> 
+                                <input id="email_re" name="email_re" size="30" data-match="#email" type="text" class='xlarge'/>
+                            </div>
+                        </div>
                         <div class="clearfix" lang="<?php echo $dir ?>">
                             <label for="username_up" id="signUpUserNameLbl"><?php echo _("Username"); ?></label>
                             <div class="input" lang="<?php echo $dir ?>">
@@ -338,6 +348,7 @@ require_once ('files/utils/topbarUtil.php');
 
                         <div class='cleaner_h10'></div>
                         
+                        
                         <a href="<?php echo $googleid->authUrl() ?>" class="zocial google">
                         <?php
                             echo _("Sign In"); echo " ";echo _("with Google")
@@ -371,10 +382,6 @@ require_once ('files/utils/topbarUtil.php');
 </html>
 
 <?php
-
-
-    
-
  function createOpenIdObject($identity, $returnUrl) {
             global $site_path;
             $openid = new LightOpenID($site_path);
@@ -389,27 +396,23 @@ require_once ('files/utils/topbarUtil.php');
             return $openid;
         }
 
-        function addUserToDb($username, $password, $email, $users, $db) {
+        function addUserToDbAndSendCondirmationMail($username, $password, $email, $users, $db) {
             global $phpDirPath, $site_path, $text, $action;
             $date = date('Y-m-d H:i:s');
             $userStructure = array("username" => $username, "password" => $password,"badges" => "", "email" => $email,
                 "confirm" => false, "date" => $date);
-            $userResult = $users->insert($userStructure, array('safe' => true));
+            $userInserted = $users->insert($userStructure, array("w" => 1));
             $userid = $userStructure['_id'];
-            if ($userResult) {
-                //get the new user id
-                //$userid = mysql_insert_id();
-                $users = $db->users_waiting_approvment;
+            if ($userInserted) {
+                $usersCollection = $db->users_waiting_approvment;
                 //create a random key
                 $key = $username . $email;
                 $key = md5($key);
-                //add confirm row
-                //$confirm = mysql_query("INSERT INTO `confirm` VALUES(NULL,'$userid','$key','$email')");	
+                //add confirm row /$confirm = mysql_query("INSERT INTO `confirm` VALUES(NULL,'$userid','$key','$email')");
                 $userStructure = array("userid" => $userid, "key" => $key, "email" => $email);
-                $userConfirmResult = $users->insert($userStructure, array('safe' => true));
-
-                //In case the user properly inserted into the database
-
+                $userConfirmResult = $usersCollection->insert($userStructure, array('w' => 1));
+                
+                //In case the user properly inserted into the database to both tables
                 if ($userConfirmResult) {
                     //include the swift class
                     include_once $phpDirPath . 'swift/swift_required.php';
@@ -421,25 +424,24 @@ require_once ('files/utils/topbarUtil.php');
                         'key' => $key,
                         'locale' => $locale,
                         'msgWelcome' => _("Welcome to TurtleAcademy"),
-                        'msgReset' => _("TurtleAcademy password reset"));
+                        'msgReset' => _("TurtleAcademy password reset")
+                        );
                     //send the email
                     $templateType = "signup_template";
                     if ($locale != "en_US")
                         $templateType = $templateType . "_" . $locale;
 
                     if (send_email($info, $site_path, $templateType)) {
-                        $thanks = _("Thanks for signing up");
-                        $checkEmail = _("Please check your email for confirmation");
-                        $action['result'] = 'success';
+                        $thanks             = _("Thanks for signing up");
+                        $checkEmail         = _("Please check your email for confirmation");
+                        $action['result']   = 'success';
                         array_push($text, $thanks . ". " . $checkEmail . "!!");
-
-                        //header("location: files/registerok.php"); 
+                       
                     } else {
                         $action['result'] = 'error';
                         array_push($text, 'Could not send confirm email');
                     }
                 } else {
-
                     $action['result'] = 'error';
                     //array_push($text,'Confirm row was not added to the database. Reason: ' . mysql_error());
                     array_push($text, 'Confirm row was not added to the database. Reason: ');
