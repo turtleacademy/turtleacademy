@@ -2,7 +2,7 @@
 <?php
 if (session_id() == '')
     session_start();
-$phpDirPath = "../registration/inc/php/";
+$phpDirPath = "../email/inc/php/";
 include_once $phpDirPath . 'config.php';
 include_once $phpDirPath . 'functions.php';
 require_once ('../../environment.php');
