@@ -1,27 +1,30 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
     "http://www.w3.org/TR/html4/strict.dtd">
-    <?php
+<?php
     require_once("environment.php");
     require_once("localization.php"); 
     require_once("files/footer.php");
     require_once('files/utils/topbarUtil.php');
-    ?>
+    require_once("localization_js.php");
+    require_once("files/utils/includeCssAndJsFiles.php"); 
+?>
+
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>"> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>
-            <?php
+        <?php
             echo _("Turtle Academy - learn logo programming in your browser");
             echo _(" free programming materials for kids");
-            ?>  
+        ?>
         </title>     
         <?php
-        require_once("files/utils/includeCssAndJsFiles.php"); 
         $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
         $po_file = "<link   rel='gettext' type='application/x-po' href='$root_dir/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
         if (file_exists($file_path))
-           // echo $po_file;
+            //echo $po_file;
+            
         includeCssAndJsFiles::include_all_page_files("index"); 
         // Case user logged in we will clear the storage data and load it from db
         $is_user_log_in =   isset($_SESSION['username']);
@@ -32,7 +35,7 @@
         <!--Should be different for log in user and for a guest -->
     <?php
         //Printing the topbar menu
-        topbarUtil::print_topbar("index"); 
+        topbarUtil::print_topbar("index");
     ?>
         <div class="container">
             <!-- Main hero unit including welcoming messages and code samples -->
@@ -45,7 +48,7 @@
                 <div class='span14 example-continer' lang="<?php echo $lang ?>">
                     <div class="span4 example" >
                         <p class="example-title"> <?php echo _("Create a Spiral"); ?></p>
-                        <p class="example-code"> <?php echo _("for [i 10 100 10]     [fd :i rt 90] ht"); ?> </p>
+                        <p class="example-code"> <?php echo _("for [i 10 70 10]  [fd :i rt 90] ht"); ?> </p>
                         <div id="logo2"></div>
                         <h2> <!--<img src='images/sample/icon1.png' alt=''/> --></h2>
                     </div>
@@ -124,7 +127,12 @@
                     <p>
                         <?php echo _("If you wish to help please"); echo " ";?>
                         <a href="mailto:support@turtleacademy.com" target="_blank"> <?php echo _("Contact Us"); ?> </a>
+                         <?php echo _("or"); echo " ";?>
+                        <a href="/donate.php" target="_blank"> <?php echo _("Donate"); ?> </a>
                     </p>
+                    
+                       
+                    
                 </div>
             </div>
         </div> <!-- /container -->
@@ -135,8 +143,8 @@
     <script> 
         //Function to create a logo drawing on a new canvas
         function do_logo(id ,cmd) {
-            $('#'+id).css('width', '200px').css('height', '160px').append('<canvas id="'+id+'c" width="200" height="160" ></canvas>' +
-                '<canvas id="'+id+'t" width="200" height="160" ></canvas>');
+            $('#'+id).css('width', '220px').css('height', '160px').css('background', 'whitesmoke').append('<canvas id="'+id+'c" width="200" height="160" background="whitesmoke"></canvas>' +
+                '<canvas id="'+id+'t" width="200" height="160" background="whitesmoke" ></canvas>');
             var canvas_element2 = document.getElementById(id+"c");
             var turtle_element2 = document.getElementById(id+"t");
             var turtle2 = new CanvasTurtle(
@@ -148,9 +156,9 @@
             g_logo2.run(cmd);
         } 
         // Logo samples
-        do_logo ('logo2', 'cs pu setxy 0 -10 pd for [i 10 100 10] [fd :i rt 90] ht');
-        do_logo ('logo3', 'cs pu setxy -30 -20 pd repeat 8 [rt 45 repeat 6 [repeat 90 [fd 1 rt 2] rt 90]] ht');
-        do_logo ('logo4', 'cs pu setxy 10 0 pd repeat 36 [ rt 10 repeat 8 [ fd 25 lt 45]] ht');
+        do_logo ('logo2', 'cs pu setxy 0 0 pd for [i 10 70 10] [setcolor sum random 5 12 arc 360 :i] ht');
+        do_logo ('logo3', 'cs pu setxy -40 -20 pd repeat 8 [setcolor sum random 5 12  rt 45 repeat 6 [repeat 90 [fd 1 rt 2] rt 90]] ht');
+        do_logo ('logo4', 'cs pu setxy 0 0 pd setcolor 4 repeat 36 [ rt 10 repeat 8 [ fd 25 lt 45]] ht');
         
         $(document).ready(function() {
             selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>index/", "index.php" ,"en" ); 
