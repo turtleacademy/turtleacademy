@@ -1,7 +1,7 @@
 <?php
 if (session_id() == '')
     session_start();
-$phpDirPath = "../registration/inc/php/";
+$phpDirPath = "../email/inc/php/";
 include_once $phpDirPath . 'config.php';
 include_once $phpDirPath . 'functions.php';
 require_once ('../../environment.php');
@@ -35,7 +35,7 @@ require_once ('../utils/userUtil.php');
     topbarUtil::print_topbar("institute");
     if (!isset($_SESSION['institute_email']))
         {
-            echo " You don't have institute admin permission Please contact site administrator" ;
+            echo _("You don't have institute admin permission Please contact site administrator") ;
         }
         else
         {

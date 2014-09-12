@@ -2,7 +2,7 @@
 <?php
 if (session_id() == '')
     session_start();
-$phpDirPath = "../registration/inc/php/";
+$phpDirPath = "../email/inc/php/";
 include_once $phpDirPath . 'config.php';
 include_once $phpDirPath . 'functions.php';
 require_once ('../../environment.php');
@@ -112,7 +112,7 @@ require_once ('../utils/topbarUtil.php');
     </head>
     <body>
 <?php
-function addUserToDb($username, $password, $users, $db) {
+function addUserToDbAndSendCondirmationMail($username, $password, $users, $db) {
     $date = date('Y-m-d H:i:s');
     $userStructure = array("username" => $username, "password" => $password,"badges" => "", "email" => "",
         "confirm" => true, "institute_email" => $_SESSION['institute_email'] , "date" => $date);
@@ -155,7 +155,7 @@ function addUserToDb($username, $password, $users, $db) {
 
         if ($action['result'] != 'error') {
             $password = md5($password);
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb; 
             $users = $db->users;
 
@@ -165,12 +165,12 @@ function addUserToDb($username, $password, $users, $db) {
 
 
             if ($isTestUser) { //Case of testing we will insert to db
-                addUserToDb($username, $password, $users, $db);
+                addUserToDbAndSendCondirmationMail($username, $password, $users, $db);
             } else if ($existUsername > 0) { //Check if email already exist
                 $action['result'] = 'error';
                 array_push($text, $strUserNExist . " " . $strChooseNewUN);
             } else {
-                addUserToDb($username, $password, $users, $db);
+                addUserToDbAndSendCondirmationMail($username, $password, $users, $db);
                 $action['result'] = 'info';
                 array_push($text, "New User - " . $username . " has been added" );
             }
@@ -185,7 +185,7 @@ function addUserToDb($username, $password, $users, $db) {
         $text = array();
         
         $email = $_POST['email'];
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb; 
         $users = $db->users;
         //Check if the user exists
