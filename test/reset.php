@@ -3,8 +3,8 @@
 if (session_id() == '')
     session_start();
 //$fullPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";  
-$phpDirPath = "files/registration/inc/php/";
-$inc_dir_path = "files/registration/inc/";
+$phpDirPath = "files/email/inc/php/";
+$inc_dir_path = "files/email/inc/";
 //$relPath    =   "files/bootstrap/twitter-bootstrap-sample-page-layouts-master/";
 $ddPath = "files/test/dd/";
 $jqueryui = "ajax/libs/jqueryui/1.10.0/";
@@ -54,10 +54,9 @@ include_once("files/inc/jquerydef.php");
         if (file_exists($file_path))
             echo $po_file;
         ?>        
-        <script type="text/javascript">
+        <script type="text/javascript"> 
             var locale = "<?php echo $locale; ?>";
         </script>
-        <script type="application/javascript" src="files/Gettext.js"></script> <!-- Using JS GetText -->
         <link rel='stylesheet' href='./files/css/interface.css' type='text/css' media='all'/> 
         <link rel='stylesheet' href='./files/css/footer.css' type='text/css' media='all'/> 
         <script src="ajax/libs/jquery/validator/dist/jquery.validate.js" type="text/javascript"></script>
@@ -166,7 +165,7 @@ include_once("files/inc/jquerydef.php");
 //Handling case of submit
 if (isset($_POST['password'])) {
     //1. Need to update user with the new password
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $usersRemindPass = $db->users_remind_pass;
     $users = $db->users;
@@ -204,7 +203,7 @@ if (empty($_GET['email']) || empty($_GET['key'])) {
             }
         }
         if ($action['result'] != 'error' && !$istest) {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;
             $usersremind = $db->users_remind_pass;
             $users = $db->users;
