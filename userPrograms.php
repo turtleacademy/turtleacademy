@@ -95,7 +95,7 @@
                                          ?>    
                                     </th>
                                     <th class='span5'>
-                                        <?php echo _("program name"); 
+                                        <?php echo _("name"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/programName/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/programName/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
@@ -187,26 +187,6 @@
                                     <?php
                                       // echo '<td id="logo'.$i.'"><img width="60" height="40" src= ' .$site_path .'picscript.php?id='.$program['_id'].'>';
                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src= ' .$site_path .'images/small/'.$program['_id'].'.png>';
-                                    //$png = $program['_id'] . ".png";
-                                    // echo '<td id="logo'.$i.'"><img width="60" height="40" src= '.$png.'>';
-                                    /*
-                                    if (isset($program['img_60_40']) && strlen($program['img_60_40'])> 20)
-                                    {
-                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img_60_40'].'">';
-                                    }
-                                    elseif (isset($program['img_200_130']) && strlen($program['img_200_130'])> 20)
-                                    {
-                                        echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img_200_130'].'">';
-                                    } 
-                                    elseif (strlen($program['img']) > 20)
-                                    {
-                                      echo '<td id="logo'.$i.'"><img width="60" height="40" src="'.$program['img'].'">';  
-                                    }
-                                    else{
-                                        echo '<td id="logo'.$i.'">';
-                                    }
-                                     * 
-                                     */
                                     ?>
 
                                     </td>
