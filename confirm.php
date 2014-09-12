@@ -1,5 +1,5 @@
 <?php
-    $inc_dir_path = "files/registration/inc/";
+    $inc_dir_path = "files/email/inc/";
     include_once $inc_dir_path . 'php/config.php';
     include_once $inc_dir_path . 'php/functions.php';
     //include_once $incDirPath . 'elements/confirmHeader.php';
@@ -52,7 +52,7 @@ if (empty($_GET['email']) || empty($_GET['key'])) {
 }
 
 if ($action['result'] != 'error' && !$istest) {
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $users_confirmation = $db->users_waiting_approvment;
     $users = $db->users;
