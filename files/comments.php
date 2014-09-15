@@ -31,65 +31,67 @@ error_reporting(E_ERROR | E_PARSE);
     $program_name = $criteria['programName'];
     $bodytag = str_replace("\n", "↵", $criteria['code']);                    
 ?>
-                <?php
-                    $comment_place_holder = _('Add comment to the program') . "..";
-                    if ($logged_in_user)
-                    {
-                ?>
-                <form id="add_comment_form"> 
-                        <textarea id="commentTxtArea" placeholder="<?php echo $comment_place_holder;?>"></textarea>
-                        <input id="btn_comment" type="button" value="<?php echo _('submit comment'); ?>" class="btn small info pressed"></input>
-                </form>
-                <?php
-                    }
-                    else{
-                ?>
-<div><span> <?php echo _("You must"); ?> <a href="<?php echo $root_dir . "registration.php";?>"><?php echo _("login"); ?> </a> <?php echo _("to comment"); ?></span></div>
-                <?php
-                    }
-                 ?> 
-                </div>
-                <div id="numOfComments">
-                    <?php echo $criteria['numOfComments']; echo " " ; echo "Comments"?>
-                </div>
-                <div id ="user-comments">
-                   <?php
-                        $comments = programUtil::find_program_comments($the_object_id);
-                        //print_r($comments); 
-                        if (is_array($comments) )
-                        {
-                            foreach ($comments as $comment)
-                            {
-                                echo "<div class='comment-contain'>";
-                                    echo "<div class='comment-title'>"; 
-                                         echo "<span>";
-                                         ?>
-                                         <a class='' href="<?php
-                                                echo $root_dir . "users/profile/";
-                                                $user = userUtil::strip_user_email($comment['user']);
-                                                echo $user['name'];
-                                                if ($user['email'])
-                                                    echo "_email";
-                                                ?>">
-                                                 <?php echo $user['name']; ?>
-                                         </a>
-                                         <?php
-                                         echo "</span>";    
-                                         echo "<span class='title-time'>"; 
-                                            $date = new DateTime($comment['time']);
-                                            echo $date->format('Y-m-d');
-                                         echo "</span>"; 
-                                    echo "</div>";
-                                    echo "<div class='comment-content'>"; 
-                                        echo "<p>";
-                                            echo $comment['comment'];
-                                        echo "</p>";
-                                    echo "</div>";
-                                echo "</div>";  // Closing of comment-contain
-                            }
-                        }
-                   ?>
-                </div>
+<?php
+    $comment_place_holder = _('Add comment to the program') . "..";
+    if ($logged_in_user)
+    {
+    ?>
+    <form id="add_comment_form"> 
+            <textarea id="commentTxtArea" placeholder="<?php echo $comment_place_holder;?>"></textarea>
+            <input id="btn_comment" type="button" value="<?php echo _('submit comment'); ?>" class="btn small info pressed"></input>
+    </form>
+    <?php
+    }   
+ ?> 
+    <div id="numOfComments">
+        <?php echo $criteria['numOfComments']; echo " " ; echo "Comments"?>
+    </div>
+    <div id ="user-comments">
+       <?php
+            $comments = programUtil::find_program_comments($the_object_id);
+            //print_r($comments); 
+            if (is_array($comments) )
+            {
+                foreach ($comments as $comment)
+                {
+                    echo "<div class='comment-contain'>";
+                        echo "<div class='comment-title'>"; 
+                             echo "<span>";
+                             ?>
+                             <a class='' href="<?php
+                                    echo $root_dir . "users/profile/";
+                                    $user = userUtil::strip_user_email($comment['user']);
+                                    echo $user['name'];
+                                    if ($user['email'])
+                                        echo "_email";
+                                    ?>">
+                                     <?php echo $user['name']; ?>
+                             </a>
+                             <?php
+                             echo "</span>";    
+                             echo "<span class='title-time'>"; 
+                                $date = new DateTime($comment['time']);
+                                echo $date->format('Y-m-d');
+                             echo "</span>"; 
+                        echo "</div>";
+                        echo "<div class='comment-content'>"; 
+                            echo "<p>";
+                                echo $comment['comment'];
+                            echo "</p>";
+                        echo "</div>";
+                    echo "</div>";  // Closing of comment-contain
+                }
+            }
+       ?>
+    </div>
+<?php
+        if (!$logged_in_user)
+        {
+        ?>
+        <div><span> <?php echo _("You must"); ?> <a href="<?php echo $root_dir . "registration.php";?>"><?php echo _("login"); ?> </a> <?php echo _("to comment"); ?></span></div>
+<?php
+        }
+?>
                 <script>      
         $("#btn_comment").click(function() {  
         //programid username

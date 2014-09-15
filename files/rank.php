@@ -19,7 +19,7 @@ require_once('utils/programUtil.php');
     }
     $sendTo = "";
     $program_id = $_GET['programid'];
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $programs = "programs";
     $programs_collection = $db->$programs;
@@ -76,8 +76,8 @@ if ($logged_in_user)
     //echo $user_privous_rank;
 }
 else{
-      ?>
-       <span> <?php echo _("You must"); ?> <a href="<?php echo $root_dir . "registration.php";?>"><?php echo _("login"); ?> </a> <?php echo _("to rank"); ?></span> 
+    ?>
+      
     <?php  
     echo"</div>";
     echo "<div class='cleaner_h10'></div>";
@@ -86,7 +86,11 @@ else{
     echo "<span class='tiny_rank'>" . "number of votes :" . $num_of_ranks."</span>     ";
     echo "<span class='tiny_rank'>" . "Toal score :" .$total_score ."</span>";
     echo"</div>";
-}
+    echo "<div class='cleaner_h10'></div>";
+    ?>
+    <span> <?php echo _("You must"); ?> <a href="<?php echo $root_dir . "registration.php";?>"><?php echo _("login"); ?> </a> <?php echo _("to rank"); ?></span> 
+<?php
+    }
 ?>
 <script>      
     $(".rank").click(function() {    

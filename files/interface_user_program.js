@@ -19,14 +19,18 @@ var lastLessonClick = null ;
                 g_logo.run("cs");
                 g_logo.run("pd");
                 g_logo.run("setcolor 0");
+                $("#err-msg").css('display', 'none'); 
                 $("#console-output").val("");
-                $("#console-output").css('visibility', 'hidden');
+                $("#console-output").css('display', 'none');
                 g_logo.run(command);
                 
             } catch (e) {
                 // Write the failure to our console
                 var i = $("#err-msg").val();
-                $("#err-msg").css('visibility', 'visible');
+                $("#err-msg").css('display', 'block'); 
+                $("#err-msg").css('visibility', 'visible'); 
+               
+                $("#console-output").css('display', 'block');
                 $("#err-msg").val(e + '\n');
             }
         }
@@ -109,9 +113,6 @@ $(function() {
     // Compile templates used later
     $("#comments").load(sitePath + 'files/comments.php?programid=' + programid);
     $("#rank").load(sitePath + 'files/rank.php?programid=' + programid);
-    var gt = new Gettext({
-        'domain' : 'messages'
-    });
 
     $("#runbtn").click(function() {  
         $("#err-msg").val('');
@@ -149,7 +150,7 @@ $(function() {
                 editor.setValue('');
                 handler('cs');
                 $("#err-msg").val('');
-                $("#err-msg").css('visibility', 'hidden');
+                $("#err-msg").css('display', 'none');
                 
             }
         });
@@ -159,7 +160,8 @@ $(function() {
         jConfirm('Do you want to save existing program changes?'  , 'New program', function(r) {
             if (r)
             {
-                saveprogram(false,true);
+                
+                saveprogram(false,true , sitePath + "files/saveUserProgram.php" , true);
             }
             else
             {
@@ -175,11 +177,16 @@ $(function() {
         deleteprogram();
     });
     $("#btn_update_program").click(function() {    
-        saveprogram(false , false);
+        saveprogram(false , false , sitePath + "files/saveUserProgram.php" , true);
         alert('Program was successfully Updated');
     });  
+    $("#btn_update_pic").click(function() {    
+        saveprogram(false , false , sitePath + "files/saveUserProgramImg.php" , false);
+        alert('picture was successfully Updated');
+    }); 
+    
     $("#btn_save_program").click(function() {    
-        saveprogram(true,true);
+        saveprogram(true,true , sitePath + "files/saveUserProgram.php" , true);
         alert('Program was successfully Saved');
     }); 
     $("#program-info-header").editable("click", function(e){
@@ -222,12 +229,42 @@ $(function() {
         
     }
 
+
     
     // Will save or update program according to the input
-    function saveprogram(isSave , isRedirect)
+    function saveprogram(isSave , isRedirect , saveUrl , saveStorage)
     {
         var canvas_element = document.getElementById("sandbox");
         var dataURL = canvas_element.toDataURL(); 
+
+        // var datauri = imageToDataUri(base64, 200,300); 
+          var img = new Image;
+          img.onload = resizeImage;
+          img.src = dataURL;
+          var img_60_40;
+          var img_200_130;
+          function resizeImage() {
+              img_60_40   = imageToDataUri(this, 60, 40);
+              img_200_130 = imageToDataUri(this, 200, 130);
+              //alert(newDataUri);
+              /// continue from here...
+          }
+              function imageToDataUri(img, width, height) {
+                    /// create an off-screen canvas
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');;
+                    //ctx.getContext('2d');
+
+                    /// set its dimension to target size
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    /// draw source image into the off-screen canvas:
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    /// encode image to data-uri with base64 version of compressed image
+                    return canvas.toDataURL();
+                }
         var programname     =   $("#program-info-header").text();
         var update          =   !isSave;
         var ispublic = true;
@@ -236,7 +273,7 @@ $(function() {
              ispublic        =   $("#publicProgramsCheckbox").is(':checked');
         }
         var programCode     =   editor.getValue();
-        var saveProgramUrl  = sitePath + "files/saveUserProgram.php";
+        var saveProgramUrl  = saveUrl;
         if (typeof username == 'undefined')
         {
             alert("Only register user can save their programs , you must log-in");
@@ -246,7 +283,14 @@ $(function() {
             var programtitle    =   prompt("Your program name is ",programname);
         else
             var programtitle = programname;
-        
+        while(typeof img_60_40 == 'undefined')
+        {
+            img_60_40 = imageToDataUri(img, 60, 40);
+        }
+        while(typeof img_200_130 == 'undefined') 
+        { 
+            img_200_130 = imageToDataUri(img, 200, 130);
+        }
         if (programtitle!=null){
                 $.ajax({
                 type : 'POST',
@@ -259,39 +303,45 @@ $(function() {
                     programid       :   programid,
                     ispublic        :   ispublic,
                     imgBase64       :   dataURL,
+                    img_60_40      :     img_60_40,
+                    img_200_130      :   img_200_130,
                     username        : username
                 },
 
                 success : function(data){
+                        alert('saved');
                         //Saving the tocmd to the user history if exist
-                        $.ajax({
-                            type : 'POST',
-                            url : sitePath + '/files/saveLocalStorage.php',
-                            dataType : 'json',
-                            data: {
-                                command      : programCode
-                            },
-                            success: function(data) { 
-                                var rdata;
-                            } ,
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                alert(XMLHttpRequest.responseText);
-                            }
-                        });
-                    if (isRedirect)
-                    {
-                        var pathname = window.location.pathname;
-                        if (isSave)
-                            {
-                                //var temppath = sitePath + "/files/updateProgram.php";
-                                //location.href = temppath + "?programid=" + data.programId.$id + "&username=" + data.username ;
-                                var temppath = sitePath + "/program/update/";
-                                location.href = temppath + data.programId.$id + "/" + data.username + "/" + localShort ;
-                                
-                            }
-                        else
-                            location.href = sitePath + "/program/new/" + localShort;
-                    }                 
+                        if (saveStorage)
+                        {
+                            $.ajax({
+                                type : 'POST',
+                                url : sitePath + '/files/saveLocalStorage.php',
+                                dataType : 'json',
+                                data: {
+                                    command      : programCode
+                                },
+                                success: function(dataprogress) { 
+                                    if (isRedirect)
+                                    {
+                                        var pathname = window.location.pathname;
+                                        if (isSave)
+                                            {
+                                                //var temppath = sitePath + "/files/updateProgram.php";
+                                                //location.href = temppath + "?programid=" + data.programId.$id + "&username=" + data.username ;
+                                                var temppath = sitePath + "/program/update/";
+                                                location.href = temppath + data.programId.$id + "/" + data.username + "/" + localShort ;
+
+                                            }
+                                        else
+                                            location.href = sitePath + "/program/new/" + localShort;
+                                    }   
+                                } ,
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    alert(XMLHttpRequest.responseText);
+                                }
+                            });
+                        }
+                                  
                 },       
                 error : function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest.responseText);  
@@ -353,6 +403,7 @@ $(function() {
             return window.prompt(s ? s : "");
         },
         write: function() {
+            $("#console-output").css('display', 'block');
             $("#console-output").css('visibility', 'visible');
             var prnt = $("#console-output").val(); ;
             for (var i = 0; i < arguments.length; i += 1) {
@@ -398,7 +449,6 @@ $(function() {
                     g_logo.run(commandToRun);
                 }catch (e) {
                 // DO NOTHING FOR NOW
-                // jqconsole.Write(gt.gettext('Error') +': ' + e + '\n');
                 }
             
         }

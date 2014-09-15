@@ -106,8 +106,16 @@ if (isset($_SESSION['username']))
         </div> <!-- Close div command to drawing -->
         <div id="instructions"> 
             <div id="code-error-div">
-                <input id="err-msg" type="text" placeholder="An error message will appear here"> </input>    
+                <input id="err-msg" type="text" placeholder="An error message will appear here"> </input>   
                 <textarea id="console-output" name="code" style="width: 100px;" placeholder="print output..."></textarea>
+                <?php
+                    if ($is_view)
+                    {
+                ?>
+                    <div id="comments"> <!-- Comments load dynamically --></div>
+                <?php
+                    }
+                ?>
             </div>
             <div id="action-buttons" > 
                 <form> 
@@ -165,15 +173,7 @@ if (isset($_SESSION['username']))
             </div>
             <div id ="tab-row">
             </div>
-            <?php
-                if ($is_view)
-                {
-            ?>
-            <div id="comments"> <!-- Comments load dynamically -->
-            </div>
-            <?php
-                }
-                ?>
+
             <?php
                 echo $program_documentation;
             ?>
