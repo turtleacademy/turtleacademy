@@ -1,44 +1,38 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-    "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <?php
     require_once("environment.php");
     require_once("localization.php"); 
     require_once("files/footer.php");
     require_once('files/utils/topbarUtil.php');
-    require_once("localization_js.php");
     require_once("files/utils/includeCssAndJsFiles.php"); 
 ?>
 
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>"> 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>
-        <?php
-            echo _("Turtle Academy - learn logo programming in your browser");
-            echo _(" free programming materials for kids");
-        ?>
+        <title> <?php
+                echo _("Turtle Academy - learn logo programming in your browser");
+                echo _(" free programming materials for kids");
+                ?>
         </title>     
         <?php
-        $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
-        $po_file = "<link   rel='gettext' type='application/x-po' href='$root_dir/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
-        if (file_exists($file_path))
-            //echo $po_file;
-            
-        includeCssAndJsFiles::include_all_page_files("index"); 
-        // Case user logged in we will clear the storage data and load it from db
-        $is_user_log_in =   isset($_SESSION['username']);
-
+            require_once("localization_js.php");
+            $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
+            $po_file = "<link  type='application/x-po' href='$root_dir/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
+            if (file_exists($file_path))
+                //echo $po_file;
+            includeCssAndJsFiles::include_all_page_files("index"); 
+            // Case user logged in we will clear the storage data and load it from db
+            $is_user_log_in =   isset($_SESSION['username']);
         ?>
     </head>
     <div id="index-main">
-        <!--Should be different for log in user and for a guest -->
-    <?php
+    <?php 
         //Printing the topbar menu
         topbarUtil::print_topbar("index");
     ?>
         <div class="container">
-            <!-- Main hero unit including welcoming messages and code samples -->
+            <!-- Welcoming messages and code samples -->
             <div class="hero-unit" id="hero-top" lang="<?php echo $lang ?>">
                 <h1 id="hero-main-title"><?php echo _("Turtle Academy"); ?></h1> 
                 <h2 id="hero-secondary-title"><?php echo _("The easy way to learn programming"); ?></h2>
@@ -47,32 +41,31 @@
                 <!-- Including the code samples -->
                 <div class='span14 example-continer' lang="<?php echo $lang ?>">
                     <div class="span4 example" >
-                        <p class="example-title"> <?php echo _("Create a Spiral"); ?></p>
+                        <p class="example-title"> <a href= "<?php echo $site_path; ?>view/programs/5413dfaef45859421f8b4567/<?php echo $lang ?>"> <?php echo _("Create a Spiral"); ?></a></p>
                         <p class="example-code"> <?php echo _("for [i 10 70 10]  [fd :i rt 90] ht"); ?> </p>
                         <div id="logo2"></div>
-                        <h2> <!--<img src='images/sample/icon1.png' alt=''/> --></h2>
                     </div>
                     <div class="span4 example" >
-                        <p class="example-title"> <?php echo _("Cool flower"); ?></p>
+                        <p class="example-title"> <a href="<?php echo $site_path; ?>view/programs/5413dfb5f4585950288b4567/<?php echo $lang ?>"> <?php echo _("Cool flower"); ?></a></p>
                         <p class="example-code"> <?php echo _("repeat 8 [rt 45 repeat 6 [repeat 90 [fd 1 rt 2] rt 90]] ht"); ?></p>
                         <div id="logo3"></div>
-                        <h2> <!--<img src='images/sample/icon1.png' alt=''/> --></h2>
 
                     </div>
                     <div class="span4 example" >
-                        <p class="example-title"> <?php echo _("Crazy octagon"); ?></p>
+                        <p class="example-title"> <a href="<?php echo $site_path; ?>view/programs/54195bebf45859ac3d8b4567/<?php echo $lang ?>"> <?php echo _("Crazy octagon"); ?></a></p>
                         <p class="example-code"> <?php echo _("cs repeat 36 [ rt 10 repeat 8 [ fd 25 lt 45]] ht"); ?></p>
                         <div id="logo4"></div>
-                        <h2> <!--<img src='images/sample/icon1.png' alt=''/> --></h2>
                     </div>
                     <div class="span2">
                     </div>
                 </div> <!-- End of code sapmles -->
-                <div id="start-logo" align="center">
+                <div id="start-logo">
                     <p class="top" id="start-logo-p"><strong><?php echo _("Let's start having fun programming"); ?></strong></p>
                     <div id="goto-buttons">
-                        <p class="top"><a class="btn primary large indbtn" href ="<?php echo $root_dir; ?>learn.php"><?php echo _("Free Lessons"); ?> </a> <a class="btn primary large indbtn" href ="<?php echo $root_dir; ?>registration.php"><?php echo _("Sign In for free"); ?></a></p>
-
+                        <p class="top">
+                            <a class="btn primary large indbtn" href ="<?php echo $root_dir; ?>learn.php"><?php echo _("Free Lessons"); ?> </a> 
+                            <a class="btn primary large indbtn" href ="<?php echo $root_dir; ?>registration.php"><?php echo _("Sign In for free"); ?></a>
+                        </p>
                     </div> 
                 </div>
             </div>
@@ -111,7 +104,7 @@
             <!-- want to help and project goals columns --> 
             <div class="row span16" id="row-info" lang="<?php echo $lang ?>"> 
                 <div class="span9 row-info-div" id="project_goal_div"> 
-                    <h2><?php echo _("Project goal"); ?> <!--<img src='images/sample/icon1.png' alt=''/> --></h2>
+                    <h2><?php echo _("Project goal"); ?> </h2>
                     <p><?php echo _("Our objective is to teach programming principles in a fun and easy way making programming an accessible competancy to every child in the world");
                             echo "."; ?>
                     </p>
@@ -121,7 +114,7 @@
 
                 <div class="span5 row-info-div">
                     <h2><?php echo _("Want to help");
-                        echo "?"; ?> <!--<img src='images/sample/icon2.png' alt=''/>--> 
+                        echo "?"; ?>
                     </h2>
                     <p> <?php echo _("In order to make programming approachable for more people we need volunteers to translate the site to their own native languages"); ?>.</p>
                     <p>

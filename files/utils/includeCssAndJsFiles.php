@@ -12,6 +12,7 @@ class includeCssAndJsFiles {
         $has_command_line       = false;
         $add_turtle_commands    = false;
         $run_logo_command       = true;
+        $run_get_text           = true;
         switch ($pageName) {
             case "index":
                 $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index.css' type='text/css' media='all'/>";
@@ -49,6 +50,7 @@ class includeCssAndJsFiles {
             case "learn":
                 $additional_files = $additional_files . "<script type='application/javascript' src='".$root_dir."files/jqconsole.js' ></script>\n";
                 $localize = array(
+                    'Add lesson step' => ('Add lesson step'),
                     'lesson' => _('lesson'),
                     'hint' => _('hint'),
                     'Solution'  => _('Solution'),
@@ -102,6 +104,7 @@ class includeCssAndJsFiles {
             case "user-program-page":
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/users.css'/> ";
                $run_logo_command = false;
+               $run_get_text     = false;
                break;
             case "faq":
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/index.css'/> "; 
@@ -153,10 +156,11 @@ class includeCssAndJsFiles {
                $add_turtle_commands  = true;
                break;
         }
-
-    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts , $has_command_line , $add_turtle_commands , $pageName , $run_logo_command);
+    includeCssAndJsFiles::includingFiles($additional_files , $has_navigator ,  $has_console ,$has_lessons , $has_alerts ,
+            $has_command_line , $add_turtle_commands , $pageName , $run_logo_command , $run_get_text);
     }
-    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts , $has_command_line , $add_turtle_commands , $pageName , $run_logo_command)
+    private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts ,
+            $has_command_line , $add_turtle_commands , $pageName , $run_logo_command , $run_get_text)
     {
         global $root_dir,$env , $locale_domain,$site_path , $localize;
         //Userd in Turtle.js will be added for all the objects
@@ -180,7 +184,7 @@ class includeCssAndJsFiles {
                 $localize['st'] = _('st');$localize['showturtle'] = _('showturtle');
                 $localize['setwidth'] = _('setwidth');$localize['home'] = _('home');
                 $localize['setx'] = _('setx');$localize['sety'] = _('sety');$localize['setxy'] = _('setxy');
-                $localize['setheading'] = _('setheading');$localize['arc'] = _('arc');
+                $localize['setheading'] = _('setheading');$localize['seth'] = _('seth');$localize['arc'] = _('arc');
                 $localize['pos'] = _('pos');$localize['heading'] = _('heading');
                 $localize['towards'] = _('towards');
                 $localize['repeat'] = _('repeat');$localize['repcount'] = _('repcount');
@@ -193,21 +197,29 @@ class includeCssAndJsFiles {
                 $localize['setcolor'] = _('setcolor');$localize['fill'] = _('fill');
                 $localize['filled'] = _('filled');
                 $localize['sum'] = _('sum');$localize['minus'] = _('minus');$localize['random'] = _('random');
+                $localize['setlabelheight'] = _('setlabelheight');$localize['xcor'] = _('xcor');$localize['ycor'] = _('ycor');
+                
                 
         }
         /* Load JQuery files */
-        if ($env== "local"){ 
-            echo "<script type='application/javascript' src='".$root_dir."files/dd/js/jquery/jquery-1.8.2.min.js' ></script>";
-        }else{ 
-            echo "<script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>";
-        }
+        echo "<script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>";
+        //echo "<script type='application/javascript' src='".$root_dir."files/dd/js/jquery/jquery-1.8.2.min.js' ></script>";
+        ?> 
+       <script>
+        if (!window.jQuery) 
+            document.write('<script src="<?php echo $root_dir."ajax/libs/jquery/1.8.2/jquery-1.8.2.min.js";?>"><\/script>');
+        </script>
+        <?php
+        
         if ($hasLessons)
         {
-            if ($env == "local") {
-                echo "<script type='application/javascript' src='".$root_dir."ajax/libs/jqueryui/1.10.0/js/jquery-ui-1.10.0.custom.js' ></script>";
-            } else {
-                echo "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>";
-            }
+            echo "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js'></script>";
+                ?> 
+               <script>
+                    if (!window.jqconsole) 
+                        document.write('<script src="<?php echo $root_dir."ajax/libs/jqueryui/1.10.0/js/jquery-ui-1.10.0.custom.js";?>"><\/script>');
+                </script>
+                <?php
          }
         if ($hasAlerts)
         {
@@ -253,14 +265,19 @@ class includeCssAndJsFiles {
             $locale_domain = "en_US"; 
         // Loading getText related files according to locale
         $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
-        $po_file = "<link   rel='gettext' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
+        //$po_file = "<link   rel='value' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
+        $po_file = $_SERVER['DOCUMENT_ROOT'] . "/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'";
         if (file_exists($file_path))
             try{
-                echo $po_file;
+                //echo $po_file;
+                //echo $_SERVER['DOCUMENT_ROOT'];
+                //include_once $po_file;
             }catch(Exception $e)
             {
-               $po_file =  "<link   rel='gettext' type='application/x-po' href='$site_pate_with_www/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />"; 
-               echo $po_file;
+               //$po_file =  "<link   rel='value' type='application/x-po' href='$site_pate_with_www/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />"; 
+                $po_file = "$site_pate_with_www/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
+                //echo $po_file;
+                //include_once $po_file;
             }
         
         //End Loading translation file   
@@ -301,7 +318,7 @@ class includeCssAndJsFiles {
     <!-- End of Google Analytics Tracking -->  
     <?php
     global $localize;
-    if (isset ($localize)) {
+    if (isset ($localize) && $run_get_text) {
         echo '<script type="application/javascript">';
         echo 'gt='.json_encode($localize).';';
         echo '</script>';

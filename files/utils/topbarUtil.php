@@ -86,9 +86,9 @@ class topbarUtil {
                 $topbarDisplay['about'] = true;
                 $displaylanguage['de'] = true;
                 $displaylanguage['pl'] = true;
+                $displaylanguage['it'] = true;
                 $displaylanguage['fi'] = true;
                 $displaylanguage['nl'] = true;
-                $displaylanguage['it'] = false;
                 $displaylanguage['hr'] = true;
                 break;
             case "faq":
@@ -142,6 +142,7 @@ class topbarUtil {
                 $language['ru'] = "ru_RU";
                 $language['he'] = "he_IL";
                 $language['es'] = "es_AR";
+                $language['it'] = "it_IT";
                 $language['zh'] = "zh_CN";
                 $language['de'] = "de_DE";
                 $language['pt'] = "pt_BR";
@@ -169,7 +170,7 @@ class topbarUtil {
                         <?php
                         if ($showTurtleIcon) {
                             ?>
-                        <a href="<?php echo $site_path . "/index/" . $lang; ?>" alt="Home page"><img class="brand" id="turtleimg" lang="<?php echo $lang ?>" src="<?php echo $rootDir; ?>files/turtles.png" /></a> 
+                        <a href="<?php echo $site_path . "/index/" . $lang; ?>"><img class="brand" id="turtleimg" lang="<?php echo $lang ?>" src="<?php echo $rootDir; ?>files/turtles.png" alt="Home Page"/></a> 
                             <?php
                         }//Close show icon
                         ?>
@@ -223,15 +224,15 @@ class topbarUtil {
                                 ?>
                         <form class="<?php
                                 echo "pull-$cssleft form-inline";
-                                ?>" action="" id="turtleHeaderLanguage" lang="<?php echo $lang ?>">
+                                ?>" id="turtleHeaderLanguage" lang="<?php echo $lang ?>">
                             <select name="selectedLanguage" id="selectedLanguage"> 
-            <?php
-            $blankImagePath = $rootDir . "Images/msdropdown/icons/blank.gif";
-            foreach ($language as $langKey => $langVal) {
-                if ($displaylanguage[$langKey])
-                    echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]'> $countryNativeName[$langKey] </option> ";
-            }
-            ?> 
+                                <?php
+                                $blankImagePath = $rootDir . "Images/msdropdown/icons/blank.gif";
+                                foreach ($language as $langKey => $langVal) {
+                                    if ($displaylanguage[$langKey])
+                                        echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]'> $countryNativeName[$langKey] </option> ";
+                                }
+                                ?> 
                             </select>
                         </form>       
             <?php

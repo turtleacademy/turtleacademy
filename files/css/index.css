@@ -43,7 +43,9 @@ root {
 .span5 > h2 {
     color: #666;
 }
-
+p.example-title a {
+    color: blue;
+}
 
 #index-main , #topbarMainDiv{
     position: relative;
@@ -100,13 +102,18 @@ p.example-title{
     color: blue;
 
 }
+#start-logo{
+    text-align:center;
+    margin-left:auto; 
+    margin-right:auto;
+}
 #start-logo-p{
     font-size: 1.2em;
     margin-top: 330px;
     color:#666;
 }
 .span4 {
-    background:white; border-radius: 5px; text-align: center;
+    background-color:whitesmoke; border-radius: 5px; text-align: center;
 }
 
 .example-continer{
