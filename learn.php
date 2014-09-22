@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-    "http://www.w3.org/TR/html4/strict.dtd">
     <?php
     require_once("environment.php");
     require_once("localization.php");
