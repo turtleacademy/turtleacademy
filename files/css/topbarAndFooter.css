@@ -61,6 +61,9 @@ root {
     background-color: white;
     width: 100px;
 }
+a.topbar_menu{
+    color : blue;
+}
 #ddusermenu > li {
     color : white ;
 }
@@ -130,7 +133,7 @@ root {
     color:black;
 }
  #turtleHeaderUl > li >a ,#turtleHeaderUlLogin{ 
-    color:black;
+    color:blue;
     padding-top: 4px;
     text-decoration: none;
 }
@@ -173,14 +176,15 @@ ul{
     background-color: ghostwhite;
     border : none;
     
-    width : 200px;
+    width : 235px;
+    height: 20px;
     font-weight: bold;
     font:15px arial,sans-serif;
 
     
 } 
 #footer_elem{
-    height: 20px;
+    height: 30px;
 }
 :lang(he)#footer_elem li{
     float : right;
@@ -191,8 +195,9 @@ ul{
 
 #footer li a {
     font-weight: bold;
-    font:15px arial,sans-serif;
+    font: 20px arial,sans-serif;
     width : 250px;
+    height: 20px;
 } 
 #turtleAt{
     float : none;

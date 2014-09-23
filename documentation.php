@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 if (session_id() == '')
     session_start();
@@ -10,18 +11,15 @@ include_once("files/inc/jquerydef.php");
 include_once("files/inc/boostrapdef.php");
 require_once('files/utils/topbarUtil.php');
 ?>
-<!DOCTYPE html>
 <html dir="ltr"> 
     <head> 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
         <title> <?php echo _("Project Documentation"); ?></title>
         <?php
-             require_once("files/utils/includeCssAndJsFiles.php"); 
+            require_once("localization_js.php");
+            require_once("files/utils/includeCssAndJsFiles.php"); 
             includeCssAndJsFiles::include_all_page_files("doc");
-        ?>
-         
-
-        
+        ?>   
     </head>
     <body>
         <?php

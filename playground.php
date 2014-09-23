@@ -30,21 +30,6 @@ require_once('files/utils/topbarUtil.php');
             require_once("localization_js.php");
             require_once("files/utils/includeCssAndJsFiles.php"); 
             includeCssAndJsFiles::include_all_page_files("playground");  
-        ?> 
-        <!--
-        <link rel='stylesheet' href='<?php echo $root_dir; ?>files/css/doc.css' type='text/css' media='all'/>
-        <link rel='stylesheet' href='<?php echo $root_dir; ?>files/css/playground.css' type='text/css' media='all'/>
-        -->
-        <?php
-        /*
-            $file_path = $sitePath . "/locale/" . $localeDomain . "/LC_MESSAGES/messages.po";
-            $po_file = "<link   rel='gettext' type='application/x-po' href='" . $file_path . "'" . " />";
-            if (file_exists($file_path))
-            {
-                echo "<script> alert('$file_path')</script>\n" ;
-            } 
-         * 
-         */
             echo "<script type='application/javascript' src='".$root_dir."files/jqconsole.js' ></script>\n" ;
          
         ?>        
@@ -65,7 +50,7 @@ require_once('files/utils/topbarUtil.php');
                 this.innerHTML = show ? 'hide' : 'show'; return false;">hide
             </a>
             <!-- Including all the Logo language menual -->
-            <iframe frameborder="0" src="<?php echo $root_dir; ?>files/lang.html" id="guide_body" style="">
+            <iframe  src="<?php echo $root_dir; ?>files/lang.html" id="guide_body" style="">
             </iframe>  
         </div> 
         <div id="main" style="margin-left: 100px;">
@@ -75,7 +60,7 @@ require_once('files/utils/topbarUtil.php');
         ?>
             <div id="headerplain" class="page-header" >
             <?php
-                echo "<h1 dir=' $dir'>";
+                echo "<h1 dir='$dir'>";
                 echo _("Logo play ground");
                 echo "  <small>";
                 echo _("Do whatever you desire");
@@ -84,7 +69,7 @@ require_once('files/utils/topbarUtil.php');
             </div>
             <div id="logoerplain"> 
                 <div id="displayplain"> 
-                    <canvas id="sandbox" width="970" height="500px" class="ui-corner-all ui-widget-content">   
+                    <canvas id="sandbox" width="970" height="500" class="ui-corner-all ui-widget-content">   
                         <span style="color: red; background-color: yellow; font-weight: bold;">
                         <?php
                             echo _("TurtleAcademy learn programming for free");
@@ -93,7 +78,7 @@ require_once('files/utils/topbarUtil.php');
                         ?>                                      
                         </span> 
                     </canvas>
-                    <canvas id="turtle" width="970" height="500px">   
+                    <canvas id="turtle" width="970" height="500">   
                         <!-- drawing box -->
                     </canvas>
                 </div>
