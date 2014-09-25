@@ -264,21 +264,6 @@ class includeCssAndJsFiles {
         if (!isset($locale_domain))
             $locale_domain = "en_US"; 
         // Loading getText related files according to locale
-        $file_path = "locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
-        //$po_file = "<link   rel='value' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
-        $po_file = $_SERVER['DOCUMENT_ROOT'] . "/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'";
-        if (file_exists($file_path))
-            try{
-                //echo $po_file;
-                //echo $_SERVER['DOCUMENT_ROOT'];
-                //include_once $po_file;
-            }catch(Exception $e)
-            {
-               //$po_file =  "<link   rel='value' type='application/x-po' href='$site_pate_with_www/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />"; 
-                $po_file = "$site_pate_with_www/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
-                //echo $po_file;
-                //include_once $po_file;
-            }
         
         //End Loading translation file   
         $is_user_login =   isset($_SESSION['username']);
@@ -300,8 +285,6 @@ class includeCssAndJsFiles {
         }
         
         echo "<link rel='stylesheet' href='".$root_dir."files/css/topbarAndFooter.min.css' type='text/css' media='all'/>";
-        //echo "<link rel='stylesheet' href='".$root_dir."files/css/topbar.css' type='text/css' media='all'/>"; 
-        //echo "<link rel='stylesheet' href='".$root_dir."files/css/footer.css' type='text/css' media='all'/>";
   ?> 
     <!-- Google Analytics Tracking --> 
     <script type="application/javascript"> 
