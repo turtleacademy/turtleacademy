@@ -31,7 +31,7 @@ class loadBs extends load_files{
             //    echo "<script src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.2.1/bootstrap.min.js'>";
         }
         if ($js_carosel == "true")
-            echo "<script type='application/javascript' src='". $this->root . "twitter-bootstrap/twitter-bootstrap-v2/docs/assets/js/bootstrap-carousel.js' ></script>" ; 
+            echo "<script type='application/javascript' src='". $this->root . "files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
         
         if ($css == "true")
             echo "<link href='" . $this->addr . "css/bootstrap.all.css' rel='stylesheet' >" ; 

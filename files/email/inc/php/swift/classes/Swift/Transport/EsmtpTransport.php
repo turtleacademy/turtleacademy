@@ -1,5 +1,4 @@
 <?php
-
 /*
  The ESMTP Transport from Swift Mailer.
  

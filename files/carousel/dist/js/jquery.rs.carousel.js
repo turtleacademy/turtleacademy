@@ -24,7 +24,6 @@ undef: true, unused: true, strict: true, trailing: true, browser: true */
     'use strict';
 
     var _super = $.Widget.prototype;
-    var gt = new Gettext({'domain' : 'messages'});
     var rtlWidth = 0;
 
     $.widget('rs.carousel', {
@@ -45,11 +44,11 @@ undef: true, unused: true, strict: true, trailing: true, browser: true */
             nextPrevActions: true,
             insertPrevAction: function () {
                 //return $('<a href="#" class="rs-carousel-action rs-carousel-action-prev">'+ gt.gettext("Prev") +'</a>').appendTo(this);
-                return $('<a href="#" class="rs-carousel-action rs-carousel-action-prev">'+ gt.gettext("<<") +'</a>').appendTo(this);
+                return $('<a href="#" class="rs-carousel-action rs-carousel-action-prev">'+ gt["<<"] +'</a>').appendTo(this);
             },
             insertNextAction: function () {
                 //return $('<a href="#" class="rs-carousel-action rs-carousel-action-next">'+ gt.gettext("Next") +'</a>').appendTo(this);
-                return $('<a href="#" class="rs-carousel-action rs-carousel-action-next">'+ gt.gettext(">>") +'</a>').appendTo(this);
+                return $('<a href="#" class="rs-carousel-action rs-carousel-action-next">'+ gt[">>"] +'</a>').appendTo(this);
             },
             pagination: true,
             insertPagination: function (pagination) {

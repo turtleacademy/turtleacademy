@@ -154,20 +154,3 @@ ul{
 :lang(he)#turtleHeaderLogin{
     direction: rtl;
 }
-/*
-
-#turtleimg , #turtleHeaderUl{
-    float: right;
-}
-
- #turtleHeaderTitle , #turtleHeaderLanguage{
-    float:right;
-}
-#turtleHeaderLogin{
-    direction: rtl;
-}
-#turtleHeaderUl li{
-    float: right;
-}
-
-*/

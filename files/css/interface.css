@@ -148,7 +148,9 @@ code { font-family: monospace; }
     overflow: hidden;
     width: 970px;
 }
-
+#main_sample{
+    width : 970px;
+} 
 
 #display {
     width: 660px;
@@ -204,6 +206,10 @@ h3.ui-accordion-header{
 a.lucio{
     font-size: 13px;
 } 
+#accordion
+{
+    width : 300px;
+}
 #carouselNextBtn{
     float: right;
 }

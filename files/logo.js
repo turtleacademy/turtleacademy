@@ -23,7 +23,7 @@ function LogoInterpreter(turtle, stream)
 {
   var self = this;
   //TurtleAcademy 
-  var gt = new Gettext({'domain' : 'messages'});   
+  
   
   var UNARY_MINUS = '<UNARYMINUS>'; // Must not match regexIdentifier
 
@@ -127,6 +127,7 @@ function LogoInterpreter(turtle, stream)
   self.scopes = [new StringMap()];
   self.plists = new StringMap();
   self.prng = new PRNG(Math.random() * 0x7fffffff); 
+  self.queuedscopes = [];
 
   //----------------------------------------------------------------------
   //
@@ -314,9 +315,10 @@ function LogoInterpreter(turtle, stream)
   self.maybegetvar = function(name) {
     name = name.toLowerCase();
     for (var i = self.scopes.length - 1; i >= 0; --i) {
-      if (self.scopes[i].has(name)) {
-        return self.scopes[i].get(name).value;
-      }
+      if ( typeof self.scopes[i].has != 'undefined')
+        if (self.scopes[i].has(name)) {
+          return self.scopes[i].get(name).value;
+        }
     }
     return (void 0);
   };
@@ -562,7 +564,7 @@ function LogoInterpreter(turtle, stream)
     var procedure = self.routines[name.toLowerCase()];
     if (!procedure) { 
         if (name.match(regexHasNumber))
-            throw new Error(format(__(gt.gettext("Command and number should be seperate by space e.g forward 50 and not forward50")), { name: name.toUpperCase() })); 
+            throw new Error(format(__(gt["Command and number should be seperate by space e.g forward 50 and not forward50"]), { name: name.toUpperCase() })); 
         else    
             throw new Error(format(__("Don't know how to {name}"), { name: name.toUpperCase() })); 
     
@@ -687,25 +689,33 @@ function LogoInterpreter(turtle, stream)
   //----------------------------------------------------------------------
   // Execute a sequence of statements
   //----------------------------------------------------------------------
-      self.waitexecute = function () {
+    self.waitexecute = function () {
         self.wait = false;
-
+        console.log("wait executing");
+        console.log(self.queuedscopes);
+//        self.scopes = JSON.parse(JSON.stringify(self.queuedscopes.shift()));
+        if (self.queuedscopes.length > 0) {
+           self.scopes = self.queuedscopes.shift();
+        }
+        console.log(self.scopes);
         self.execute(self.queue);
+        
         if (self.turtle) {
             self.turtle.begin();
             self.turtle.end();
         }
-      }
+    }
+
   self.execute = function(statements, options) {
-    options = Object(options);
-    // Operate on a copy so the original is not destroyed
-    statements = statements.slice();
-    
-    var result;
-    
-    
+        options = Object(options);
+        // Operate on a copy so the original is not destroyed
+        statements = statements.slice();
+
+        var result;
         if (self.wait) {
             self.queue = self.queue.concat(statements);
+            self.queuedscopes.push(JSON.parse(JSON.stringify(self.scopes)));
+            console.log(self.queuedscopes);
             return;
         };
         while (statements.length) {
@@ -715,7 +725,7 @@ function LogoInterpreter(turtle, stream)
                 self.wait = true;
                 setTimeout(function() {
                     self.waitexecute()
-                    },300);
+                    },200);
                 return result;
             }
             result = self.evaluateExpression(statements);
@@ -863,7 +873,7 @@ function LogoInterpreter(turtle, stream)
     name = name.toLowerCase();
         // TurtleAcademy - avoid replacing primitive functions
         if (typeof self.routines[name] !== 'undefined' && self.routines[name].primitive) {
-            throw gt.gettext("Please don't try to override primitive functions");
+            throw gt["Please don't try to override primitive functions"];
         }
 /*
     if (self.routines.hasOwnProperty(name) && self.routines[name].primitive) {
@@ -878,13 +888,13 @@ function LogoInterpreter(turtle, stream)
     while (list.length) {
       var atom = list.shift();
       // TurtleAcademy handling end command
-      var parsedatom    = gt.gettext(atom);
-      if (Type(atom) === 'word' && (parsedatom.toUpperCase() === 'END' || parsedatom.toUpperCase() ===  gt.gettext("end").toUpperCase())) {
+      var parsedatom    = gt[atom];
+      if (Type(atom) === 'word' && typeof parsedatom != 'undefined' &&(parsedatom.toUpperCase() === 'END' || parsedatom.toUpperCase() ===  gt['end'].toUpperCase())) {
         sawEnd = true;
         break;
       } else if (state_inputs && Type(atom) === 'word' && atom.charAt(0) === ':') {
         inputs.push(atom.substring(1));
-      } else {
+      } else { 
         state_inputs = false;
         block.push(atom);
       }
@@ -2407,7 +2417,7 @@ function LogoInterpreter(turtle, stream)
   //Object.keys(self.routines).forEach(function(x) { self.routines[x].primitive = true; });
   //TurtleAcademy
     Object.keys(self.routines).forEach(function(x) {
-        self.routines[gt.gettext(x)] = self.routines[x];
+        self.routines[gt[x]] = self.routines[x];
         self.routines[x].primitive = true;
     //        console.log(x);
     });

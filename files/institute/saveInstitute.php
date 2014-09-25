@@ -12,7 +12,7 @@
     $description    = $_POST['desc'];
     
     //Check the institute email is in the users collection
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $strcol = $db->users;
     $strQuery               = array('email' => $email);

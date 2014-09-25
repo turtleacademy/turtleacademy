@@ -23,7 +23,7 @@ if(empty($_GET['email']) || empty($_GET['key'])){
 }
 		
 if($action['result'] != 'error'){
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $users_confirmation = $db->users_waiting_approvment;
         $users             = $db->users;

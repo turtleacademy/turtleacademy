@@ -37,7 +37,7 @@
                 //Printing the topbar menu
                 topbarUtil::print_topbar("index");
                 //Get fuc items
-                $m                  = new Mongo();
+                $m                  = new MongoClient();
                 $db                 = $m->turtleTestDb;
                 $strcol             = $db->faq;
                 $faqs               = $strcol->find();

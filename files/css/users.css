@@ -83,8 +83,8 @@ td.mini-thumbnail{
     float: left
 }
 #user-singel-program-image > a > img{
-    width :180px;
-    height : 120px;
+    width :  200px;
+    height : 130px;
 }
 #user-singel-program-description{
     height:80px;
@@ -92,4 +92,8 @@ td.mini-thumbnail{
 }
 #user-singel-program-description > p {
     font-weight:bold;
+}
+#user-singel-program-description > div {
+    height: 20px;
+    color : rgb(137, 137, 137);
 }

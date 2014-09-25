@@ -313,8 +313,9 @@ $(function() {
                     success: function(data) { 
                         if (data != null)
                         {
-                            if(data.badge.length > 4)
-                                alert('New badge - ' + data.badge);
+                            if (typeof data.badge != 'undefined')
+                                if(data.badge.length > 4)
+                                    alert('New badge - ' + data.badge);
                         }
                         var rdata;
                     } ,

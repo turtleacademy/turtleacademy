@@ -6,7 +6,7 @@
     $return['username']         =   $username; 
 
     
-    $m                          =   new Mongo();
+    $m                          =   new MongoClient();
     $db                         =   $m->turtleTestDb;
     $user_programs               =   "programs";
     $user_Programs_Collection     =   $db->$user_programs;

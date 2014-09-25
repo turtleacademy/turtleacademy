@@ -22,6 +22,16 @@
             return $program['comments'];
             //Case no user found          
         }
+         
+        public static function find_program_num_comments($program_id) 
+        {
+            $m = new MongoClient();
+            $db = $m->turtleTestDb;	
+            $programcol = $db->programs;
+            $program = $programcol->findOne(array("_id" => $program_id));
+            return $program['numOfComments'];
+            //Case no user found          
+        }
         
         //Getting the user rank for the program
         public static function program_ave_rank($program_id) 

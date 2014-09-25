@@ -9,6 +9,8 @@
     $ppl        = $_POST['progress_pl'];
     $pnl        = $_POST['progress_nl'];
     $pfi        = $_POST['progress_fi'];
+    $pit        = $_POST['progress_it'];
+    $pbg        = $_POST['progress_bg'];
     
     $fru        = $_POST['finish_ru'];
     $fzh        = $_POST['finish_zh'];
@@ -19,6 +21,8 @@
     $fpl        = $_POST['finish_pl'];
     $fnl        = $_POST['finish_nl'];
     $ffi        = $_POST['finish_fi'];
+    $fit        = $_POST['finish_it'];
+    $fbg        = $_POST['finish_bg'];
     
     $precedence = $_POST['precedence'];
    
@@ -31,7 +35,7 @@
     if ($flag)
     {
 
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->lessons_translate_status;
         
@@ -61,6 +65,8 @@
             $progress['locale_pl_PL'] = $ppl;
             $progress['locale_fi_FI'] = $pfi;
             $progress['locale_nl_NL'] = $pnl;
+            $progress['locale_it_IT'] = $pit;
+            $progress['locale_bg_BG'] = $pbg;
 
             
             $completed['locale_zh_CN'] = $fzh;
@@ -72,6 +78,8 @@
             $completed['locale_pl_PL'] = $fpl; 
             $completed['locale_fi_FI'] = $ffi;
             $completed['locale_nl_NL'] = $fnl;
+            $completed['locale_it_IT'] = $fit;
+            $completed['locale_bg_BG'] = $fbg;
 
             $result     =   $strcol->update($lessonExist, array("title" => $title , "comments" => $comments , "lesson_id" => $lessonid ,
                                                                 "in_progress" => $progress ,"completed" => $completed , "precedence" => $precedence ));

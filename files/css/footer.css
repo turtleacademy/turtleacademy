@@ -7,10 +7,6 @@
         Purpose of the stylesheet follows.
 */
 
-root { 
-    display: block;
-} 
-
 .flagIcon{
     height: 50px;
 }

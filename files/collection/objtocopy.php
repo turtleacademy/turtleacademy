@@ -12,7 +12,7 @@
 
 
 
-                $m = new Mongo();
+                $m = new MongoClient();
 
                 // select a database
                 $db = $m->$db_name;

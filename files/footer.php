@@ -1,6 +1,6 @@
     
 <?php
-    //TODO - remove unneeded variable comments
+    //TODO - remove unneeded variable comments 
         //$currentFile    = $_SERVER["PHP_SELF"];
         //$parts          = Explode('/', $currentFile);
         //$currentPage    = $parts[count($parts) - 1];

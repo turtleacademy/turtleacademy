@@ -33,15 +33,7 @@ error_reporting(E_ERROR | E_PARSE);
 ?>
 <?php
     $comment_place_holder = _('Add comment to the program') . "..";
-    if ($logged_in_user)
-    {
-    ?>
-    <form id="add_comment_form"> 
-            <textarea id="commentTxtArea" placeholder="<?php echo $comment_place_holder;?>"></textarea>
-            <input id="btn_comment" type="button" value="<?php echo _('submit comment'); ?>" class="btn small info pressed"></input>
-    </form>
-    <?php
-    }   
+
  ?> 
     <div id="numOfComments">
         <?php echo $criteria['numOfComments']; echo " " ; echo "Comments"?>
@@ -85,7 +77,15 @@ error_reporting(E_ERROR | E_PARSE);
        ?>
     </div>
 <?php
-        if (!$logged_in_user)
+    if ($logged_in_user)
+    {
+    ?>
+    <form id="add_comment_form"> 
+            <textarea id="commentTxtArea" placeholder="<?php echo $comment_place_holder;?>"></textarea>
+            <input id="btn_comment" type="button" value="<?php echo _('submit comment'); ?>" class="btn small info pressed"></input>
+    </form>
+    <?php
+    } else 
         {
         ?>
         <div><span> <?php echo _("You must"); ?> <a href="<?php echo $root_dir . "registration.php";?>"><?php echo _("login"); ?> </a> <?php echo _("to comment"); ?></span></div>

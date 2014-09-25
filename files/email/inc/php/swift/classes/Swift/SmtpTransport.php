@@ -1,5 +1,4 @@
 <?php
-
 /*
  SMTP Transport wrapper from Swift Mailer.
  

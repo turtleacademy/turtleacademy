@@ -20,7 +20,7 @@ class collectionUtil {
     # Constructor  
     public function __construct($db,$collection)  
      {
-                $m = new Mongo();
+                $m = new MongoClient();
                 $this->m = $m;
                 $thisdb = $m->$db; 
                 $this->collection = $thisdb->$collection;$this->db = $thisdb; 
@@ -91,7 +91,7 @@ class collectionUtil {
     }
     public static function add_property_to_all_collection_objects($collectoinName ,$property , $val)
     {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $collection = $db->$collectoinName;
            $cursor = $collection->find();
@@ -104,7 +104,7 @@ class collectionUtil {
      }
     public static function change_all_collection_objects_property ($collectoinName ,$property , $val)
     {
-           $m = new Mongo();
+           $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $collection = $db->$collectoinName;
            $cursor = $collection->find();
@@ -123,7 +123,7 @@ class collectionUtil {
     }
     public static function collection_item_change_attrivute_val ($db,$collection ,$mongoid , $attName , $attVal) 
     { 
-        $m                          =   new Mongo();
+        $m                          =   new MongoClient();
         $thisdb                     =   $m->$db;
         $colname                    =   $collection;
         $collection            =   $thisdb->$colname;
@@ -155,7 +155,7 @@ class collectionUtil {
      * good for example to move data from lessons to lessons_translate
      */
     public static function copy_full_lesson_between_collections($mongoid ,$dbName,$colFromName , $colToName) {
-        $mo = new Mongo();
+        $mo = new MongoClient();
         // select a database
         $dbb = $mo->$dbName;
         // select a collection (analogous to a relational database's table)
@@ -181,7 +181,7 @@ class collectionUtil {
         }
     }
     public static function copy_locale_lesson_between_collections($mongoid ,$dbName,$col_from_name , $col_to_name , $locale , $stepnum) {
-        $mo = new Mongo();
+        $mo = new MongoClient();
         // select a database
         $dbb = $mo->$dbName;
         // select a collection (analogous to a relational database's table)
@@ -207,7 +207,7 @@ class collectionUtil {
       */
      public static function get_all_collection_objects($colname) 
      {
-           $m       = new Mongo();
+           $m       = new MongoClient();
            $db      = $m->turtleTestDb;
            $strings = $db->$colname;
            $results = $strings->find();

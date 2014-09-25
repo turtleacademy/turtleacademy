@@ -18,7 +18,7 @@
         echo "Your context is " .$context . " "  . ".<br />";
         echo "Your itemid is " .$itemid . " "  . ".<br />";
         
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->news;
         
@@ -26,7 +26,8 @@
         $newsQuery              = array('itemid' => $itemid);
         $newsExist              = $strcol->findOne($newsQuery);
         $resultcount            = $strcol->count($newsQuery);
-        $emptyTranslate         = array("locale_zh_CN" => "" ,"locale_es_AR" => "" ,"locale_he_IL" => "" ,"locale_ru_RU" => "");
+        $emptyTranslate         = array("locale_zh_CN" => "" ,"locale_es_AR" => "" ,"locale_he_IL" => "" ,"locale_ru_RU" => ""
+            ,"locale_it_IT" => "");
         $date = date('Y-m-d H:i:s');
         //Here the record will be added in any case
         

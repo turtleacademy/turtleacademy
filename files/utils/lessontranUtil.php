@@ -7,7 +7,7 @@
 class lessontranUtil {
 
     public function add_new_locale($locale_name) {
-        $m                  = new Mongo();
+        $m                  = new MongoClient();
         $db                 = $m->turtleTestDb;
         $strcol             = $db->lessons_translate_status;
         $lessons            = $strcol->find();

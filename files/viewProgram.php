@@ -67,7 +67,7 @@ if (isset($_SESSION['username']))
     topbarUtil::print_topbar("programUpdate"); 
             
     $program_id = $_GET['programid'];
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $programs = "programs";
     $programs_collection = $db->$programs;

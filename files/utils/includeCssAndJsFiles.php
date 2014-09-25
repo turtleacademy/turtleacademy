@@ -4,7 +4,7 @@ class includeCssAndJsFiles {
     public static function include_all_page_files($pageName) 
     {
         $additional_files = "";
-        global $_SESSION , $root_dir , $locale_domain , $site_path , $localize;
+        global $_SESSION , $root_dir , $locale_domain , $site_path , $localize , $minified;
         $has_navigator          = false;
         $has_console            = false;
         $has_lessons            = false;
@@ -15,7 +15,7 @@ class includeCssAndJsFiles {
         $run_get_text           = true;
         switch ($pageName) {
             case "index":
-                $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index.css' type='text/css' media='all'/>";
+                $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/index" . $minified .".css' type='text/css' media='all'/>";
             break;
             case "donate":
                 $additional_files    = "<link rel='stylesheet' href='".$root_dir."files/css/donation.css' type='text/css' media='all'/>";
@@ -107,7 +107,7 @@ class includeCssAndJsFiles {
                $run_get_text     = false;
                break;
             case "faq":
-               $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/index.css'/> "; 
+               $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/index.min.css'/> "; 
                $additional_files = $additional_files ."<link rel='stylesheet' type='text/css' href='".$root_dir."files/css/faq.css'/> "; 
                break;
            case "faqadmin":
@@ -162,7 +162,7 @@ class includeCssAndJsFiles {
     private static function includingFiles($additional_files , $hasNavigator ,  $hasConsole ,$hasLessons , $hasAlerts ,
             $has_command_line , $add_turtle_commands , $pageName , $run_logo_command , $run_get_text)
     {
-        global $root_dir,$env , $locale_domain,$site_path , $localize;
+        global $root_dir,$env , $locale_domain,$site_path , $localize , $minified;
         //Userd in Turtle.js will be added for all the objects
         $localize['black'] = _('black');$localize['blue'] = _('blue');$localize['lime'] = _('lime');$localize['cyan'] = _('cyan');
         $localize['red'] = _('red');$localize['magenta'] = _('magenta');$localize['yellow'] = _('yellow');$localize['white'] = _('white');
@@ -257,7 +257,7 @@ class includeCssAndJsFiles {
         {    
             //echo "<script type='application/javascript' src='".$root_dir."files/bootstrap/js/bootstrap-carousel.js' ></script>" ; 
         }
-        echo "<link href='".$root_dir."files/bootstrap/css/bootstrap.all.css' rel='stylesheet' >" ;
+        echo "<link href='".$root_dir."files/bootstrap/css/boostrap_all.min.css' rel='stylesheet' >" ;
 
     
     /* loading some other files */
@@ -291,15 +291,15 @@ class includeCssAndJsFiles {
         }
         if ($run_logo_command)
         {
-            echo "<script type='application/javascript' src='".$root_dir."files/logo.js' ></script>\n" ; 
-            echo "<script type='application/javascript' src='".$root_dir."files/turtle.js' ></script>\n" ; 
+            echo "<script type='application/javascript' src='".$root_dir."files/logo".$minified .".js'></script>\n" ; 
+            echo "<script type='application/javascript' src='".$root_dir."files/turtle".$minified .".js'></script>\n" ; 
         }
         if ($has_command_line)
         {
             echo "<script type='application/javascript' src='".$root_dir."files/floodfill.js' ></script>\n" ; 
         }
         
-        echo "<link rel='stylesheet' href='".$root_dir."files/css/topbarAndFooter.css' type='text/css' media='all'/>";
+        echo "<link rel='stylesheet' href='".$root_dir."files/css/topbarAndFooter.min.css' type='text/css' media='all'/>";
         //echo "<link rel='stylesheet' href='".$root_dir."files/css/topbar.css' type='text/css' media='all'/>"; 
         //echo "<link rel='stylesheet' href='".$root_dir."files/css/footer.css' type='text/css' media='all'/>";
   ?> 

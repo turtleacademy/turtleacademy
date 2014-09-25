@@ -416,7 +416,7 @@
             var createStepNavVar = function createStepNav(isStepAdd , isStepRemove)
             {
                 var lessonStepValuesStorage = new Array(new Array());
-                var gt = new Gettext({'domain' : 'messages'});
+
                 if ($.Storage.get("lesson-total-number-of-steps"))
                 {
                     //var currentNumOfLessonStep = $('.existing_step').length;
@@ -457,7 +457,7 @@
                        liElements += "<li class='existing_step " + active + "" + "'id=\"" +id + "\">" + " <a href='#'> " + i + " </a></li>";
                        active = "";
                     }
-                    liElements += "<li><a class='add_step' id='addStep'>" + gt.gettext("Add lesson step") + "</a></li>";
+                    liElements += "<li><a class='add_step' id='addStep'>" + gt['Add lesson step'] + "</a></li>";
                     if (isStepAdd)
                         {
                             $.Storage.set('active-step' , stepId + numOfLessonSteps); 
@@ -467,7 +467,7 @@
                 }
                 else
                 {
-                    $("#lessonStepUl" ).append('<li class="existing_step active" id="lesson_step1"> <a href="#"> 1 </a></li><li><a class="add_step" id="addStep">' + gt.gettext("Add lesson step") + '</a></li>');  
+                    $("#lessonStepUl" ).append('<li class="existing_step active" id="lesson_step1"> <a href="#"> 1 </a></li><li><a class="add_step" id="addStep">' + gt['Add lesson step'] + '</a></li>');  
                     $.Storage.set('lesson-total-number-of-steps' , '1');
                     $.Storage.set('lessonStepsValues',JSON.stringify(lessonStepValuesStorage, null, 2))
                     $.Storage.set('lessonStepsValuesTranslate',JSON.stringify(lessonStepValuesStorage, null, 2))
@@ -654,8 +654,8 @@
                     //removelesson();
                     //need to remove from DB
                     var gt = new Gettext({'domain' : 'messages'});
-                    jConfirm(gt.gettext("Are you sure you want to delete the lesson") , 'Confirmation Dialog', function(r) {
-                        jAlert(gt.gettext("Your lessson has been deleted") + r, 'confirm delete');
+                    jConfirm(gt['Are you sure you want to delete the lesson'] , 'Confirmation Dialog', function(r) {
+                        jAlert(gt['Your lessson has been deleted'] + r, 'confirm delete');
                         if (r)
                         {
                             $.ajax({
@@ -671,11 +671,11 @@
                                     window.clearStep();
                                     var url = document.URL ;
                                     var myUrl = url.split("?");
-                                    alert(gt.gettext("successfully deleted"));
+                                    alert(gt['successfully deleted']);
                                     window.location.replace(myUrl[0]);
                                 },
                                 error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                    alert(gt.gettext("an error occured"));
+                                    alert(gt['an error occured']);
                                 }
                             });
                         }
@@ -695,10 +695,10 @@
 
                                
                             } else
-                               alert(gt.gettext("Lesson title should contain at least 2 caracters"));
+                               alert(gt['Lesson title should contain at least 2 caracters']);
                             }
                     else{
-                        alert(gt.gettext("Lesson title should contain at least 2 caracters"));
+                        alert(gt['Lesson title should contain at least 2 caracters']);
                     }
                     
                 });

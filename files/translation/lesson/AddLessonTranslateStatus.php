@@ -17,7 +17,7 @@
         echo "Your Title is " .$title  . " "  . ".<br />";
         echo "Your id is " .$id . " "  . ".<br />";
         
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->lessons_translate_status;
         

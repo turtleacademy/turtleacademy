@@ -35,13 +35,11 @@ $.extend({
 
 function loadLesson(lessonID)
 {
-    var gt = new Gettext({
-        'domain' : 'messages'
-    });
+   
     //Set the activeLesson
     activeLesson = lessonID;
     var lessonDisplayNum = lessonID +1;
-    var LessonTitleTranslated = gt.gettext("lesson");    
+    var LessonTitleTranslated = gt["lesson"];    
     //Clear the accordion
     $( "#accordion" ).replaceWith('<div id="accordion" style="color:#4aa329">');
 
@@ -102,9 +100,6 @@ $(function() {
     // Compile templates used later
     // The header template
     
-    var gt = new Gettext({
-        'domain' : 'messages'
-    });
 
     var markup =
     '<div id="rs-carousel" class="rs-carousel">'     
@@ -146,10 +141,10 @@ $(function() {
     + '<p>{{html explanation}}</p> '
     + '<p>{{html action}}</p>'
     + '{{if hint.length > 0}}'
-    +  '<button class="btn">' + gt.gettext("hint") + '</button>' 
+    +  '<button class="btn">' + gt["hint"] + '</button>' 
     +  '<p id="(${Id})" style="display: none;color:black;">{{html hint}}</p>' 
     + '{{/if}}'
-    +  '<button class="btn">' + gt.gettext("Solution") + '</button>' 
+    +  '<button class="btn">' + gt["Solution"] + '</button>' 
     + '<p id="(${Id})" style="display: none;color:black;">{{html solution}}</p>'
     +'<p id="' + turtleid+'${$index +1}"> </p>'
               
@@ -242,7 +237,7 @@ $(function() {
     loadLesson(0);
 
     // Creating the console.   
-    window.jqconsole = $('#console').jqconsole(gt.gettext("Hi") + "\n" + gt.gettext("Welcome to the Turtle world"), '> ');
+    window.jqconsole = $('#console').jqconsole(gt["Hi"] + "\n" + gt["Welcome to the Turtle world"], '> ');
     
     if ($('html').attr('dir') == 'rtl') //Should be check comparing to array contaning all RTL languages
     {
@@ -289,7 +284,7 @@ $(function() {
     //jqconsole.history = JSON.parse($.Storage.get("logo-history"));
     } catch (e) {
         // Write the failure to our console
-        jqconsole.Write(gt.gettext('Error Loading History') +': ' + e + '\n');
+        jqconsole.Write(gt['Error Loading History'] +': ' + e + '\n');
     }
     
     var handler = function(command) {
@@ -382,7 +377,7 @@ $(function() {
                 }
             } catch (e) {
                 // Write the failure to our console
-                jqconsole.Write(gt.gettext('Error') +': ' + e + '\n');
+                jqconsole.Write(gt['Error'] +': ' + e + '\n');
             }
         }
         jqconsole.Prompt(true, handler, function(command) {
@@ -446,7 +441,7 @@ $(function() {
             var toCmd        = commandParts[0].substr(1, commandParts[0].length);
             if (i == 0)
                 toCmd = toCmd.substr(1,toCmd.length -1);
-            if (toCmd == gt.gettext("to")) 
+            if (toCmd == gt["to"]) 
             {
                 commandLen   = historyArray[i].length -1;
                 var startcmd = 1;

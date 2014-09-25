@@ -3,7 +3,7 @@
     if (isset ($_GET['itemid']))
     {
         $edit       =   true;
-        $m          = new Mongo();
+        $m          = new MongoClient();
         $db         = $m->turtleTestDb;
         $colname    = $db->news;
         $the_object_id   = new MongoId($_GET['itemid']);

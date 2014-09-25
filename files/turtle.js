@@ -23,7 +23,7 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
   function deg2rad(d) { return d / 180 * Math.PI; }
   function rad2deg(r) { return r * 180 / Math.PI; } 
 
-  var gt = new Gettext({'domain' : 'messages'});   
+    
   
   var self = this;
   function moveto(x, y) {
@@ -46,6 +46,7 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
       // TODO: What happens if we switch modes and turtle is outside bounds?
 
       switch (self.turtlemode) {
+  
         case 'window':
           _go(self.x, self.y, x, y);
           self.x = x;
@@ -62,14 +63,30 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
 
           if (x < 0) {
             fx = (self.x - 0) / (self.x - x);
+            if (self.x == x)
+            {
+               fx = 1; 
+            }
           } else if (x >= width) {
             fx = (self.x - width) / (self.x - x);
+            if (self.x == x)
+            {
+               fx = 1; 
+            }
           }
 
           if (y < 0) {
             fy = (self.y - 0) / (self.y - y);
+            if (self.y == y)
+            {
+               fy = 1; 
+            }
           } else if (y >= height) {
             fy = (self.y - height) / (self.y - y);
+            if (self.y == y)
+            {
+               fy = 1; 
+            }
           }
 
           // intersection point (draw current to here)
@@ -111,10 +128,10 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
               return;
             }
           }
-
           break;
-      }
+      
     }
+  }
   }
 
   this.move = function(distance) {
@@ -173,7 +190,7 @@ function CanvasTurtle(canvas_ctx, turtle_ctx, width, height) {
       //turtle academy
       var tran_color = false;
       for (var i = 0; i < 16; i++) {
-        if (color == gt.gettext(STANDARD_COLORS[i]))
+        if (color == gt[(STANDARD_COLORS[i])])
             {
                 tran_color = true;
                 this.color = STANDARD_COLORS[i];

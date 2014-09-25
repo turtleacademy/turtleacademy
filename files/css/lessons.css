@@ -22,19 +22,7 @@ root {
     display: block;
     */
 }
-.lessonlables
-{
-   color :   blue ;
-   /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
-   font-size: 16px;
-   font-weight: normal;
 
-   cursor: default;
-   padding-top: 10px ;
-   border: 0;
-   width : 500px;
-   float : left;
-}
 #lessonStep{
    /* height: 140px; */
    width : 100%;
@@ -189,6 +177,10 @@ textarea {
     position: relative;
     width :40%;
 }
+.leftLessonElem[dir*="rtl"]
+{
+    float : right;
+}
 .rightLessonElem{
     width :45%;
     /* margin-left: 600px;  */
@@ -246,6 +238,27 @@ textarea {
     text-align: left;
     padding-top: 5px;
 }  
+.lesson-label[dir*="rtl"]
+{
+    float : right;
+}
+.lessonlables
+{
+   color :   blue ;
+   /* font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; */
+   font-size: 16px;
+   font-weight: normal;
+
+   cursor: default;
+   padding-top: 10px ;
+   border: 0;
+   width : 500px;
+   float : left;
+}
+.lessonlables[dir*="rtl"]
+{
+    float : right;
+}
 .form-stacked label{
     width : 100px !important; 
         
@@ -317,4 +330,11 @@ font-family: sans-serif;
 }
 .form-input{
     height: 60px;
+}
+#stepNav[dir*="rtl"] , #lessonStepUl[dir*="rtl"] 
+{
+    float : right;
+}
+#lessonStepUl[dir*="rtl"]  > li{
+     float : right;
 }

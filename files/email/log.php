@@ -111,7 +111,7 @@
         }
         if ($validateUser)
         {
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->$db_name;
             $loginLog = $db->login_volunteers;
             date_default_timezone_set('America/Los_Angeles');

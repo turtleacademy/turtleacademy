@@ -9,7 +9,7 @@
    
     
      function addNewLocale($localeName) {
-        $m                  = new Mongo();
+        $m                  = new MongoClient();
         $db                 = $m->turtleTestDb;
         $strcol             = $db->faq;
         $lessonsfaqs        = $strcol->find();

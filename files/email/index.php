@@ -88,7 +88,7 @@ if(isset($_POST['signup'])){
 				
 		$password = md5($password);	
                 
-                $m = new Mongo();
+                $m = new MongoClient();
 
                 $db = $m->turtleTestDb;	
 

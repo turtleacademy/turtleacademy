@@ -62,11 +62,10 @@ $(function() {
     /////////////////////////////////////////////////////////////
     // Console ///////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
-    var gt = new Gettext({'domain' : 'messages'});
     // Creating the console.
     var welcome = 'Hello\nWelcome to the world of the turtle\n';
     
-    window.jqconsole = $('#console').jqconsole(gt.gettext("Hi") + "\n" + gt.gettext("Welcome to the Turtle world"), '> ');
+    window.jqconsole = $('#console').jqconsole(gt["Hi"] + "\n" + gt["Welcome to the Turtle world"], '> ');
     //window.jqconsole = $('#console').jqconsole(gt.gettext("Hi \nWelcome to the Turtle world"), '> ');
     //        window.jqconsole = $('#console').jqconsole(gt.gettext("welcome"), '> ');
    
@@ -114,8 +113,9 @@ $(function() {
     // Load console history from localStorage for consistant console
     if ($.Storage.get("logo-history")) 
     {
-        if (JSON.parse($.Storage.get("logo-history")))
-            jqconsole.history = JSON.parse($.Storage.get("logo-history"));
+        //Should be implemented later
+        //if (JSON.parse($.Storage.get("logo-history")))
+        //    jqconsole.history = JSON.parse($.Storage.get("logo-history"));
     }
 
     // Handle a command.
@@ -131,7 +131,7 @@ $(function() {
                 //Saving the user history commands
                 $.ajax({
                     type : 'POST',
-                    url : '/files/saveLocalStorage.php',
+                    url : sitePath + '/files/saveLocalStorage.php',
                     dataType : 'json',
                     data: {
                         userHistory  :   $.Storage.get('logo-history'),
@@ -146,7 +146,7 @@ $(function() {
                 });
             } catch (e) {
                 // Write the failure to our console
-                jqconsole.Write(gt.gettext('Error') +': ' + e + '\n');
+                jqconsole.Write(gt['Error'] +': ' + e + '\n');
             }
         }
         jqconsole.Prompt(true, handler, function(command) {

@@ -1,7 +1,7 @@
 <?php
 require_once '../../environment.php';
 $return["nothi"] = "nothing";
-$m = new Mongo();
+$m = new MongoClient();
 $db = $m->turtleTestDb;
 $strcol = $db->messages;
 $date = date('Y-m-d H:i:s');// Case of system message

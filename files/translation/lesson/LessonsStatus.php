@@ -52,6 +52,8 @@
                                     <input type="checkbox" value="option7" id="progress_pl<?php echo $i ?>" <?php if ($progress['locale_pl_PL'] == "true") echo "checked=true";?>> PL
                                     <input type="checkbox" value="option8" id="progress_nl<?php echo $i ?>" <?php if ($progress['locale_nl_NL'] == "true") echo "checked=true";?>> NL
                                     <input type="checkbox" value="option9" id="progress_fi<?php echo $i ?>" <?php if ($progress['locale_fi_FI'] == "true") echo "checked=true";?>> FI
+                                    <input type="checkbox" value="option9" id="progress_it<?php echo $i ?>" <?php if ($progress['locale_it_IT'] == "true") echo "checked=true";?>> IT
+                                    <input type="checkbox" value="option9" id="progress_bg<?php echo $i ?>" <?php if ($progress['locale_bg_BG'] == "true") echo "checked=true";?>> BG
 
                             </div>
                       </td>
@@ -65,7 +67,9 @@
                                     <input type="checkbox" value="option6" id="finish_pt<?php echo $i ?>" <?php if ($completed['locale_pt_BR'] == "true") echo "checked=true";?>> PT
                                     <input type="checkbox" value="option7" id="finish_pl<?php echo $i ?>" <?php if ($completed['locale_pl_PL'] == "true") echo "checked=true";?>> Pl
                                     <input type="checkbox" value="option8" id="finish_nl<?php echo $i ?>" <?php if ($completed['locale_nl_NL'] == "true") echo "checked=true";?>> NL
-                                    <input type="checkbox" value="option9" id="finish_fi<?php echo $i ?>" <?php if ($completed['locale_fi_FI'] == "true") echo "checked=true";?>> FI                                    
+                                    <input type="checkbox" value="option9" id="finish_fi<?php echo $i ?>" <?php if ($completed['locale_fi_FI'] == "true") echo "checked=true";?>> FI
+                                    <input type="checkbox" value="option9" id="finish_it<?php echo $i ?>" <?php if ($completed['locale_it_IT'] == "true") echo "checked=true";?>> IT
+                                    <input type="checkbox" value="option9" id="finish_bg<?php echo $i ?>" <?php if ($completed['locale_bg_BG'] == "true") echo "checked=true";?>> BG
                             </div>
                       </td>
                       <td><textarea type='text' id='comments<?php echo $i ?>' rows="3" value='<?php echo $comments; ?>'><?php echo $comments; ?></textarea></td>
@@ -96,6 +100,8 @@
                         var progress_pl             = $('#' + 'progress_pl' + id).is(":checked");
                         var progress_fi             = $('#' + 'progress_fi' + id).is(":checked");
                         var progress_nl             = $('#' + 'progress_nl' + id).is(":checked");
+                        var progress_it             = $('#' + 'progress_it' + id).is(":checked");
+                        var progress_bg             = $('#' + 'progress_bg' + id).is(":checked");
                         
                         var finish_ru             = $('#' + 'finish_ru' + id).is(":checked");
                         var finish_zh             = $('#' + 'finish_zh' + id).is(":checked");
@@ -106,6 +112,8 @@
                         var finish_pl             = $('#' + 'finish_pl' + id).is(":checked");
                         var finish_fi             = $('#' + 'finish_fi' + id).is(":checked");
                         var finish_nl             = $('#' + 'finish_nl' + id).is(":checked");
+                        var finish_it             = $('#' + 'finish_it' + id).is(":checked");
+                        var finish_bg             = $('#' + 'finish_bg' + id).is(":checked");
                         
                         //alert("hello--" + str + "--" + page + "--" + context + "----" + input);
                         $.ajax({
@@ -122,6 +130,8 @@
                                 progress_pl                : progress_pl,
                                 progress_fi                : progress_fi,
                                 progress_nl                : progress_nl,
+                                progress_it                : progress_it,
+                                progress_bg                : progress_bg,
                                 finish_ru                  : finish_ru,
                                 finish_zh                  : finish_zh,
                                 finish_es                  : finish_es,
@@ -131,6 +141,8 @@
                                 finish_pl                  : finish_pl,
                                 finish_fi                  : finish_fi,
                                 finish_nl                  : finish_nl,
+                                finish_it                  : finish_it,
+                                finish_bg                  : finish_bg,
                                 comments                   : comments,
                                 precedence                 : precedence,
                                 lessonId                   : lessonId

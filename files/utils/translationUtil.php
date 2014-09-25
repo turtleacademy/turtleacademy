@@ -30,7 +30,7 @@ class translationUtil extends lessonsUtil {
       */
      public static function show_collection_item_to_translate($colname) 
      {
-           $m       = new Mongo();
+           $m       = new MongoClient();
            $db      = $m->turtleTestDb;	
            $strings = $db->$colname;
            $results = $strings->find();
@@ -62,6 +62,8 @@ class translationUtil extends lessonsUtil {
             $lang = "Italian";
         else if ($locale == "hr_HR")
             $lang = "Croatian";
+        else if ($locale == "bg_BG")
+            $lang = "Bulgarian";
         return $lang;
     }
    

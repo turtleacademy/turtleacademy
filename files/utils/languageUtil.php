@@ -8,7 +8,7 @@ class languageUtil {
 
      public function __construct($db,$collection)  
      {
-                $m = new Mongo();
+                $m = new MongoClient();
                 $this->m = $m;
                 $thisdb = $m->$db; 
                 $this->db = $thisdb; 

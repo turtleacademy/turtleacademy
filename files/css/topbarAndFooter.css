@@ -152,6 +152,14 @@ ul{
 .ddChild > ul {
     direction : ltr;
 } 
+#turtleimg{
+    width : 83px;
+    height: 65px;
+}
+.blank_pic{
+    width : 140px;
+    height: 11px;  
+}
 :lang(he)#turtleimg , :lang(he)#turtleHeaderUl ,:lang(he)#turtleHeaderTitle 
 , /*:lang(he)#turtleHeaderLanguage ,*/ :lang(he)#turtleHeaderUl li{
      float: right;

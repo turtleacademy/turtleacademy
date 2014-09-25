@@ -9,7 +9,7 @@
     if ($flag)
     {
 
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $progcol = $db->programs;
         

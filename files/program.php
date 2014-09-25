@@ -30,19 +30,24 @@ if (isset($_SESSION['username']))
     </title>     
 
     <?php
+     $file_path = "../locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
+    $po_file = "<link   rel='gettext' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />"; 
+    if (file_exists($file_path))
+    {
+       //echo $po_file;
+        ?>
+        <link   rel='gettext' type='application/x-po' href='http://turtleacademy.com//locale/he_IL/LC_MESSAGES/messages.po' />
+        <?php
+    }
+    else {
+        echo "<script> var translationNotLoaded = 5; </script>";      
+      } 
     require_once("utils/includeCssAndJsFiles.php"); 
     includeCssAndJsFiles::include_all_page_files("user-program"); 
     echo "<script type='application/javascript' src='" . $root_dir . "files/jquery.Storage.js' ></script>";
     ?>      
     <?php
-        $file_path = "../locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
-    $po_file = "<link   rel='gettext' type='application/x-po' href='$site_path/locale/" . $locale_domain . "/LC_MESSAGES/messages.po'" . " />";
-    
-    if (file_exists($file_path))
-       echo $po_file;
-    else {
-        echo "<script> var translationNotLoaded = 5; </script>";      
-      } 
+   
     ?>  
 </head>
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">

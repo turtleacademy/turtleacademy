@@ -6,16 +6,18 @@
         $limit = 15;
         $adjacents = 3;
       //if no page var is given, set start to 0
-      //  $num_of_programs = $allPrograms->count();
         $total_pages = ceil($num_of_programs/$limit);
         $lastpage   = $total_pages;
         $prev = $page - 1;							//previous page is page - 1
         $next = $page + 1;							//next page is page + 1
-                    //lastpage is = total pages / items per page, rounded up.
+    //lastpage is = total pages / items per page, rounded up.
         $lpm1 = $lastpage - 1;
-        //echo $num_of_programs;
         $pagination = "";
         $targetpage = curPageURL();
+        
+        //Strings for multilanguage 
+        $previous   =   _("previous");
+        $next_str       =   _("next");   
         if (isset($_GET['page']))
         {
             if ($page >=1 && $page < 10)
@@ -31,9 +33,9 @@
                 $pagination .= "<div class=\"pagination\">";
                 //previous button
                 if ($page > 1) 
-                        $pagination.= "<a href=\"$targetpage/$prev\">� previous</a>";
+                        $pagination.= "<a href=\"$targetpage/$prev\">� $previous</a>";
                 else
-                        $pagination.= "<span class=\"disabled\">� previous</span>";	
+                        $pagination.= "<span class=\"disabled\">� $previous</span>";	
 
                 //pages	
                 if ($lastpage < 7 + ($adjacents * 2))	//not enough pages to bother breaking it up
@@ -97,12 +99,12 @@
 
                         //next button
                         if ($page < $counter - 1) 
-                                $pagination.= "<a href=\"$targetpage/$next\">next �</a>";
+                                $pagination.= "<a href=\"$targetpage/$next\">$next_str �</a>";
                         else
-                                $pagination.= "<span class=\"disabled\">next �</span>";
+                                $pagination.= "<span class=\"disabled\">$next_str �</span>";
                         $pagination.= "</div>\n";		
         }
         return $pagination;
     }
-                            // END pagination
+// END pagination
 ?>

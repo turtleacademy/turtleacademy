@@ -22,10 +22,11 @@ class loadJq extends load_files {
             $js_temple = true, $js_storage = true , $css_alerts = true, $css_custom = true) {
        
         if ($js_min) {
-            if ($this->env == "local")
+            if ($this->env == "lcl")
                 echo "<script type='application/javascript' src='" . $this->addr . "js/jquery/jquery-1.8.2.min.js' ></script>";
             else
-                echo "<script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>";
+                echo "<script type='application/javascript' src='" . $this->addr . "js/jquery/jquery-1.8.2.min.js' ></script>";
+                //echo "<script type='application/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>";
         }
         if ($js_custom == "true") {
             // Ruin the change language 

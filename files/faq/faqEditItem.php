@@ -23,7 +23,7 @@ and open the template in the editor.
         if (isset( $_GET['faqItem']))
             $faqItemnumber =   $_GET['faqItem'];
         //2 . should connect the faq db
-        $m                  = new Mongo();
+        $m                  = new MongoClient();
         $db                 = $m->$db_name;
         $db_lesson_collection = "faq";
         $faqs               = $db->$db_lesson_collection;

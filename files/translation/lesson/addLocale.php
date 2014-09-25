@@ -10,4 +10,5 @@ $ltu ->add_new_locale("locale_fi_FI");
 $ltu ->add_new_locale("locale_nl_NL");
 $ltu ->add_new_locale("locale_it_IT");
 $ltu ->add_new_locale("locale_hr_HR");
+$ltu ->add_new_locale("locale_bg_BG");
 ?>

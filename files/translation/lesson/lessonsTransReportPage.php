@@ -15,14 +15,14 @@
 
     $fullLocalePath     =   "locale_".$locale;
     
-    $m = new Mongo();
+    $m = new MongoClient();
     $db                 = $m->turtleTestDb;
     $strcol             = $db->lessons_translate_status;
     $lessons            = $strcol->find();
     //Should be sorted by precedence
     $lessons->sort(array('precedence' => 1));
     $lang               = translationUtil::get_language($locale);
-
+    
     echo "<div> <h1> Lesson translate to " . $lang . " report </h1></div>";
     foreach ($lessons as $lesson)
     {
@@ -95,32 +95,5 @@
         </span> 
     </div>
     <?php
-    function getLanguage($locale)
-    {
-        $lang = "English";
-        if ($locale == "he_IL")
-            $lang = "Hebrew";
-        else if ($locale == "ru_RU")
-            $lang = "Russian";
-        else if ($locale == "es_AR")
-            $lang = "Spanish";
-        else if ($locale == "zh_CN")
-            $lang = "Chinese";
-        else if ($locale == "ar_JO")
-            $lang = "Arabic";
-        else if ($locale == "de_DE")
-            $lang = "German";
-        else if ($locale == "pt_BR")
-            $lang = "Portuguese";
-        else if ($locale == "pl_PL")
-            $lang = "Polish";
-        else if ($locale == "nl_NL")
-            $lang = "Duetch";
-        else if ($locale == "it_IT")
-            $lang = "Italian";
-        else if ($locale == "hr_HR")
-            $lang = "Croatian";
-        return $lang;
-    }
     ?>
 

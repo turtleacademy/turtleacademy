@@ -61,7 +61,7 @@ require_once("faqSideNav.php");
         $comment            = $_POST['comment'];
     }
     
-    $m = new Mongo();
+    $m = new MongoClient();
     $db         = $m->turtleTestDb;
     $strcol     = $db->$collectionName;
     $date       =   date('Y-m-d H:i:s');

@@ -230,7 +230,7 @@ class topbarUtil {
                                 $blankImagePath = $rootDir . "Images/msdropdown/icons/blank.gif";
                                 foreach ($language as $langKey => $langVal) {
                                     if ($displaylanguage[$langKey])
-                                        echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]'> $countryNativeName[$langKey] </option> ";
+                                        echo "<option value='$langVal' data-image='$blankImagePath' data-imagecss='flag $countryFlagName[$langKey]' data-title='$countryNativeName[$langKey]' class='blank_pic'> $countryNativeName[$langKey] </option> ";
                                 }
                                 ?> 
                             </select>

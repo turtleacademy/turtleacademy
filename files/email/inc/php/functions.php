@@ -120,24 +120,18 @@ function send_email_test($info){
     $transport = Swift_SmtpTransport::newInstance('localhost', 25);
     $mailer = Swift_Mailer::newInstance($transport);
     $message = Swift_Message::newInstance();
-
-  // Give the message a subject
-  $message->setSubject('Your subject');
-
-  // Set the From address with an associative array
-  $message->setFrom(array('john@doe.com' => 'John Doe'));
-
-  // Set the To addresses with an associative array
-  $message->setTo(array('uriwald@walla.com' => 'Dear uri lucio'));
-
-  // Give it a body
-  $message->setBody('Here is the message itself');
-
-  // And optionally an alternative body
-  $message->addPart('<q>Here is the message itself</q>', 'text/html');
-
-  $result = $mailer->send($message);
-  return $result;
+    // Give the message a subject
+    $message->setSubject('Your subject');
+    // Set the From address with an associative array
+    $message->setFrom(array('john@doe.com' => 'John Doe'));
+    // Set the To addresses with an associative array
+    $message->setTo(array('uriwald@walla.com' => 'Dear uri lucio'));
+    // Give it a body
+    $message->setBody('Here is the message itself');
+    // And optionally an alternative body
+    $message->addPart('<q>Here is the message itself</q>', 'text/html');
+    $result = $mailer->send($message);
+    return $result;
 }
 //cleanup the errors
 function show_errors($action){

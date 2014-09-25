@@ -23,7 +23,7 @@
         echo "Type is " .$type . " "  . ".<br />"; 
         echo "Your id is " .$id . " "  . ".<br />"; 
         
-        $m = new Mongo();
+        $m = new MongoClient();
         $db = $m->turtleTestDb;
         $strcol = $db->faq;
         $locales         = array("zh_CN"  ,"es_AR" ,"he_IL"  ,"ru_RU" ,

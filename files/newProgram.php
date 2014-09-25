@@ -5,6 +5,7 @@ if (session_id() == '')
     session_start();
 require_once("../environment.php");
 require_once("../localization.php");
+require_once("../localization_js.php");
 
 if (!isset($_SESSION['username']))
 {
@@ -43,16 +44,7 @@ require_once('utils/topbarUtil.php');
     else {
         echo "<script> var translationNotLoaded = 5; </script>";      
       } 
-    /*
-    echo "<script type='application/javascript' src='" . $rootDir . "files/jqconsole.js' ></script>\n";
-    echo "<script type='application/javascript' src='" . $rootDir . "ajax/libs/jquery/editable/jquery.editable.js'></script>";
-    echo "<link   href='".$rootDir."files/codemirror/mode/logo/logo.css' rel='stylesheet'></link>";
-     * 
-     */
-    ?>        
-     <!-- <script type="application/javascript" src="<?php echo $root_dir; ?>files/interface_user_program.js?locale=<?php echo $locale_domain ?>"></script> <!-- Interface scripts -->
-
-    <!--<link rel="stylesheet" href="codemirror/mode/logo/logo.css"> -->
+    ?>  
 </head>
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">
 <body>
@@ -88,6 +80,7 @@ require_once('utils/topbarUtil.php');
         <div id="instructions"> 
             <div id="code-error-div">
                 <input id="err-msg" type="text" placeholder="An error message will appear here"> </input>    
+                <textarea id="console-output" name="code" style="width: 100px;" placeholder="print output..."></textarea>
             </div>
             <div id="action-buttons" > 
                 <form> 

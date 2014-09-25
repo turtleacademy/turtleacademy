@@ -60,7 +60,7 @@ require_once('progdoc.php');
     //Printing the topbar menu
     topbarUtil::print_topbar("programUpdate"); 
     $program_id = $_GET['programid'];
-    $m = new Mongo();
+    $m = new MongoClient();
     $db = $m->turtleTestDb;
     $programs = "programs";
     $programs_collection = $db->$programs;
@@ -98,7 +98,8 @@ require_once('progdoc.php');
         </div> <!-- Close div command to drawing -->
         <div id="instructions"> 
             <div id="code-error-div">
-                <input id="err-msg" type="text" placeholder="An error message will appear here"> </input>    
+                <input id="err-msg" type="text" placeholder="An error message will appear here"> </input>   
+                <textarea id="console-output" name="code" style="width: 100px;" placeholder="print output..."></textarea>
             </div>
             <div id="action-buttons" > 
                 <form> 

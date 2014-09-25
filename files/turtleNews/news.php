@@ -61,7 +61,7 @@
 
         cssUtils::loadcss($locale, "../css/lessons");
 
-        $m = new Mongo();
+        $m = new MongoClient();
 
         // select a database
         $db = $m->$db_name;
@@ -76,7 +76,7 @@
         foreach ($cursor as $newsItem) {
             $headline                         =    $newsItem['headline'] ;
             $context                          =    $newsItem['context'];
-            $pendingStatus                    =    $newsItem['approve'];
+            $pending_status                    =    $newsItem['approve'];
             $objID                            =    $newsItem['_id'];
             
            
@@ -92,7 +92,7 @@
             */
             
             $approveLesson ;
-            if ($pendingStatus)
+            if ($pending_status)
             {
                 echo "Lesson is currently approved";
                 $approveLesson = "<a href='approveNewsItem.php?item=$objID&pending=false&col=news' > <span class='lessonh'> Unapprove Lesson (lesson will appear in main page) </span> </a>";

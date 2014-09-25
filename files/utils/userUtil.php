@@ -169,10 +169,8 @@
            $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $programs = $db->programs;
-
-
            $userProgramQuery       =  array('$or' => array(array('displayInProgramPage' => true), array('displayInProgramPage' => 'true')));
-           //$programs->ensureIndex(array('totalRankScore' => 1));
+           $programs->ensureIndex(array('lastUpdated' => 1)); //Index required
            $results     = $programs->find($userProgramQuery);
            return $results;
            //Case no user found          
@@ -294,7 +292,7 @@
         return $results;
      }
      
-    public static function get_num_of_varified_users() 
+     public static function get_num_of_varified_users() 
      {
            $m = new MongoClient();
            $db = $m->turtleTestDb;	
@@ -304,8 +302,16 @@
            $resultcount     = $users->count($user_query);
            //Case no user found
           
-               return $resultcount;
-           
+               return $resultcount;     
+     }
+     public static function get_varified_users_collection() 
+     {
+           $m = new MongoClient();
+           $db = $m->turtleTestDb;	
+           $users = $db->users;
+           $user_query       = array('confirm' => true);
+           $resultcount     = $users->find($user_query);
+           return $resultcount;    
      }
      
      

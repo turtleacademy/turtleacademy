@@ -34,9 +34,20 @@
                   <tr>
                       <td></td>
                       <td id='headline<?php echo $itemid ?>'> <?php echo $newsItem['headline'] ?> </td>
-                      <td><textarea id='headline_translate<?php echo $itemid ?>' rows="3"><?php echo $newsItem['headline_translate'] ["locale_" . $locale]?></textarea></td>
-                      <td id='context<?php echo $itemid ?>'><?php echo $newsItem['context'] ?></td>
-                      <td><textarea id='context_translate<?php echo $itemid ?>' rows="3"> <?php echo $newsItem['context_translate'] ["locale_" . $locale] ?></textarea></td>
+                      <td>
+                          <textarea id='headline_translate<?php echo $itemid ?>' rows="3"><?php 
+                                if (isset($newsItem['headline_translate'] ["locale_" . $locale]))
+                                    echo $newsItem['headline_translate'] ["locale_" . $locale]
+                            ?></textarea>
+                      </td>
+                      <td id='context<?php echo $itemid ?>'>
+                          <?php echo $newsItem['context'] ?></td>
+                      <td>
+                          <textarea id='context_translate<?php echo $itemid ?>' rows="3"><?php 
+                                    if (isset($newsItem['context_translate'] ["locale_" . $locale]))
+                                        echo $newsItem['context_translate'] ["locale_" . $locale] ;
+                               ?></textarea>
+                      </td>
                       <td>
                         <div class='btn small info pressed' id='<?php echo $itemid ?>'>save</div>
                       </td>

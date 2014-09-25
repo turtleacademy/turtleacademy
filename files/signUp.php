@@ -22,7 +22,7 @@
             </h1>
         </header>
         <?php
-            $m = new Mongo();
+            $m = new MongoClient();
             // select a database
             $db = $m->turtleTestDb;
             // select a collection (analogous to a relational database's table)

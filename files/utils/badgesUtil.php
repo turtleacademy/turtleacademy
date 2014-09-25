@@ -5,10 +5,12 @@
  *  view user badges 
  */
 //Active session class
-    if (session_id() == '')
-    {
-        session_start();
-    }
+if (session_id() == '')
+{
+    session_start();
+}
+
+//require_once("../../environment.php");
 class badgesUtil {
     
    /*
@@ -25,7 +27,7 @@ class badgesUtil {
             return $_SESSION['ubadges'];
        }
        else { 
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->turtleTestDb;
             $users = $db->users;
 
@@ -61,7 +63,7 @@ class badgesUtil {
         else
         {  
         //if User have some badges their condition shouldn't be check
-            $m              = new Mongo();
+            $m              = new MongoClient();
             $db             = $m->turtleTestDb;	
             $user_progress   = $db->user_progress;
             $user           = $user_progress->findOne(array("username" => $username));
@@ -165,7 +167,7 @@ class badgesUtil {
    }
    private static function add_user_badge_to_db ($badgeName , $username)
    {
-        $m              = new Mongo();
+        $m              = new MongoClient();
         $db             = $m->turtleTestDb;	
         $users          = $db->users;
         $user           = $users->findOne(array("username" => $username));

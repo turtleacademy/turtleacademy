@@ -28,12 +28,6 @@ require_once('utils/topbarUtil.php');
         <?php
             bindtextdomain("messages", "../locale");
             textdomain("messages");
-            $file_path = $site_path . "/locale/" . $locale_domain . "/LC_MESSAGES/messages.po";
-            $po_file = "<link   rel='gettext' type='application/x-po' href='" . $file_path . "'" . " />";
-            if (file_exists($file_path))
-            {
-                echo "<script> alert('$file_path')</script>\n" ;
-            } 
             echo "<script type='application/javascript' src='".$root_dir."files/jqconsole.js' ></script>\n" ;
          
         ?>        
@@ -53,7 +47,7 @@ require_once('utils/topbarUtil.php');
                 this.innerHTML = show ? 'hide' : 'show'; return false;">hide
             </a>
             <!-- Including all the Logo language menual -->
-            <iframe frameborder="0" src="<?php echo $root_dir; ?>files/lang.html" id="guide_body" style="">
+            <iframe  src="<?php echo $root_dir; ?>files/lang.html" id="guide_body" style="">
             </iframe>  
         </div> 
         <div id="main" style="margin-left: 100px;">
