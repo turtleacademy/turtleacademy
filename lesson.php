@@ -18,8 +18,9 @@ require_once('files/utils/topbarUtil.php');
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <?php
-        require_once('files/utils/includeCssAndJsFiles.php');
-        includeCssAndJsFiles::include_all_page_files("learn");
+            require_once("localization_js.php");
+            require_once('files/utils/includeCssAndJsFiles.php');
+            includeCssAndJsFiles::include_all_page_files("learn");
         ?>
         <title>
             Create new lesson
@@ -34,7 +35,7 @@ require_once('files/utils/topbarUtil.php');
 
     </head>
     <?php
-    function curPageURL() {
+        function curPageURL() {
                 $pageURL = 'http';
                 if (isset($_SERVER["HTTPS"])) {$pageURL .= "s";}
                 $pageURL .= "://";
@@ -45,18 +46,19 @@ require_once('files/utils/topbarUtil.php');
                 }
                 return $pageURL;
             }
-    $curr_url = curPageURL();
-    if ($has_permission) { // Show the page for register user
+        $curr_url = curPageURL();
+        if ($has_permission) { // Show the page for register user
         ?>
         <body>
             <?php
             topbarUtil::print_topbar("index");
-            $m = new Mongo();
+            $m = new MongoClient();
             $db = $m->$db_name;
             $db_lesson_collection = "lessons_created_by_guest";
             if (isset($_SESSION['Admin'])) {
                 $db_lesson_collection = "lessons";
             }
+        
             $lessons = $db->$db_lesson_collection;
 
             $lessonFinalTitle = "";

@@ -653,7 +653,6 @@
                 $('#btnDeleteLesson').click(function() {
                     //removelesson();
                     //need to remove from DB
-                    var gt = new Gettext({'domain' : 'messages'});
                     jConfirm(gt['Are you sure you want to delete the lesson'] , 'Confirmation Dialog', function(r) {
                         jAlert(gt['Your lessson has been deleted'] + r, 'confirm delete');
                         if (r)
@@ -685,8 +684,7 @@
                 $('#btnSaveLessonTranslate').click(function() {           
                     window.saveLessonData(true);
                 });
-                $('#btnSaveLesson').click(function() {  
-                    var gt = new Gettext({'domain' : 'messages'});
+                $('#btnSaveLesson').click(function() {
                     if ($.Storage.get('lessonTitle'))
                         {
                            if ($.Storage.get('lessonTitle').length > 2)
