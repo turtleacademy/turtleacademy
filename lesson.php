@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <?php
 if (session_id() == '')
@@ -32,7 +28,6 @@ require_once('files/utils/topbarUtil.php');
         ?>
         <link rel='stylesheet' type='text/css' href='<?php echo $root_dir ?>files/css/lessons.css' />
         <script type="application/javascript" src='<?php echo $root_dir ?>files/js/lesson.js'></script> <!-- lessonFunctions --> 
-
     </head>
     <?php
         function curPageURL() {
@@ -60,13 +55,14 @@ require_once('files/utils/topbarUtil.php');
             }
         
             $lessons = $db->$db_lesson_collection;
-
             $lessonFinalTitle = "";
             $lessonPrecedence = 100;
             $lessonTurtleId = 100;
+            $is_update = false;
 
             //If we are in existing lesson we will enter editing mode 
             if (isset($_GET['lessonid'])) {
+                $is_update = true;
                 $lu = new lessonsUtil($locale, $lessons, $_GET['lessonid']); 
                 $the_object_id = new MongoId($_GET['lessonid']);
                 $cursor = $lessons->findOne(array("_id" => $the_object_id));
@@ -85,7 +81,7 @@ require_once('files/utils/topbarUtil.php');
             }
 
             function printElement($i, $flag, $step) {
-                global $dir;
+                global $dir ;
                 if ($flag) {
                     $action     = $step["action"];
                     $solution   = $step["solution"];
@@ -111,7 +107,7 @@ require_once('files/utils/topbarUtil.php');
             }
 
             function printLeftLessonElemnt($i, $show, $lessonPrecedence, $lessonTurtleId) {
-                global $cssleft , $dir;
+                global $cssleft , $dir , $is_update;
                 echo "<div class='leftLessonElem span7' dir='$dir' style='margin-top:10px; margin-left: 0px;  height:350px;'> 
                         <form class='form'>
                             <fieldset class='lesson-fieldset'> 
@@ -137,15 +133,18 @@ require_once('files/utils/topbarUtil.php');
                     echo"</textarea>";
                     echo "</div> ";
                 } //End of if show
-                echo "<div class='divActionBtn'>
-                            <a class='btn' id='btnSaveLesson'>" . _("Save Lesson") . "</a>
-                            <a class='btn btn-danger' id='btnDeleteLesson'>" . _("Delete Lesson") . "</a>
+                echo "<div class='divActionBtn'> ";
+                if ($is_update)
+                    echo "<a class='btn' id='btnSaveLesson'>" . _("Save Lesson") . "</a>";
+                else {
+                    echo "<a class='btn' id='btnCreateLesson'>" . _("Create Lesson") . "</a>";
+                }
+                           echo " <a class='btn btn-danger' id='btnDeleteLesson'>" . _("Delete Lesson") . "</a>
                         </div>
                         </fieldset>                      
                       </form> 
                     </div>"; // Closing left lesson elements
             }
-
 //End of print left element
 
             function printRightLessonElemnt() {
@@ -331,8 +330,8 @@ require_once('files/utils/topbarUtil.php');
         </body>
     </html>
     <?php
-} else { //Unregister user
-    echo "Only registered users are allowed to add lessons";
-    echo "<p><a class='btn primary large' href='/registration.php'>Register for free</a></p>";
+    }else { //Unregister user
+        echo "Only registered users are allowed to add lessons";
+        echo "<p><a class='btn primary large' href='/registration.php'>Register for free</a></p>";
 }
 ?> 

@@ -43,7 +43,7 @@ if (empty($_POST['steps'])) {
     }
     $return['lessonSteps'] =  $lessonSteps;
     
-    $m = new Mongo();
+    $m = new MongoClient();
     // select a database
     $db = $m->$db_name;
     // select a collection (analogous to a relational database's table)
@@ -70,7 +70,7 @@ if (empty($_POST['steps'])) {
             $finalArrAfterTranslation[$i] = $lessonStep;
         }
         $structure = array("steps" => $finalArrAfterTranslation, "title" => $titles, "pending" => "true" , "username" => $user , "localeCreated" => $locale , "register_only" => false );
-        $result = $lessons->insert($structure, array('safe' => true));
+        $result = $lessons->insert($structure);
         $return['objID'] = $structure['_id'];
     } 
     else 

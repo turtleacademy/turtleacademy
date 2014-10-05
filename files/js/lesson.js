@@ -115,7 +115,7 @@
                         populateInputsWithCurrentStep('lessonStepsValues');
                         populateInputsWithCurrentStep('lessonStepsValuesTranslate');
                         //Saving new data
-                        window.saveLessonData(false);
+                        window.saveLessonData(false,false);
                     }
                 }); 
                 
@@ -235,7 +235,7 @@
                 }
             }
             
-            var saveLessonData = function saveLessonData(isTranslate)
+            var saveLessonData = function saveLessonData(isTranslate , redirect)
             {
                 
                 ;
@@ -290,6 +290,11 @@
                     },
                         
                     success : function(data){
+                        if (redirect)
+                        {
+                            var new_lesson_page   =   data.objID.$id;
+                            location.href = sitePath + "/lesson/" + new_lesson_page + "/"  + localShort;
+                        }
                         $('#waiting').hide(100);
                         $('#lessonObjectId').val(data.objID.$id);
                         window.isLessonSaved =   true;
@@ -518,7 +523,7 @@
                     showFirstStepIfExist('lessonStepsValuesTranslate');
                 }
                 else{
-                    window.saveLessonData(false);
+                    window.saveLessonData(false , false);
                 } 
                 
                 
@@ -682,16 +687,29 @@
                 });     
                 
                 $('#btnSaveLessonTranslate').click(function() {           
-                    window.saveLessonData(true);
+                    window.saveLessonData(true ,false);
+                });
+                $('#btnCreateLesson').click(function() {           
+                    if ($.Storage.get('lessonTitle'))
+                        {
+                           if ($.Storage.get('lessonTitle').length > 2)
+                           {
+                               window.saveLessonData(false,true);
+
+                               
+                            } else
+                               alert(gt['Lesson title should contain at least 2 caracters']);
+                            }
+                    else{
+                        alert(gt['Lesson title should contain at least 2 caracters']);
+                    }
                 });
                 $('#btnSaveLesson').click(function() {
                     if ($.Storage.get('lessonTitle'))
                         {
                            if ($.Storage.get('lessonTitle').length > 2)
                            {
-                               window.saveLessonData(false);
-
-                               
+                               window.saveLessonData(false,false);        
                             } else
                                alert(gt['Lesson title should contain at least 2 caracters']);
                             }
@@ -716,35 +734,6 @@
 
                 
                 $('#btnShowLesson').each(function() {
-                    /*
-                            var gt = new Gettext({'domain' : 'messages'});
-                            
-                            
-                            var dialogCreatedOnce   =   false ;
-                            if (locale != "he_IL")
-                                var $dialog = $('<div dir="ltr"></div>'); 
-                            else
-                                var $dialog = $('<div dir="rtl"></div>');
-                                    var locale      = $.Storage.get('locale');
-                                    var objid       = $.Storage.get('ObjId');
-                                    if (window.isLessonSaved == false)
-                                        alert(gt.gettext("You must save the lesson before show lesson"));
-                                    else
-                                    {  
-                                    $dialog                           
-                                            .load('showLesson.php?locale=' + locale + '&objid=' + objid)
-                                            .dialog({
-                                                    title: $link.attr('title'),
-                                                    width: 700                                                  
-                                            }); 
-                                            $link.click(function() {
-                                                    $dialog.dialog('open');
-                                                    dialogCreatedOnce = true;
-                                                    return false;
-                                            });
-                                    return false;
-                                    }   
-                                    */
                     });
 
                 $('#btnDel').attr('disabled','disabled');
