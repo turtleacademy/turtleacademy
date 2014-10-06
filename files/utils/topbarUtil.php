@@ -162,7 +162,7 @@ class topbarUtil {
     }
 
     private static function print_topbar_selected($rootDir, $topbarDisplay, $langDropDown/*, $signUpDisplay*/, $language, $topbarSpanSize, $displaylanguage, $countryNativeName, $countryFlagName, $showTurtleIcon = true) {
-        global $cssleft, $cssright, $lang, $site_path , $documentation_page , $home_page;
+        global $cssleft, $cssright, $lang, $site_path , $documentation_page , $home_page , $lesson_page;
         ?>    
         <div class="topbar" id="topbarMainDiv" > 
             <div class="fill" id="topbarfill">
@@ -182,7 +182,7 @@ class topbarUtil {
                             echo "</a></li>";
                         }
                         if (isset($topbarDisplay['exercise']) && $topbarDisplay['exercise'] == "true") {
-                            echo "<li><a href='" . $site_path . "/lessons/$lang'>";
+                            echo "<li><a href='" . $site_path . $lesson_page .$lang ."'>";
                             echo _("Lessons");
                             echo "</a></li>";
                         }

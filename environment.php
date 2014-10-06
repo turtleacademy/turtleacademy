@@ -16,6 +16,6 @@
     $user_profile           =   "profile/";
     $documentation_page     =   "project/doc/";
     $home_page              =   "index/";
-    $lesson_page            =   "learn.php"; 
+    $lesson_page            =   "lessons/"; 
     //$root_dir             = "/next/";
 ?>
