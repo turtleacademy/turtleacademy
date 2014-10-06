@@ -1,10 +1,6 @@
     
 <?php
     //TODO - remove unneeded variable comments 
-        //$currentFile    = $_SERVER["PHP_SELF"];
-        //$parts          = Explode('/', $currentFile);
-        //$currentPage    = $parts[count($parts) - 1];
-        //$newLesson      = _('Create new Lesson');
         if (!isset ($root_dir)) $root_dir = "/";
         //if (!isset ($locale)) $locale = "en_US";
         $footer =
@@ -12,7 +8,7 @@
             <div id='footer_elem' lang='" . $lang ."'>
                 <ul>
                     <li>
-                        <a id='doc' title='"._('Project documentation')."' href='".$root_dir."project/doc/".$lang."'>
+                        <a id='doc' title='"._('Project documentation')."' href='".$root_dir.$documentation.$lang."'>
                         <b>". _('Documentation') ."</b>
                         </a>
                     </li>  
