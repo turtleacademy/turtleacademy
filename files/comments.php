@@ -51,7 +51,7 @@ error_reporting(E_ERROR | E_PARSE);
                              echo "<span>";
                              ?>
                              <a class='' href="<?php
-                                    echo $root_dir . "users/profile/";
+                                    echo $root_dir . $user_profile;
                                     $user = userUtil::strip_user_email($comment['user']);
                                     echo $user['name'];
                                     if ($user['email'])

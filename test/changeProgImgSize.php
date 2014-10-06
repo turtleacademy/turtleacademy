@@ -5,38 +5,38 @@
     if (session_id() == '')
         session_start();
     //If the user is not logged in yet redirect
-    require_once("../../environment.php");
+    require_once("../environment.php");
 
     $display_page = true;
-    require_once("../../localization.php");
-    require_once("../footer.php");
-    require_once("../cssUtils.php");
-    require_once("../utils/languageUtil.php");
-    require_once('../utils/topbarUtil.php');
-    require_once('../utils/badgesUtil.php');
-    require_once('../utils/userUtil.php');
-    require_once('../utils/pagination.php');
-
+    require_once("../localization.php");
+    require_once("../files/footer.php");
+    require_once("../files/cssUtils.php");
+    require_once("../files/utils/languageUtil.php");
+    require_once('../files/utils/topbarUtil.php');
+    require_once('../files/utils/badgesUtil.php');
+    require_once('../files/utils/userUtil.php');
+    require_once('../files/utils/pagination.php');
+    require_once('../files/utils/timeUtil.php');
 
     ?>
 
 <script> 
     var program_images = "" ;
     function do_logo(id ,cmd) {
-    $('#'+id).css('width', '60px').css('height', '40px').append('<canvas id="'+id+'c" width="60" height="40" style="position: absolute; z-index: 0;"></canvas>' +
-        '<canvas id="'+id+'t" width="60" height="40" style="position: absolute; z-index: 1;"></canvas>');
-    var canvas_element2 = document.getElementById(id+"c");
-    var turtle_element2 = document.getElementById(id+"t");
-    var turtle2 = new CanvasTurtle(
-    canvas_element2.getContext('2d'),
-    turtle_element2.getContext('2d'),
-    canvas_element2.width, canvas_element2.height);
-    var rate = 0.1;
-    g_logo2 = new LogoInterpreter(turtle2, null );
-    g_logo2.setRatio(rate);
-    cmd = cmd + " ht";
-    g_logo2.run(cmd);
-} 
+        $('#'+id).css('width', '200px').css('height', '130px').append('<canvas id="'+id+'c" width="200" height="130" style="position: absolute; z-index: 0;"></canvas>' +
+            '<canvas id="'+id+'t" width="200" height="130" style="position: absolute; z-index: 1;"></canvas>');
+        var canvas_element2 = document.getElementById(id+"c");
+        var turtle_element2 = document.getElementById(id+"t");
+        var turtle2 = new CanvasTurtle(
+        canvas_element2.getContext('2d'),
+        turtle_element2.getContext('2d'),
+        canvas_element2.width, canvas_element2.height);
+        var rate = 0.5;
+        g_logo2 = new LogoInterpreter(turtle2, null );
+        g_logo2.setRatio(rate);
+        cmd = cmd + " ht";
+        g_logo2.run(cmd);
+    }
 </script>
 
 <html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">
@@ -46,7 +46,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <?php
-        require_once("../utils/includeCssAndJsFiles.php");
+        require_once("../files/utils/includeCssAndJsFiles.php");
         includeCssAndJsFiles::include_all_page_files("users");
         echo "<link rel='stylesheet' href='".$root_dir."files/css/pagination.css' type='text/css' media='all'/>"; 
         echo "<script type='application/javascript' src='".$root_dir."files/floodfill.js' ></script>\n" ; 
@@ -84,48 +84,43 @@
                     <form class='form-stacked' id='diaplay-programs' method="post" action="">
                         <table class='zebra-striped ads' id="my_lessons" lang="<?php echo $lang ?>">
                             <thead>
-                                <tr>
-                                    <th class='span1'><?php echo _("num"); ?></th>
-                                    <th class='span2'><?php echo _("pic"); ?></th>
-                                    <th class='span4'>
+                                <tr> 
+                                    <th ><?php echo _("num"); ?></th>
+                                    <th ><?php echo _("pic"); ?></th>
+                                    <th >
                                         <?php echo _("creator"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/username/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/username/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
-                                    <th class='span5'>
+                                    <th >
                                         <?php echo _("program name"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/programName/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/programName/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
-                                    <th class='span4'><?php echo _("Date Created"); ?></th>
-                                    <th class='span5'>
+                                    <th ><?php echo _("Date Created"); ?></th>
+                                    <th >
                                         <?php echo _("Last updated"); 
                                             echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/lastUpdated/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
                                             echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/lastUpdated/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
                                          ?>    
                                     </th>
-                                    <th class='span4'><?php echo _("Actions"); ?></th>
+                                    <th >
+                                        <?php echo _("Total Score"); 
+                                            echo  "<span class='arrow' style='width:20px;float:left'><a href=\"$site_path/programs/$lang/asc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-up'></i></a></span>"; 
+                                            echo  "<span style='width:20px;float:left'><a href=\"$site_path/programs/$lang/desc/totalRankScore/1\"><i class='icon-fixed-width icon-chevron-down'></i></a></span>"; 
+                                         ?>    
+                                    </th>
+                                    <th ><?php echo _("Actions"); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
                             <?php
-                            //Getting the institute email
-                            
-                            if (isset($_SESSION['institute_email']))
-                                $insEmail           =    $_SESSION['institute_email'];
-                            else
-                            {
-                                if (isset($_SESSION['username']))
-                                $insEmail           =    userUtil::get_user_institute_email($_SESSION['username']);
-                            }
-                            
-                                $allPrograms = userUtil::get_institiute_user_programs($insEmail);
-                           
+                            $allPrograms = userUtil::find_public_programs();
                             // Here we will determine how to sort the user programs
-                            $sortColumn = 'precedence';
-                            $sortDirection = 1;
+                            $sortColumn = 'totalRankScore';
+                            $sortDirection = -1;
                             if (isset($_GET['column']))
                             {
                                 $sortColumn = $_GET['column'];
@@ -137,11 +132,13 @@
                                 else {
                                     $sortDirection = -1;
                                 }
-                            }                                
-                            $allPrograms->sort(array($sortColumn => $sortDirection));
+                            }  
+                          
+                            
+                            //$allPrograms->sort(array($sortColumn => 1));
                             // End of sorting the user programs
                             
-                            $limit = 15;
+                            $limit = 10;
                             $adjacents = 3;
                             if (isset($_GET['page']))
                             {
@@ -167,7 +164,7 @@
                             }
                             
                             $pagination = pagination($limit,$adjacents,$page,$start,$num_of_programs , $targetpage);
-                           
+
 
                             $i = 0;
                             $display_program_in_page = false;
@@ -188,9 +185,7 @@
                                     <?php
                                     if (strlen($program['img']) > 20)
                                     {
-                                    ?>
-                                    <td id="logo<?php echo $i;?>" style="background : url(<?php echo $program['img'] ?>);"> 
-                                    <?php
+                                        echo '<td id="logo'.$i.'"><img width="200" height="130" src="'.$program['img'].'">';
                                     } 
                                     else{
                                 ?>
@@ -224,16 +219,20 @@
                                         </a>
                                     </td>
                                     <td><?php echo $program['programName'] ?></td>
-                                    <td><?php echo $program['dateCreated'] ?></td>
-                                    <td><?php echo $program['lastUpdated'] ?></td>
+                                    <td><?php echo FormatTime(strtotime($program['dateCreated']))?></td>
+                                    <td><?php echo FormatTime(strtotime($program['lastUpdated'])) ?></td>
+                                    <td><?php echo $program['totalRankScore'] ?></td>
                                     <td>
                                         <a class='btn small info' href="<?php
-                                            echo $root_dir . "users/programs/";
+                                            echo $root_dir . "view/programs/";
                                             echo $program['_id'];
+                                            echo "/";
+                                            echo substr($locale ,0, 2);
+                                            
                                             ?>">
                                             <?php
                                                 echo _("View");
-                                                if (strlen($program['img']) < 20 )
+                                                //if (strlen($program['img']) < 20 )
                                                     $programImage = $programImage . "do_logo('logo" .$i ."','" . $newstr . "');** " ;
 
                                             ?>
@@ -305,7 +304,8 @@
                                     //For now ignoring the problem when User programs contains '' " signs
                                     if ( substr_count($image, "'")  == 4 )
                                     {
-                                    echo $image; echo "\n"; 
+                                        echo $image;
+                                        echo "\n"; 
                                     
                                     }
                                   ?>
@@ -335,12 +335,11 @@
                                     $progImg   = $program['img'];
                                     $canvasid  = "logo" .$i ."c";
                                    
-                                    if (strlen($progImg) < 20 )
-                                    { 
+                                   
                                        echo "try{ ";
                                         echo "saveProgramImage(\"$progTitle\"  , '$progId' , '$username' , '$canvasid'); ";
                                         echo " } catch(err) {} ; \n";
-                                    }
+                                    
                                      
                                 }// End if it's a program we need to $progCode in this page
                             } // End of foreach loop

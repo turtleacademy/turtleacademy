@@ -308,7 +308,7 @@
                                     </td>
                                     <td>
                                         <a class='' href="<?php
-                                            echo $root_dir . "users/profile/";
+                                            echo $root_dir . $user_profile;
                                             $programCreator    = $program['username'];
                                             $hasMail = false;
                                             if (strpos($programCreator, '@') !== false) {

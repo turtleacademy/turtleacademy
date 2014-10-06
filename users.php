@@ -1,6 +1,4 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-    "http://www.w3.org/TR/html4/strict.dtd">  
+<!DOCTYPE html>
     <?php
     if (session_id() == '')
         session_start();
@@ -160,7 +158,7 @@
                             ?>
                             <p> 
                             <?php
-                                $m = new Mongo();
+                                $m = new MongoClient();
                                 $db = $m->turtleTestDb;
                                 $strcol = $db->messages;
                                 $username = trim($username);
@@ -219,7 +217,7 @@
                                     echo _("My private profile");
                                 }
                             } else {
-                                echo "<a href='$root_dir" . "users/profile/" . $display_username . "'" . ">";
+                                echo "<a href='$root_dir" . $user_profile . $display_username . "'" . ">";
                                 echo _("My public profile");
                             }
                             ?>
@@ -345,7 +343,10 @@
                                             }
                                             ?> 
                                             ">  
-                                               <img  src="<?php echo $program['img'] ?>"/>;
+                                               <?php
+                                               echo '<img src= ' .$site_path .'images/medium/'.$program['_id'].'.png>';
+                                                   ?>
+                                               <!-- <img  src="<?php echo $program['img'] ?>"/>; -->
                                             </a>
                                     </div>   
                                     <div id ="user-singel-program-description" >

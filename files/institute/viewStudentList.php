@@ -59,7 +59,7 @@ require_once ('../utils/userUtil.php');
                         <tr>
                             <td>
                             <a class='' href="<?php
-                                            echo $root_dir . "users/profile/";
+                                            echo $root_dir . $user_profile;
                                             $username    = $student['username'];
                                             echo $username; 
                                             ?>"> 

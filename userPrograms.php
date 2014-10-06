@@ -1,6 +1,4 @@
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-    "http://www.w3.org/TR/html4/strict.dtd">  
+<!DOCTYPE html>  
     <?php
     if (session_id() == '')
         session_start();
@@ -135,7 +133,6 @@
                                 }
                             }  
                           
-                            
                             $allPrograms->sort(array($sortColumn => $sortDirection));
                             $allPrograms->limit(500); 
                             // End of sorting the user programs
@@ -192,7 +189,7 @@
                                     </td>
                                     <td>
                                         <a class='' href="<?php
-                                            echo $root_dir . "users/profile/";
+                                            echo $root_dir . $user_profile;
                                             $user = userUtil::strip_user_email($program['username']);
                                             
                                             echo $user['name'];
