@@ -17,5 +17,7 @@
     $documentation_page     =   "project/doc/";
     $home_page              =   "index/";
     $lesson_page            =   "lessons/"; 
+    $program_page           =   "programs/";
+    $news_page              =   "news/";
     //$root_dir             = "/next/";
 ?>

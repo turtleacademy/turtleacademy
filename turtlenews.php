@@ -83,7 +83,7 @@ $newsItems->sort(array('date' => -1));
     <script>
         // Select language in main page
         $(document).ready(function() {
-            selectLanguage("<?php echo $_SESSION['locale']; ?>" , "<?php echo $root_dir; ?>news/" , "turtlenews.php" ,"en_US" );
+            selectLanguage("<?php echo $_SESSION['locale']; ?>" , "<?php echo $root_dir; echo $news_page;?>" , "turtlenews.php" ,"en_US" );
         })
         
     </script>
