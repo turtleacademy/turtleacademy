@@ -9,12 +9,13 @@
     $site_path              =    "http://turtle.com/";
     //$site_pate_with_www   =    "http://www.turtleacademy.com/next/";  
     $site_pate_with_www     =    "http://www.turtle.com/";  
-    $home_page              =   "index.php";
-    $lesson_page            =   "learn.php";  
+ 
     $env                    =   "lcl";
     $root_dir               =   "/"; 
     $minified               =   ".min";
     $user_profile           =   "profile/";
-    $documentation          =   "project/doc/"
+    $documentation_page     =   "project/doc/";
+    $home_page              =   "index/";
+    $lesson_page            =   "learn.php"; 
     //$root_dir             = "/next/";
 ?>

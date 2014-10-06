@@ -8,7 +8,7 @@
             <div id='footer_elem' lang='" . $lang ."'>
                 <ul>
                     <li>
-                        <a id='doc' title='"._('Project documentation')."' href='".$root_dir.$documentation.$lang."'>
+                        <a id='doc' title='"._('Project documentation')."' href='".$root_dir.$documentation_page.$lang."'>
                         <b>". _('Documentation') ."</b>
                         </a>
                     </li>  

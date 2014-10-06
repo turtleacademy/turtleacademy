@@ -162,7 +162,7 @@ class topbarUtil {
     }
 
     private static function print_topbar_selected($rootDir, $topbarDisplay, $langDropDown/*, $signUpDisplay*/, $language, $topbarSpanSize, $displaylanguage, $countryNativeName, $countryFlagName, $showTurtleIcon = true) {
-        global $cssleft, $cssright, $lang, $site_path , $documentation;
+        global $cssleft, $cssright, $lang, $site_path , $documentation_page , $home_page;
         ?>    
         <div class="topbar" id="topbarMainDiv" > 
             <div class="fill" id="topbarfill">
@@ -177,7 +177,7 @@ class topbarUtil {
                     <ul class="nav" id="turtleHeaderUl" lang="<?php echo $lang ?>"> 
                         <?php
                         if ($topbarDisplay['turtleacademy'] == "true") {
-                            echo "<li><a href='" . $site_path . "/index/$lang'>";
+                            echo "<li><a href='" . $site_path .$home_page . $lang . "'>";
                             echo _("TurtleAcademy");
                             echo "</a></li>";
                         }
@@ -213,7 +213,7 @@ class topbarUtil {
                             echo "</a></li>";
                         }
                         if ($topbarDisplay['about'] == "true") {
-                            echo "<li><a href='" . $site_path . "$documentation$lang'>";
+                            echo "<li><a href='" . $site_path . $documentation_page . $lang ."'>";
                             echo _("About");
                             echo "</a></li>";
                         }
@@ -263,7 +263,7 @@ class topbarUtil {
                                     </a>
                                     <ul class="dropdown-menu" id="ddusermenu"role="menu" aria-labelledby="dLabel">
                                         <li><a tabindex="-1" href="<?php echo $rootDir . "users.php"; ?>"   class="innerLink" id="help-nav"><?php echo _("My account"); ?></a></li>
-                                        <li><a tabindex="-1" href="<?php echo $rootDir . $documentation . $lang; ?>" class="innerLink" id="hel-nav"><?php echo _("Help"); ?></a></li>
+                                        <li><a tabindex="-1" href="<?php echo $rootDir . $documentation_page . $lang; ?>" class="innerLink" id="hel-nav"><?php echo _("Help"); ?></a></li>
                                         <li><a href="<?php echo $rootDir; ?>logout.php" class="innerLink"><?php echo _("Log out"); ?></a></li>
                                     </ul>
                                 </li>

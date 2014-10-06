@@ -224,7 +224,7 @@
                                 </a>
                             </p>
                             <p>
-                                <a href='<?php echo $root_dir . $documentation . $lang; ?>'>
+                                <a href='<?php echo $root_dir . $documentation_page . $lang; ?>'>
                                 <?php echo _("Help"); ?>
                                 </a>
                             </p>

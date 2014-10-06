@@ -310,7 +310,7 @@ require_once('files/utils/topbarUtil.php');
         <!-- Creating logo symbols -->
         <script>
         $(document).ready(function() {
-            selectLanguage("<?php echo $_SESSION['locale']; ?>" , "<?php echo $root_dir; echo $documentation; ?>" , "documentation.php" ,"en_US" );
+            selectLanguage("<?php echo $_SESSION['locale']; ?>" , "<?php echo $root_dir; echo $documentation_page; ?>" , "documentation.php" ,"en_US" );
         })
             function do_logo(id ,cmd) {
                 $('#'+id).css('width', '300px').css('height', '200px').append('<canvas id="'+id+'c" width="300" height="200" style="position: absolute; z-index: 0;"></canvas>' +
