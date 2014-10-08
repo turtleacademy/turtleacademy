@@ -195,7 +195,9 @@
                                             echo $user['name'];
                                             if ($user['email'])
                                                 echo "_email";
-                                            ?>"> 
+                                            echo "/" .$lang . "/1";
+                                            ?>"
+                                         > 
                                             <?php
                                                 echo $user['name'];
                                                 $code = $program['code'];

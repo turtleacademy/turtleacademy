@@ -24,6 +24,7 @@
     require_once('files/utils/badgesUtil.php');
     require_once('files/utils/userUtil.php');
     require_once('files/utils/timeUtil.php');
+    require_once('files/utils/pagination.php');
 
     if (isset($_SESSION['username'])) {
         $username = $_SESSION['username'];
@@ -74,6 +75,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <?php
+        echo "<link rel='stylesheet' href='".$root_dir."files/css/pagination.css' type='text/css' media='all'/>"; 
         require_once("localization_js.php");
         require_once("files/utils/includeCssAndJsFiles.php");
         includeCssAndJsFiles::include_all_page_files("users");
@@ -81,6 +83,17 @@
     </head>
     <body>
         <?php
+         function curPageURL() {
+            $pageURL = 'http';
+            if (isset($_SERVER["HTTPS"])) {$pageURL .= "s";}
+            $pageURL .= "://";
+            if ($_SERVER["SERVER_PORT"] != "80") {
+             $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+            } else {
+             $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+            }
+            return $pageURL;
+        }
         //Will display the page only if user is register ,, if not will be redirected
         if ($display_page) {
             //Printing the topbar menu
@@ -213,7 +226,7 @@
                                         $name_before_adding_mail_address = explode('@', $private_user_name);
                                         $private_user_name = $name_before_adding_mail_address[0];
                                     }
-                                    echo "<a href='$root_dir" . "users/" . $private_user_name. "'" . ">";
+                                    echo "<a href='$root_dir" . $user_profile . $private_user_name. "'" . ">";
                                     echo _("My private profile");
                                 }
                             } else {
@@ -312,6 +325,8 @@
                         </div> 
 
                     </div> <!-- End of myProgress div -->
+                    
+                    <!-- Viewing user programs -->
                     <div class='span16'id="usrLessonDiv" lang="<?php echo $lang ?>"> 
 
                         <h2><?php
@@ -323,12 +338,54 @@
                         </h2>
                         <?php
                             if ($is_public_user_page)
+                            {
                                 $user_programs = userUtil::find_user_public_programs($username);
+                            }
                             else
+                            {
                                 $user_programs = userUtil::find_user_programs($username);
+                            }
                             $i = 0 ;
-                         foreach ($user_programs as $program) { 
-                             $i++;
+                            $display_program_in_page = false;
+                            //Adding pagination
+                            $limit = 4;
+                            $adjacents = 2;
+                            if (isset($_GET['page']))
+                            {
+                                $page = $_GET['page'];
+                                $start = ($page - 1) * $limit +1; 
+                            }
+                            else
+                            {
+                                $start = 1;
+                                $page = 1; //if no page var is given, default to 1.
+                            };
+                            $num_of_programs = $user_programs->count();
+                            $targetpage = curPageURL();
+                            if (isset($_GET['page']))
+                            {
+                                if ($page >=1 && $page < 10)
+                                    $targetpage = substr ($targetpage, 0,  strlen ($targetpage) -2);
+                                elseif ($page >=10 && $page < 100)
+                                    $targetpage = substr ($targetpage, 0,  strlen ($targetpage) -3);
+                                else {
+                                  $targetpage = substr ($targetpage, 0,  strlen ($targetpage) -4);  
+                                }
+                            }
+                           // echo "limit is " . $limit . " adjacents is " . $adjacents . " page is " . $page . " start is " . $start . " num prog is " . $num_of_programs
+                           //         . " target page " . $targetpage;
+                            $pagination = pagination($limit,$adjacents,$page,$start,$num_of_programs , $targetpage);
+                            ?>
+                            <div id="all-user-programs">
+                            <?php
+                            foreach ($user_programs as $program) { 
+                                $i++;
+                                if ($i == $start)
+                                    $display_program_in_page = true;
+                                if ($i == $start + $limit )
+                                    $display_program_in_page = false;
+                                if ($display_program_in_page)
+                                {
                             ?>
                                 <div id="user-singel-program" >
                                     <div id ="user-singel-program-image" > 
@@ -377,65 +434,12 @@
     
                                 </div>
                             <?php
-                            } // End of foreach loop
+                                } 
+                             }  // End of foreach loop
+                            echo "</div>"; // close <div id="all-user-programs">
+                            echo $pagination;
                             ?> 
-                        <!--
-                        <table class='zebra-striped ads' id="my_lessons" lang="<?php echo $lang ?>">
-                            <thead>
-                                <tr>
-                                    <th class='span4'><?php echo _("Name"); ?></th>
-                                    <th class='span4'><?php echo _("Date Created"); ?></th>
-                                    <th class='span4'><?php echo _("Last updated"); ?></th>
-                                    <th class='span4'><?php echo _("Actions"); ?></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php
-                            if (isset($_SESSION['isOpenID'])) {
-                                $username = $display_username . $_SESSION['completeEmail'];
-                            }
-                            if ($is_public_user_page)
-                                $user_programs = userUtil::find_user_public_programs($username);
-                            else
-                                $user_programs = userUtil::find_user_programs($username);
-                            
-                            
-                            foreach ($user_programs as $program) {
-                            ?>
-                                <tr>
-                                    <td><?php echo $program['programName'] ?></td>
-                                    <td><?php echo FormatTime(strtotime($program['dateCreated'])) ?></td>
-                                    <td><?php echo FormatTime(strtotime($program['lastUpdated'])) ?></td>
-                                    <td>
-                                        <a class='btn small info' href="<?php
-                                            if ($is_public_user_page)
-                                                echo $root_dir . "view/programs/";
-                                            else
-                                                echo $root_dir . "program/update/";
-                                            echo $program['_id'];
-                                            if (!$is_public_user_page) {
-                                                echo"/";
-                                                echo $username;
-                                                echo "/";
-                                                echo substr($locale,0,2);
-                                                
-                                            }
-                                            ?> 
-                                        ">  <?php
-                                            if ($is_public_user_page)
-                                                echo _("View");
-                                            else
-                                                echo _("Edit");
-                                            ?>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php
-                            } // End of foreach loop
-                            ?> 
-                            </tbody>  
-                        </table>
-                        -->
+                       
                     </div><!-- end of center content -->
                 </div>
             <?php
@@ -469,7 +473,7 @@
                         });                                           
                     });
                         
-                    selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir; ?>users/<?php if ($is_public_user_page) echo "profile" . "/" . $username; ?>/", "users.php" ,"en" ); 
+                    selectLanguage("<?php echo $_SESSION['locale']; ?>" ,  "<?php echo $root_dir . $user_profile; ?><?php if ($is_public_user_page) echo $user_profile. $username; ?>", "users.php" ,"en" ); 
                     $('#myMessages').hide();
                     $('#myMessageslink').click(function() {
                         $('#myProgress').hide();

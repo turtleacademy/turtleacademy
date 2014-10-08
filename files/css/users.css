@@ -78,7 +78,7 @@ td.mini-thumbnail{
     height: 20px;
 }
 #user-singel-program{ 
-    width: 220px ; 
+    width: 235px ; 
     height: 200px;
     float: left
 }
@@ -96,4 +96,7 @@ td.mini-thumbnail{
 #user-singel-program-description > div {
     height: 20px;
     color : rgb(137, 137, 137);
+}
+#all-user-programs{
+    height: 220px;
 }

@@ -3,7 +3,9 @@
 //Start pagination
     function pagination($limit,$adjacents,$page,$start,$num_of_programs , $targetpage)
     {
-        $limit = 15;
+        if (!isset($limit))
+            $limit = 15;
+        if (!isset($adjacents))
         $adjacents = 3;
       //if no page var is given, set start to 0
         $total_pages = ceil($num_of_programs/$limit);

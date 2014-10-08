@@ -297,12 +297,19 @@
            $m = new MongoClient();
            $db = $m->turtleTestDb;	
            $users = $db->users;
-           
-           $user_query       = array('confirm' => true);
+           $user_query       = array('confirm' => true );
            $resultcount     = $users->count($user_query);
            //Case no user found
-          
-               return $resultcount;     
+            return $resultcount;     
+     }
+     public static function get_num_users_added_by_teachers(){
+        $m = new MongoClient();
+        $db = $m->turtleTestDb;	
+        $users = $db->users;
+        $user_query       = array('confirm' => true , 'email' =>'');
+        $resultcount     = $users->count($user_query);
+        //Case no user found
+         return $resultcount;     
      }
      public static function get_varified_users_collection() 
      {
