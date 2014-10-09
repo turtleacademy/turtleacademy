@@ -321,6 +321,19 @@
            return $resultcount;    
      }
      
+      public static function update_user_password($username , $new_password) 
+     {
+        $m = new MongoClient();
+        $db = $m->turtleTestDb;
+        $users = $db->users;
+        $userQuery = array('username' => $username);
+        $criteria = $users->findOne($userQuery);
+        $pass   =   md5($new_password);
+        $criteria_update = $criteria;
+        $criteria_update['password'] = $pass;
+        $update_users = $users->update($criteria, $criteria_update);
+     }
+     
      
     }
 ?>
