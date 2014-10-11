@@ -2,15 +2,13 @@
 if (session_id() == '')
     session_start();
 $phpDirPath = "../email/inc/php/";
-include_once $phpDirPath . 'config.php';
-include_once $phpDirPath . 'functions.php';
 require_once ('../../environment.php');
 require_once ("../../localization.php");
 require_once ('../utils/topbarUtil.php');
 require_once ('../openid.php');
 require_once ('../utils/userUtil.php');
 ?>
-<html dir="<?php echo $dir ?>" lang="en">
+<html dir="<?php echo $dir ?>" lang="<?php echo $lang ?>">
     <head>
         <meta charset="utf-8">
         <title>Add Student</title>
@@ -48,27 +46,36 @@ require_once ('../utils/userUtil.php');
                     <tr>
                         <th class='span4'><?php echo _("Username"); ?></th>
                         <th class='span4'><?php echo _("Join date"); ?></th>
+                        <th class='span4'><?php echo _("Set new password"); ?></th>
+                        <th class='span4'><?php echo _("action"); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     $instituteStudents = userUtil::get_institiute_users_by_institue_admin_email($_SESSION['institute_email']);
+                    $i = 0;
                     foreach ($instituteStudents as $student) {
-                        
+                        $i = $i++;
                         ?>
                         <tr>
                             <td>
                             <a class='' href="<?php
                                             echo $root_dir . $user_profile;
                                             $username    = $student['username'];
-                                            echo $username; 
+                                            echo $username . "/" . $lang; 
                                             ?>"> 
                                             <?php
-                                                echo $username;
+                                                echo $username ;
                                             ?>  
                                         </a>
                             </td>
                             <td><?php if (isset($student['date'])) echo $student['date']; ?></td>
+                            <td>
+                                <textarea row="3" id='password<?php echo $i ?>'></textarea>
+                            </td> 
+                            <td>
+                                <div class='btn small info pressed' id='<?php echo $i ?>' name='<?php echo $student['username'] ?>'>save</div>
+                            </td>
                         </tr>
                         <?php
                     } // End of foreach loop
@@ -82,3 +89,33 @@ require_once ('../utils/userUtil.php');
             }
         ?>
     </body>
+     <script type="application/javascript">  
+             $(document).ready(function() {
+           
+                    $(".pressed").click(function() {
+                        var id              = $(this).attr('id');
+                        var username        = $(this).attr('name');
+                        var thepassword     = "password"+id;
+                        var password         = $('#' + thepassword).val();
+                        var passLen = password.length;
+                        if (passLen < 6)
+                            alert("<?php echo _("Password should contain at least 5 caracters"); ?>")
+                        else
+                        $.ajax({
+                            type : 'POST',
+                            url : 'setStudentPassword.php',
+                            dataType : 'json',
+                            data: {
+                                username        :   username,
+                                password       :   password
+                            },
+                            success: function(data) { 
+                                alert('successfully save');
+                            } ,
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert('en error occured');
+                            }
+                        });
+                    });
+            });
+         </script>

@@ -9,6 +9,7 @@ require_once ('../../environment.php');
 require_once ("../../localization.php"); 
 require_once ("../cssUtils.php");
 require_once ('../utils/topbarUtil.php');
+date_default_timezone_set('America/Los_Angeles');
 ?>
 <html dir="<?php echo $dir ?>" lang="en">
     <head>
@@ -116,7 +117,7 @@ function addUserToDbAndSendCondirmationMail($username, $password, $users, $db) {
     $date = date('Y-m-d H:i:s');
     $userStructure = array("username" => $username, "password" => $password,"badges" => "", "email" => "",
         "confirm" => true, "institute_email" => $_SESSION['institute_email'] , "date" => $date);
-    $userResult = $users->insert($userStructure, array('safe' => true));
+    $userResult = $users->insert($userStructure);
 }
  if (!isset($_SESSION['institute_email']))
  {
